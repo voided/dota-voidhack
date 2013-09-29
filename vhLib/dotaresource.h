@@ -15,6 +15,12 @@ public:
 
 	CEntPropArray( int, m_nSelectedHeroID );
 
+	CEntPropArray( int, m_iKills );
+	CEntPropArray( int, m_iAssists );
+	CEntPropArray( int, m_iDeaths );
+
+	CEntPropArray( int, m_iLevel );
+
 
 	static C_DOTAResource GetResourceEntity();
 

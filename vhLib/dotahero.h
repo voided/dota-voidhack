@@ -13,5 +13,14 @@ public:
 	C_DOTAHero( C_BaseEntity *pEnt );
 
 
+	int GetHeroID();
+	
+	int GetNumKills();
+	int GetNumAssists();
+	int GetNumDeaths();
+
+	int GetLevel();
+
+
 	CEntProp( int, m_iPlayerID );
 };

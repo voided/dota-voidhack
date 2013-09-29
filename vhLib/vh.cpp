@@ -12,6 +12,10 @@
 #include "toolframework/ienginetool.h"
 #include "cdll_int.h"
 
+#include "dotaplayer.h"
+#include "dotahero.h"
+#include "dotaresource.h"
+
 #include <sourcehook/sourcehook.h>
 
 
@@ -47,24 +51,22 @@ CON_COMMAND( vh_test, "Test convar" )
 	Msg( "In game: %d\n", VH().EngineClient()->IsInGame() );
 	Msg( "Ent index: %d\n", VH().ClientTools()->GetEntIndex( VH().ClientTools()->GetLocalPlayer() ) );
 
-	C_BasePlayer *pPlayer = EntityHelper().GetLocalPlayer();
-
-	if ( pPlayer )
+	for ( int x = 1 ; x <= MAX_PLAYERS ; ++x )
 	{
-		int playerId;
-		if ( !EntityHelper().GetEntPropInt( pPlayer, EntProp_RecvProp, "m_iPlayerID", &playerId ) )
-			return;
+		C_DOTAPlayer player = C_DOTAPlayer::GetPlayerByIndex( x );
 
-		C_BaseEntity *pResource = EntityHelper().GetResourceEntity();
+		if ( !player.IsValid() )
+			continue;
 
-		if ( pResource )
-		{
-			int heroId;
-			if ( !EntityHelper().GetEntPropInt( pResource, EntProp_RecvProp, "m_nSelectedHeroID", &heroId, EntPropSize_Int8, playerId ) )
-				return;
+		C_DOTAHero hero = player.m_hAssignedHero;
 
-			Msg( "You are playing as heroid: %d\n", heroId );
-		}
+		if ( !hero.IsValid() )
+			continue;
+
+		Msg(
+			"Player %d (%d) is playing as %d at level %d, with %d/%d/%d kda\n",
+			x, ( int )hero.m_iPlayerID, hero.GetHeroID(), hero.GetLevel(), hero.GetNumKills(), hero.GetNumDeaths(), hero.GetNumAssists()
+		);
 	}
 
 }
