@@ -17,9 +17,9 @@ private:
 	friend void ZeusManager_Think();
 	void Think();
 
-
-	bool ShouldUlt();
 	bool IsPlayingAsZeus();
+	bool IsUltReady();
+	bool ShouldUlt();
 
 	void DoUlt();
 

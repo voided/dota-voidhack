@@ -6,6 +6,7 @@
 #include "dotaplayer.h"
 #include "dotahero.h"
 #include "dotaresource.h"
+#include "dotaability.h"
 
 
 
@@ -44,9 +45,10 @@ void CZeusManager::Think()
 	if ( !VH().EngineTool()->IsInGame() )
 		return; // not in game, no logic to perform
 
-	if ( this->ShouldUlt() )
+	if ( IsPlayingAsZeus() && IsUltReady() && ShouldUlt() )
 	{
-		this->DoUlt();
+		DoUlt();
+		return;
 	}
 
 	// check if we should taunt players
@@ -60,11 +62,7 @@ void CZeusManager::Think()
 
 bool CZeusManager::ShouldUlt()
 {
-	if ( !IsPlayingAsZeus() )
-		return false;
-
 	// todo: 
-	//   check if our ult isn't on CD & we have enough mana
 	//   check if any players are worth ulting (low hp, calculate magic resistance)
 
 	return false;
@@ -72,12 +70,7 @@ bool CZeusManager::ShouldUlt()
 
 bool CZeusManager::IsPlayingAsZeus()
 {
-	C_DOTAPlayer player = C_DOTAPlayer::GetLocalPlayer();
-
-	if ( !player.IsValid() )
-		return false;
-
-	C_DOTAHero hero = player.m_hAssignedHero;
+	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
 
 	if ( !hero.IsValid() )
 		return false;
@@ -92,12 +85,33 @@ bool CZeusManager::IsPlayingAsZeus()
 	return heroId == HERO_ZEUS; // 22
 }
 
+// precondition: we're playing as zeus
+bool CZeusManager::IsUltReady()
+{
+	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
+
+	C_DOTAAbility ability = hero.m_hAbilities[ 3 ]; // ability 3 (zero indexed) is ult
+
+	if ( !ability.IsValid() )
+		return false;
+
+	if ( ability.m_iLevel == 0 )
+		return false; // not skilled
+
+	if ( hero.m_flMana < ability.m_iManaCost )
+		return false; // not enough mana
+
+	// todo: check cooldown time
+
+	return true;
+}
+
 void CZeusManager::DoUlt()
 {
 	// just ult
 	// difter could learn a thing or two here
 
-	// todo: select hero first, or perhaps execute the ability directly
+	// todo: select hero first, or perhaps execute the ability directly?
 	VH().EngineClient()->ExecuteClientCmd( "dota_ability_execute 5\n" );
 
 	m_flNextTaunt = VH().EngineTool()->ClientTime() + 5.0;
