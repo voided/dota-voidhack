@@ -26,13 +26,6 @@ struct DataMapInfo_t
 	int actualOffset;
 };
 
-enum EntPropSize
-{
-	EntPropSize_Int8,
-	EntPropSize_Int16,
-	EntPropSize_Int32,
-};
-
 enum EntPropType
 {
 	EntProp_RecvProp,
@@ -62,7 +55,7 @@ public:
 	C_BaseEntity *GetResourceEntity();
 
 
-	bool	GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *pValue, EntPropSize size = EntPropSize_Int32, int element = 0 );
+	bool	GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *pValue, int element = 0 );
 	bool	GetEntPropHandle( C_BaseEntity *pEnt, EntPropType propType, const char *propName, CBaseHandle *pHandle, int element = 0 );
 	bool	GetEntPropEnt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, C_BaseEntity **pOutEnt, int element = 0 );
 	int 	GetEntPropString( C_BaseEntity *pEnt, EntPropType propType, const char *propName, char **pOutString, int element = 0 );

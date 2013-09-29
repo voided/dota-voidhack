@@ -92,7 +92,7 @@ C_BaseEntity *CEntityHelper::GetResourceEntity()
 }
 
 
-bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *pValue, EntPropSize size, int element )
+bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *pValue, int element )
 {
 	int offset = 0;
 
@@ -152,25 +152,9 @@ bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, con
 			return false;
 	}
 
-	switch ( size )
-	{
-		case EntPropSize_Int32:
-			*pValue = *(uint32 *)( (uint8 *)pEnt + offset );
-			return true;
 
-		case EntPropSize_Int16:
-			*pValue = *(uint16 *)( (uint8 *)pEnt + offset );
-			return true;
-
-		case EntPropSize_Int8:
-			*pValue = *(uint8 *)( (uint8 *)pEnt + offset );
-			return true;
-
-		default:
-			Assert( !"Unknown prop size in GetEntPropInt!" );
-	}
-
-	return false;
+	*pValue = *(int32 *)( (uint8 *)pEnt + offset );
+	return true;
 }
 
 bool CEntityHelper::GetEntPropHandle( C_BaseEntity *pEnt, EntPropType propType, const char *propName, CBaseHandle *pHandle, int element )
