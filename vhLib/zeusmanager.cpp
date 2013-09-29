@@ -2,11 +2,10 @@
 #include "vh.h"
 
 #include "zeusmanager.h"
-#include "entityhelper.h"
 
-#include "dota_consts.h"
-
-#include "cbase.h"
+#include "dotaplayer.h"
+#include "dotahero.h"
+#include "dotaresource.h"
 
 
 
@@ -73,26 +72,22 @@ bool CZeusManager::ShouldUlt()
 
 bool CZeusManager::IsPlayingAsZeus()
 {
-	C_BasePlayer *pPlayer = EntityHelper().GetLocalPlayer();
+	C_DOTAPlayer player = C_DOTAPlayer::GetLocalPlayer();
 
-	if ( !pPlayer )
+	if ( !player.IsValid() )
 		return false;
 
-	C_BaseEntity *pHero;
-	if ( !EntityHelper().GetEntPropEnt( pPlayer, EntProp_RecvProp, "m_hAssignedHero", &pHero ) )
+	C_DOTAHero hero = player.m_hAssignedHero.Get();
+
+	if ( !hero.IsValid() )
 		return false;
 
-	int playerId;
-	if ( !EntityHelper().GetEntPropInt( pHero, EntProp_RecvProp, "m_iPlayerID", &playerId ) )
+	C_DOTAResource resourceEnt = C_DOTAResource::GetResourceEntity();
+
+	if ( !resourceEnt.IsValid() )
 		return false;
 
-	C_BaseEntity *pResourceEnt = EntityHelper().GetResourceEntity();
-	if ( !pResourceEnt )
-		return false;
-
-	int heroId;
-	if ( !EntityHelper().GetEntPropInt( pResourceEnt, EntProp_RecvProp, "m_nSelectedHeroID", &heroId, EntPropSize_Int8, playerId ) )
-		return false;
+	int heroId = resourceEnt.m_nSelectedHeroID.Get( hero.m_iPlayerID.Get() );
 
 	return heroId == HERO_ZEUS; // 22
 }

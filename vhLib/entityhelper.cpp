@@ -19,7 +19,7 @@ CEntityHelper &EntityHelper()
 }
 
 void CEntityHelper::Init()
-{
+{ 
 	CByteScanner byteScan( "client" );
 
 	// we're sigscanning the cl_dota_showents concommand handler
@@ -378,29 +378,26 @@ bool FindInDataMap( datamap_t *pDataMap, const char *dataName, DataMapInfo_t *pI
 
 bool CEntityHelper::GetRecvPropInfo( IClientNetworkable *pNetworkable, const char *propName, RecvPropInfo_t *pInfo )
 {
+	if ( pNetworkable == NULL )
+		return false;
+
 	ClientClass *pClass = pNetworkable->GetClientClass();
 
 	if ( pClass == NULL )
-	{
-		Msg( "[EntityHelper] Unable to get recvprop %s from networkable!\n", propName );
 		return false;
-	}
 
 	return FindInRecvTable( pClass->m_pRecvTable, propName, pInfo, 0 );
 }
 
 bool CEntityHelper::GetDataMapInfo( C_BaseEntity *pEntity, const char *dataName, DataMapInfo_t *pInfo )
 {
-	// todo: this gives us the datadesc for C_BaseEntity, but we actually want the upper one!
+	if ( pEntity == NULL )
+		return false;
 
 	datamap_t *pDataMap = pEntity->GetDataDescMap();
 
 	if ( pDataMap == NULL )
-	{
-		Msg( "[EntityHelper] Unable to get datamap from entity!\n" );
 		return false;
-	}
 
 	return FindInDataMap( pDataMap, dataName, pInfo );
-
 }

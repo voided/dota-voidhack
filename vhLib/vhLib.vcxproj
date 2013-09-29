@@ -89,7 +89,10 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cproto.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp" />
     <ClCompile Include="bytescanner.cpp" />
+    <ClCompile Include="dotaentity.cpp" />
+    <ClCompile Include="dotahero.cpp" />
     <ClCompile Include="dotaplayer.cpp" />
+    <ClCompile Include="dotaresource.cpp" />
     <ClCompile Include="entityhelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="vh.cpp" />
@@ -97,9 +100,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bytescanner.h" />
+    <ClInclude Include="dotaentity.h" />
+    <ClInclude Include="dotahero.h" />
     <ClInclude Include="dotaplayer.h" />
+    <ClInclude Include="dotaresource.h" />
     <ClInclude Include="dota_consts.h" />
     <ClInclude Include="entityhelper.h" />
+    <ClInclude Include="entprop.h" />
     <ClInclude Include="vh.h" />
     <ClInclude Include="zeusmanager.h" />
   </ItemGroup>

@@ -28,6 +28,12 @@
     <Filter Include="Header Files\dota">
       <UniqueIdentifier>{77523d75-a5d8-4f21-b6f5-8ad9293708f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{3c85e22f-d8ee-4ead-bb9a-72320b927fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{953cded2-a0b1-46b7-8e8c-0b882bd376a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -37,9 +43,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entityhelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook.cpp">
@@ -66,15 +69,24 @@
     <ClCompile Include="dotaplayer.cpp">
       <Filter>Source Files\dota</Filter>
     </ClCompile>
+    <ClCompile Include="entityhelper.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="dotaentity.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="dotahero.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="dotaresource.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zeusmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entityhelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bytescanner.h">
@@ -84,6 +96,21 @@
       <Filter>Header Files\dota</Filter>
     </ClInclude>
     <ClInclude Include="dota_consts.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="entityhelper.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="entprop.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="dotaentity.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dotahero.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dotaresource.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
   </ItemGroup>

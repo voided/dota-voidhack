@@ -15,6 +15,7 @@
 
 # visual studio
 *.sdf
+*.opensdf
 
 # user files
 *.suo
