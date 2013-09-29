@@ -23,4 +23,12 @@ public:
 
 
 	CEntProp( int, m_iPlayerID );
+
+	CEntProp( int, m_iHealth );
+	CEntProp( int, m_iMaxHealth );
+
+	CEntProp( float, m_flMana );
+	CEntProp( float, m_flMaxMana );
+
+	CEntPropEntArray( m_hAbilities );
 };

@@ -68,3 +68,20 @@
 			return (propType)0; \
 		} \
 	} propName;
+
+#define CEntPropEntArray( propName ) \
+	class CEntPropArray_##propName \
+	{ \
+	public: \
+		C_BaseEntity *operator[]( const int index ) { return Get( index ); } \
+		C_BaseEntity *Get( int element ) \
+		{ \
+			C_BaseEntity *pEntOuter = GET_OUTER( ThisClass, propName )->m_pEntity; \
+			C_BaseEntity *pEnt = NULL; \
+			if ( EntityHelper().GetEntPropEnt( pEntOuter, EntProp_RecvProp, #propName, &pEnt, element ) ) \
+			{ \
+				return pEnt; \
+			} \
+			return NULL; \
+		} \
+	} propName;

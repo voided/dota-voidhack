@@ -81,6 +81,9 @@
     <ClCompile Include="dotaresource.cpp">
       <Filter>Source Files\dota</Filter>
     </ClCompile>
+    <ClCompile Include="dotaability.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zeusmanager.h">
@@ -111,6 +114,9 @@
       <Filter>Header Files\dota</Filter>
     </ClInclude>
     <ClInclude Include="dotaresource.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dotaability.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
   </ItemGroup>

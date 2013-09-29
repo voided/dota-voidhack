@@ -89,6 +89,7 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cproto.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp" />
     <ClCompile Include="bytescanner.cpp" />
+    <ClCompile Include="dotaability.cpp" />
     <ClCompile Include="dotaentity.cpp" />
     <ClCompile Include="dotahero.cpp" />
     <ClCompile Include="dotaplayer.cpp" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bytescanner.h" />
+    <ClInclude Include="dotaability.h" />
     <ClInclude Include="dotaentity.h" />
     <ClInclude Include="dotahero.h" />
     <ClInclude Include="dotaplayer.h" />

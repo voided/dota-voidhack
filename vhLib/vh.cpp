@@ -15,6 +15,7 @@
 #include "dotaplayer.h"
 #include "dotahero.h"
 #include "dotaresource.h"
+#include "dotaability.h"
 
 #include <sourcehook/sourcehook.h>
 
@@ -50,6 +51,29 @@ CON_COMMAND( vh_test, "Test convar" )
 {
 	Msg( "In game: %d\n", VH().EngineClient()->IsInGame() );
 	Msg( "Ent index: %d\n", VH().ClientTools()->GetEntIndex( VH().ClientTools()->GetLocalPlayer() ) );
+
+	C_DOTAPlayer player = C_DOTAPlayer::GetLocalPlayer();
+
+	if ( player.IsValid() )
+	{
+		C_DOTAHero hero = player.m_hAssignedHero;
+
+		if ( hero.IsValid() )
+		{
+			for ( int x = 0 ; x < MAX_ABILITIES ; ++x )
+			{
+				C_DOTAAbility ability = hero.m_hAbilities[ x ];
+
+				if ( ability.IsValid() )
+				{
+					Msg(
+						"Ability %d, Activated: %d, Hidden: %d, Level: %d, Cooldown %0.4f/%0.4f, Mana cost: %d\n",
+						x, (bool)ability.m_bActivated, (bool)ability.m_bHidden, (int)ability.m_iLevel, (float)ability.m_fCooldown, (float)ability.m_flCooldownLength, (int)ability.m_iManaCost
+					);
+				}
+			}
+		}
+	}
 
 	for ( int x = 1 ; x <= MAX_PLAYERS ; ++x )
 	{
