@@ -24,6 +24,7 @@ public:
 
 
 	static C_DOTAPlayer GetLocalPlayer();
+	static C_DOTAPlayer GetPlayerByIndex( int index );
 
 };
 

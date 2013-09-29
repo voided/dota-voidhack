@@ -77,7 +77,7 @@ bool CZeusManager::IsPlayingAsZeus()
 	if ( !player.IsValid() )
 		return false;
 
-	C_DOTAHero hero = player.m_hAssignedHero.Get();
+	C_DOTAHero hero = player.m_hAssignedHero;
 
 	if ( !hero.IsValid() )
 		return false;
@@ -87,7 +87,7 @@ bool CZeusManager::IsPlayingAsZeus()
 	if ( !resourceEnt.IsValid() )
 		return false;
 
-	int heroId = resourceEnt.m_nSelectedHeroID.Get( hero.m_iPlayerID.Get() );
+	int heroId = resourceEnt.m_nSelectedHeroID[ hero.m_iPlayerID ];
 
 	return heroId == HERO_ZEUS; // 22
 }

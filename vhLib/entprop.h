@@ -16,6 +16,7 @@
 	class CEntProp_##propName  \
 	{ \
 	public: \
+		operator propType##() { return Get(); } \
 		propType Get() \
 		{ \
 			RecvPropInfo_t propInfo; \
@@ -32,6 +33,7 @@
 	class CEntPropEnt_##propName \
 	{ \
 	public: \
+		operator C_BaseEntity *() { return Get(); } \
 		C_BaseEntity *Get() \
 		{ \
 			C_BaseEntity *pOuterEnt = GET_OUTER( ThisClass, propName )->m_pEntity; \
@@ -48,6 +50,7 @@
 	class CEntPropArray_##propName \
 	{ \
 	public: \
+		propType operator[]( const int index ) { return Get( index ); } \
 		propType Get( int element ) \
 		{ \
 			RecvPropInfo_t propInfo; \
