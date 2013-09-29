@@ -88,27 +88,27 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_chookmaninfo.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cproto.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp" />
-    <ClCompile Include="bytescanner.cpp" />
-    <ClCompile Include="dotaability.cpp" />
-    <ClCompile Include="dotaentity.cpp" />
-    <ClCompile Include="dotahero.cpp" />
-    <ClCompile Include="dotaplayer.cpp" />
-    <ClCompile Include="dotaresource.cpp" />
-    <ClCompile Include="entityhelper.cpp" />
+    <ClCompile Include="dota\dotaability.cpp" />
+    <ClCompile Include="dota\dotaentity.cpp" />
+    <ClCompile Include="dota\dotahero.cpp" />
+    <ClCompile Include="dota\dotaplayer.cpp" />
+    <ClCompile Include="dota\dotaresource.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sigscan\bytescanner.cpp" />
+    <ClCompile Include="utils\entityhelper.cpp" />
     <ClCompile Include="vh.cpp" />
     <ClCompile Include="zeusmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bytescanner.h" />
-    <ClInclude Include="dotaability.h" />
-    <ClInclude Include="dotaentity.h" />
-    <ClInclude Include="dotahero.h" />
-    <ClInclude Include="dotaplayer.h" />
-    <ClInclude Include="dotaresource.h" />
-    <ClInclude Include="dota_consts.h" />
-    <ClInclude Include="entityhelper.h" />
-    <ClInclude Include="entprop.h" />
+    <ClInclude Include="dota\dotaability.h" />
+    <ClInclude Include="dota\dotaentity.h" />
+    <ClInclude Include="dota\dotahero.h" />
+    <ClInclude Include="dota\dotaplayer.h" />
+    <ClInclude Include="dota\dotaresource.h" />
+    <ClInclude Include="dota\dota_consts.h" />
+    <ClInclude Include="sigscan\bytescanner.h" />
+    <ClInclude Include="utils\entityhelper.h" />
+    <ClInclude Include="utils\entprop.h" />
     <ClInclude Include="vh.h" />
     <ClInclude Include="zeusmanager.h" />
   </ItemGroup>

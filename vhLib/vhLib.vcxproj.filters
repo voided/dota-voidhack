@@ -63,26 +63,26 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp">
       <Filter>Source Files\sourcehook</Filter>
     </ClCompile>
-    <ClCompile Include="bytescanner.cpp">
+    <ClCompile Include="dota\dotaability.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\dotaentity.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\dotahero.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\dotaplayer.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\dotaresource.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
+    <ClCompile Include="sigscan\bytescanner.cpp">
       <Filter>Source Files\sigscan</Filter>
     </ClCompile>
-    <ClCompile Include="dotaplayer.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="entityhelper.cpp">
+    <ClCompile Include="utils\entityhelper.cpp">
       <Filter>Source Files\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="dotaentity.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dotahero.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dotaresource.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dotaability.cpp">
-      <Filter>Source Files\dota</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,32 +92,32 @@
     <ClInclude Include="vh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bytescanner.h">
+    <ClInclude Include="dota\dota_consts.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaability.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaentity.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotahero.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaplayer.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaresource.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="sigscan\bytescanner.h">
       <Filter>Header Files\sigscan</Filter>
     </ClInclude>
-    <ClInclude Include="dotaplayer.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota_consts.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="entityhelper.h">
+    <ClInclude Include="utils\entityhelper.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="entprop.h">
+    <ClInclude Include="utils\entprop.h">
       <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="dotaentity.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dotahero.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dotaresource.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dotaability.h">
-      <Filter>Header Files\dota</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
