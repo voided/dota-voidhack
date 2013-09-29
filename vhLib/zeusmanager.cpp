@@ -75,14 +75,7 @@ bool CZeusManager::IsPlayingAsZeus()
 	if ( !hero.IsValid() )
 		return false;
 
-	C_DOTAResource resourceEnt = C_DOTAResource::GetResourceEntity();
-
-	if ( !resourceEnt.IsValid() )
-		return false;
-
-	int heroId = resourceEnt.m_nSelectedHeroID[ hero.m_iPlayerID ];
-
-	return heroId == HERO_ZEUS; // 22
+	return hero.GetHeroID() == HERO_ZEUS; // 22
 }
 
 // precondition: we're playing as zeus
