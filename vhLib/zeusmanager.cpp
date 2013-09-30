@@ -94,8 +94,10 @@ bool CZeusManager::IsUltReady()
 	if ( hero.m_flMana < ability.m_iManaCost )
 		return false; // not enough mana
 
-	// todo: check cooldown time
+	if ( ability.GetCooldownTimeRemaining() > 0.0 )
+		return false; // still waiting for it to cool down
 
+	// ult is ready
 	return true;
 }
 

@@ -68,8 +68,8 @@ CON_COMMAND( vh_test, "Test convar" )
 				if ( ability.IsValid() )
 				{
 					Msg(
-						"Ability %d, Activated: %d, Hidden: %d, Level: %d, Cooldown %0.4f/%0.4f, Mana cost: %d\n",
-						x, (bool)ability.m_bActivated, (bool)ability.m_bHidden, (int)ability.m_iLevel, (float)ability.m_fCooldown, (float)ability.m_flCooldownLength, (int)ability.m_iManaCost
+						"Ability %d, Activated: %d, Hidden: %d, Level: %d, Cooldown: %0.2f, Mana cost: %d\n",
+						x, (bool)ability.m_bActivated, (bool)ability.m_bHidden, (int)ability.m_iLevel, ability.GetCooldownTimeRemaining(), (int)ability.m_iManaCost
 					);
 				}
 			}
