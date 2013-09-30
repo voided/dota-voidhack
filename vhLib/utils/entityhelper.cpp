@@ -53,6 +53,10 @@ void CEntityHelper::Init()
 void CEntityHelper::Shutdown()
 {
 	m_pEntInfo = NULL;
+	m_pGameRules = NULL;
+
+	m_pResourceEntity = NULL;
+	m_pGameRulesProxyEntity = NULL;
 }
 
 C_BasePlayer *CEntityHelper::GetLocalPlayer()
@@ -130,12 +134,13 @@ bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, con
 				RecvProp *pProp = pTable->GetProp( element );
 
 				if ( pProp->GetType() != DPT_Int )
-					return false;
+					return false; // underlying array members should be ints
 
 				propInfo.actualOffset += pProp->GetOffset();
 			}
 			else if ( propType != DPT_Int )
 			{
+				// not an "array" prop, or an int prop
 				return false;
 			}
 
@@ -162,9 +167,13 @@ bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, con
 			return false;
 	}
 
-	if ( pEnt == GetGameRulesProxyEntity() && GetGameRules() )
+	if ( pEnt == GetGameRulesProxyEntity() )
 	{
-		// if we're looking up a netprop on the proxy, we use the real gamerules pointer instead
+		// if we're looking up a netprop on the gamerules proxy, we need to use the real gamerules class
+
+		if ( GetGameRules() == NULL )
+			return false;
+
 		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
 	}
 
@@ -200,12 +209,13 @@ bool CEntityHelper::GetEntPropHandle( C_BaseEntity *pEnt, EntPropType propType, 
 				RecvProp *pProp = pTable->GetProp( element );
 
 				if ( pProp->GetType() != DPT_Int )
-					return false;
+					return false; // underlying array member props should be int for handles
 
 				propInfo.actualOffset += pProp->GetOffset();
 			}
 			else if ( propType != DPT_Int )
 			{
+				// not an "array" prop, or an int prop (which handles are)
 				return false;
 			}
 
@@ -232,9 +242,13 @@ bool CEntityHelper::GetEntPropHandle( C_BaseEntity *pEnt, EntPropType propType, 
 			return false;
 	}
 
-	if ( pEnt == GetGameRulesProxyEntity() && GetGameRules() )
+	if ( pEnt == GetGameRulesProxyEntity() )
 	{
-		// if we're looking up a netprop on the proxy, we use the real gamerules pointer instead
+		// if we're looking up a netprop on the gamerules proxy, we need to use the real gamerules class
+
+		if ( GetGameRules() == NULL )
+			return false;
+
 		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
 	}
 
@@ -274,7 +288,7 @@ int CEntityHelper::GetEntPropString( C_BaseEntity *pEnt, EntPropType propType, c
 				return 0;
 
 			if ( propInfo.prop->GetType() != DPT_String )
-				return 0;
+				return 0; // not a string prop
 
 			offset = propInfo.actualOffset;
 			break;
@@ -307,9 +321,13 @@ int CEntityHelper::GetEntPropString( C_BaseEntity *pEnt, EntPropType propType, c
 		}
 	}
 
-	if ( pEnt == GetGameRulesProxyEntity() && GetGameRules() )
+	if ( pEnt == GetGameRulesProxyEntity() )
 	{
-		// if we're looking up a netprop on the proxy, we use the real gamerules pointer instead
+		// if we're looking up a netprop on the gamerules proxy, we need to use the real gamerules class
+
+		if ( GetGameRules() == NULL )
+			return false;
+
 		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
 	}
 

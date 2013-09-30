@@ -22,7 +22,6 @@ enum ClientFrameStage_t;
 typedef void (*FrameFunction)();
 
 
-
 class CVH
 {
 
@@ -34,9 +33,11 @@ public:
 	void Init();
 	void Shutdown();
 
+	// add and remove per-frame think hooks
 	void AddFrameHook( FrameFunction func );
 	void RemoveFrameHook( FrameFunction func );
 
+	// various engine/client interface accessors
 	IVEngineClient *EngineClient() { return m_pEngineClient; }
 	IBaseClientDLL *ClientDLL() { return m_pClientDLL; }
 	IEngineTool *EngineTool() { return m_pEngineTool; }

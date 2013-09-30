@@ -5,6 +5,8 @@
 #include "dotaentity.h"
 
 
+// wrapper over gamerules proxy entity, which defines ent props that exist on the gamerules class
+// entprop lookup automatically handles the translation so that props are accessed relative to the real gamerules class
 class C_DOTAGameRules : public C_DOTABaseEntity
 {
 	DOTA_CLASS( C_DOTAGameRules, C_DOTABaseEntity );

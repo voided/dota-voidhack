@@ -38,10 +38,8 @@ class CEntityHelper
 	
 public:
 	CEntityHelper() :
-		m_pEntInfo( NULL ),
-		m_pGameRules( NULL ),
-		m_pResourceEntity( NULL ),
-		m_pGameRulesProxyEntity( NULL )
+		m_pEntInfo( NULL ), m_pGameRules( NULL ),
+		m_pResourceEntity( NULL ), m_pGameRulesProxyEntity( NULL )
 	{
 	}
 
@@ -54,9 +52,12 @@ public:
 	C_BasePlayer *GetLocalPlayer();
 	C_BaseEntity *GetEntityFromIndex( int entIndex );
 
+	// returns the player resource entity
 	C_BaseEntity *GetResourceEntity();
+	// returns the gamerules proxy entity
 	C_BaseEntity *GetGameRulesProxyEntity();
 
+	// returns the real gamerules class
 	C_GameRules *GetGameRules();
 
 

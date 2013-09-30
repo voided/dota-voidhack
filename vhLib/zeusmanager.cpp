@@ -45,17 +45,20 @@ void CZeusManager::Think()
 	if ( !VH().EngineTool()->IsInGame() )
 		return; // not in game, no logic to perform
 
-	if ( IsPlayingAsZeus() && IsUltReady() && ShouldUlt() )
+	if ( IsPlayingAsZeus() )
 	{
-		DoUlt();
-		return;
-	}
+		if ( IsUltReady() && ShouldUlt() )
+		{
+			DoUlt();
+			return;
+		}
 
-	// check if we should taunt players
-	if ( VH().EngineTool()->ClientTime() >= m_flNextTaunt )
-	{
-		m_flNextTaunt = FLT_MAX;
-		VH().EngineClient()->ExecuteClientCmd( "say \"You can't run from heaven!\"\n" );
+		// check if we should taunt players
+		if ( VH().EngineTool()->ClientTime() >= m_flNextTaunt )
+		{
+			m_flNextTaunt = FLT_MAX;
+			VH().EngineClient()->ExecuteClientCmd( "say \"You can't run from heaven!\"\n" );
+		}
 	}
 }
 

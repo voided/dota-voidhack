@@ -9,8 +9,11 @@ C_DOTAAbility::C_DOTAAbility( C_BaseEntity *pEnt )
 {
 }
 
+
 float C_DOTAAbility::GetCooldownTimeRemaining()
 {
+	Assert( m_iLevel > 0 );
+
 	C_DOTAGameRules gameRules = C_DOTAGameRules::GetGameRules();
 
 	if ( !gameRules.IsValid() )

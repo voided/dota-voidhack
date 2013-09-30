@@ -20,11 +20,13 @@
 		propType Get() \
 		{ \
 			RecvPropInfo_t propInfo; \
-			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->m_pEntity; \
+			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
 			if ( EntityHelper().GetRecvPropInfo( pEnt, #propName, &propInfo ) ) \
 			{ \
-				if ( pEnt == EntityHelper().GetGameRulesProxyEntity() && EntityHelper().GetGameRules() ) \
+				if ( pEnt == EntityHelper().GetGameRulesProxyEntity() ) \
 				{ \
+					if ( EntityHelper().GetGameRules() == NULL ) \
+						return (propType)0; \
 					pEnt = reinterpret_cast<C_BaseEntity *>( EntityHelper().GetGameRules() ); \
 				} \
 				return *(propType *)( (uint8 *)pEnt + propInfo.actualOffset ); \
@@ -40,7 +42,7 @@
 		operator C_BaseEntity *() { return Get(); } \
 		C_BaseEntity *Get() \
 		{ \
-			C_BaseEntity *pOuterEnt = GET_OUTER( ThisClass, propName )->m_pEntity; \
+			C_BaseEntity *pOuterEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
 			C_BaseEntity *pEnt = NULL; \
 			if ( EntityHelper().GetEntPropEnt( pOuterEnt, EntProp_RecvProp, #propName, &pEnt ) ) \
 			{ \
@@ -58,7 +60,7 @@
 		propType Get( int element ) \
 		{ \
 			RecvPropInfo_t propInfo; \
-			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->m_pEntity; \
+			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
 			if ( EntityHelper().GetRecvPropInfo( pEnt, #propName, &propInfo ) ) \
 			{ \
 				RecvTable *pTable = propInfo.prop->GetDataTable(); \
@@ -67,8 +69,10 @@
 				\
 				RecvProp *pProp = pTable->GetProp( element ); \
 				propInfo.actualOffset += pProp->GetOffset(); \
-				if ( pEnt == EntityHelper().GetGameRulesProxyEntity() && EntityHelper().GetGameRules() ) \
+				if ( pEnt == EntityHelper().GetGameRulesProxyEntity() ) \
 				{ \
+					if ( EntityHelper().GetGameRules() == NULL ) \
+						return (propType)0; \
 					pEnt = reinterpret_cast<C_BaseEntity *>( EntityHelper().GetGameRules() ); \
 				} \
 				return *(propType *)( (uint8 *)pEnt + propInfo.actualOffset ); \
@@ -84,7 +88,7 @@
 		C_BaseEntity *operator[]( const int index ) { return Get( index ); } \
 		C_BaseEntity *Get( int element ) \
 		{ \
-			C_BaseEntity *pEntOuter = GET_OUTER( ThisClass, propName )->m_pEntity; \
+			C_BaseEntity *pEntOuter = GET_OUTER( ThisClass, propName )->GetEntity(); \
 			C_BaseEntity *pEnt = NULL; \
 			if ( EntityHelper().GetEntPropEnt( pEntOuter, EntProp_RecvProp, #propName, &pEnt, element ) ) \
 			{ \

@@ -2,6 +2,7 @@
 #pragma once
 
 
+// you can't run from heaven
 class CZeusManager
 {
 
@@ -12,6 +13,7 @@ public:
 public:
 	void Init();
 	void Shutdown();
+
 
 private:
 	friend void ZeusManager_Think();
