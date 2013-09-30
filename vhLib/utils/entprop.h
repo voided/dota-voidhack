@@ -23,6 +23,10 @@
 			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->m_pEntity; \
 			if ( EntityHelper().GetRecvPropInfo( pEnt, #propName, &propInfo ) ) \
 			{ \
+				if ( pEnt == EntityHelper().GetGameRulesProxyEntity() && EntityHelper().GetGameRules() ) \
+				{ \
+					pEnt = reinterpret_cast<C_BaseEntity *>( EntityHelper().GetGameRules() ); \
+				} \
 				return *(propType *)( (uint8 *)pEnt + propInfo.actualOffset ); \
 			} \
 			return (propType)0; \
@@ -63,6 +67,10 @@
 				\
 				RecvProp *pProp = pTable->GetProp( element ); \
 				propInfo.actualOffset += pProp->GetOffset(); \
+				if ( pEnt == EntityHelper().GetGameRulesProxyEntity() && EntityHelper().GetGameRules() ) \
+				{ \
+					pEnt = reinterpret_cast<C_BaseEntity *>( EntityHelper().GetGameRules() ); \
+				} \
 				return *(propType *)( (uint8 *)pEnt + propInfo.actualOffset ); \
 			} \
 			return (propType)0; \

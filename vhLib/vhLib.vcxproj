@@ -90,6 +90,7 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp" />
     <ClCompile Include="dota\dotaability.cpp" />
     <ClCompile Include="dota\dotaentity.cpp" />
+    <ClCompile Include="dota\dotagamerules.cpp" />
     <ClCompile Include="dota\dotahero.cpp" />
     <ClCompile Include="dota\dotaplayer.cpp" />
     <ClCompile Include="dota\dotaresource.cpp" />
@@ -102,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="dota\dotaability.h" />
     <ClInclude Include="dota\dotaentity.h" />
+    <ClInclude Include="dota\dotagamerules.h" />
     <ClInclude Include="dota\dotahero.h" />
     <ClInclude Include="dota\dotaplayer.h" />
     <ClInclude Include="dota\dotaresource.h" />

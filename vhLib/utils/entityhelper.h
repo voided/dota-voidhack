@@ -39,7 +39,9 @@ class CEntityHelper
 public:
 	CEntityHelper() :
 		m_pEntInfo( NULL ),
-		m_pResourceEntity( NULL )
+		m_pGameRules( NULL ),
+		m_pResourceEntity( NULL ),
+		m_pGameRulesProxyEntity( NULL )
 	{
 	}
 
@@ -53,6 +55,9 @@ public:
 	C_BaseEntity *GetEntityFromIndex( int entIndex );
 
 	C_BaseEntity *GetResourceEntity();
+	C_BaseEntity *GetGameRulesProxyEntity();
+
+	C_GameRules *GetGameRules();
 
 
 	bool	GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *pValue, int element = 0 );
@@ -65,9 +70,14 @@ public:
 
 
 private:
+	C_BaseEntity *FindEntityByNetClass( const char *netClass );
+
+private:
 	CEntInfo *m_pEntInfo; // CBaseEntityList entlist array
+	C_GameRules **m_pGameRules; // g_pGameRules
 
 	C_BaseEntity *m_pResourceEntity;
+	C_BaseEntity *m_pGameRulesProxyEntity; // gamerules proxy
 
 
 };

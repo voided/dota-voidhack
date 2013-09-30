@@ -16,6 +16,7 @@
 #include "dotahero.h"
 #include "dotaresource.h"
 #include "dotaability.h"
+#include "dotagamerules.h"
 
 #include <sourcehook/sourcehook.h>
 
@@ -73,6 +74,16 @@ CON_COMMAND( vh_test, "Test convar" )
 				}
 			}
 		}
+	}
+
+	C_DOTAGameRules gameRules = C_DOTAGameRules::GetGameRules();
+
+	if ( gameRules.IsValid() )
+	{
+		Msg(
+			"State: %d, game time: %0.2f, Time of day: %d, Start time: %0.2f\n",
+			(int)gameRules.m_nGameState, (float)gameRules.m_fGameTime, (int)gameRules.m_iNetTimeOfDay, (float)gameRules.m_flGameStartTime
+		);
 	}
 
 	for ( int x = 1 ; x <= MAX_PLAYERS ; ++x )

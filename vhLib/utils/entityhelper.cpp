@@ -35,6 +35,19 @@ void CEntityHelper::Init()
 	{
 		Warning( "[EntityHelper] Unable to find cl_dota_showents!\n" );
 	}
+
+
+	// we find g_pGameRules relative to CDOTA_Modifier_Roshan_CandyBuff::GetActivityTranslationModifiers
+	// cause why not
+	
+	if ( byteScan.FindCodePattern( "\x55\x8B\xEC\x8B\x49\x78\x83\xF9\xFF\x74\x51", "xxxxxxxxxxx", &pFunc ) )
+	{
+		m_pGameRules = *(C_GameRules ***)( (uint8 *)pFunc + 0x2A );
+	}
+	else
+	{
+		Warning( "[EntityHelper] Unable to find CDOTA_Modifier_Roshan_CandyBuff::GetActivityTranslationModifiers!\n" );
+	}
 }
 
 void CEntityHelper::Shutdown()
@@ -67,28 +80,25 @@ C_BaseEntity *CEntityHelper::GetEntityFromIndex( int entIndex )
 C_BaseEntity *CEntityHelper::GetResourceEntity()
 {
 	if ( m_pResourceEntity == NULL )
-	{
-		for ( int i = MAX_PLAYERS + 1 ; i < MAX_EDICTS ; ++i )
-		{
-			C_BaseEntity *pEnt = GetEntityFromIndex( i );
-
-			if ( !pEnt )
-				continue;
-
-			ClientClass *pClass = pEnt->GetClientClass();
-
-			if ( !pClass )
-				continue;
-
-			if ( V_strcmp( pClass->m_pNetworkName, "CDOTA_PlayerResource" ) == 0 )
-			{
-				m_pResourceEntity = pEnt;
-				break;
-			}
-		}
-	}
+		m_pResourceEntity = FindEntityByNetClass( "CDOTA_PlayerResource" );
 
 	return m_pResourceEntity;
+}
+
+C_BaseEntity *CEntityHelper::GetGameRulesProxyEntity()
+{
+	if ( m_pGameRulesProxyEntity == NULL )
+		m_pGameRulesProxyEntity = FindEntityByNetClass( "CDOTAGamerulesProxy" );
+
+	return m_pGameRulesProxyEntity;
+}
+
+C_GameRules *CEntityHelper::GetGameRules()
+{
+	if ( m_pGameRules == NULL )
+		return NULL;
+
+	return *m_pGameRules;
 }
 
 
@@ -152,6 +162,11 @@ bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, con
 			return false;
 	}
 
+	if ( pEnt == GetGameRulesProxyEntity() && GetGameRules() )
+	{
+		// if we're looking up a netprop on the proxy, we use the real gamerules pointer instead
+		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
+	}
 
 	*pValue = *(int32 *)( (uint8 *)pEnt + offset );
 	return true;
@@ -215,6 +230,12 @@ bool CEntityHelper::GetEntPropHandle( C_BaseEntity *pEnt, EntPropType propType, 
 		default:
 			Assert( !"EntProp type not implemented!" );
 			return false;
+	}
+
+	if ( pEnt == GetGameRulesProxyEntity() && GetGameRules() )
+	{
+		// if we're looking up a netprop on the proxy, we use the real gamerules pointer instead
+		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
 	}
 
 	*pHandle = *(CBaseHandle *)( (uint8 *)pEnt + offset );
@@ -284,6 +305,12 @@ int CEntityHelper::GetEntPropString( C_BaseEntity *pEnt, EntPropType propType, c
 
 			break;
 		}
+	}
+
+	if ( pEnt == GetGameRulesProxyEntity() && GetGameRules() )
+	{
+		// if we're looking up a netprop on the proxy, we use the real gamerules pointer instead
+		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
 	}
 
 	if ( isStringIndex )
@@ -384,4 +411,27 @@ bool CEntityHelper::GetDataMapInfo( C_BaseEntity *pEntity, const char *dataName,
 		return false;
 
 	return FindInDataMap( pDataMap, dataName, pInfo );
+}
+
+C_BaseEntity *CEntityHelper::FindEntityByNetClass( const char *netClass )
+{
+	for ( int i = 0 ; i < MAX_EDICTS ; ++i )
+	{
+		C_BaseEntity *pEnt = GetEntityFromIndex( i );
+
+		if ( !pEnt )
+			continue;
+
+		ClientClass *pClass = pEnt->GetClientClass();
+
+		if ( !pClass || !pClass->m_pNetworkName )
+			continue;
+
+		if ( V_strcmp( pClass->m_pNetworkName, netClass ) == 0 )
+		{
+			return pEnt;
+		}
+	}
+
+	return NULL;
 }
