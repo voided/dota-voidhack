@@ -17,6 +17,7 @@
 		propType Get() \
 		{ \
 			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
+			AssertMsg( pEnt, "Entprop lookup on invalid entity!" ); \
 			propType value; \
 			if ( EntityHelper().GetEntProp<propType>( pEnt, entPropType, #propName, &value ) ) \
 			{ \
@@ -34,6 +35,7 @@
 		C_BaseEntity *Get() \
 		{ \
 			C_BaseEntity *pOuterEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
+			AssertMsg( pOuterEnt, "Entprop lookup on invalid entity!" ); \
 			C_BaseEntity *pEnt = NULL; \
 			if ( EntityHelper().GetEntPropEnt( pOuterEnt, entPropType, #propName, &pEnt ) ) \
 			{ \
@@ -66,8 +68,9 @@
 		propType Get( int element ) \
 		{ \
 			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
+			AssertMsg( pEnt, "Entprop lookup on invalid entity!" ); \
 			propType value; \
-			if ( EntityHelper().GetEntProp<propType>( pEnt, entPropType, #propName, &value ) ) \
+			if ( EntityHelper().GetEntProp<propType>( pEnt, entPropType, #propName, &value, element ) ) \
 			{ \
 				return value; \
 			} \
@@ -76,13 +79,14 @@
 	} propName;
 
 #define CEntPropEntArrayInternal( entPropType, propName ) \
-	class CEntPropArray_##propName \
+	class CEntPropEntArray_##propName \
 	{ \
 	public: \
 		C_BaseEntity *operator[]( const int index ) { return Get( index ); } \
 		C_BaseEntity *Get( int element ) \
 		{ \
 			C_BaseEntity *pEntOuter = GET_OUTER( ThisClass, propName )->GetEntity(); \
+			AssertMsg( pEntOuter, "Entprop lookup on invalid entity!" ); \
 			C_BaseEntity *pEnt = NULL; \
 			if ( EntityHelper().GetEntPropEnt( pEntOuter, entPropType, #propName, &pEnt, element ) ) \
 			{ \
