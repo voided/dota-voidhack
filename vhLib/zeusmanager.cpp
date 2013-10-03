@@ -68,7 +68,8 @@ bool CZeusManager::ShouldUlt()
 {
 	int ultDamage = 0;
 
-	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
+	C_DOTAPlayer localPlayer = C_DOTAPlayer::GetLocalPlayer();
+	C_DOTAHero hero = localPlayer.m_hAssignedHero;
 	C_DOTAAbility abilityUlt = hero.m_hAbilities[ 3 ];
 
 	// todo: this is gross, but pulling values from the KV scripts is a wishlist feature
@@ -92,8 +93,11 @@ bool CZeusManager::ShouldUlt()
 	{
 		C_DOTAPlayer player = C_DOTAPlayer::GetPlayerByIndex( i );
 
-		if ( !player.IsValid() )
-			continue;
+		if ( !player.IsValid() || player.IsLocalPlayer() )
+			continue; // ignore invalid players and self
+
+		if ( player.m_iTeamNum == localPlayer.m_iTeamNum )
+			continue; // ignore teammates
 
 		if ( IsPlayerUltable( player, ultDamage ) )
 			return true;
@@ -104,9 +108,6 @@ bool CZeusManager::ShouldUlt()
 
 bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 {
-	if ( player.IsLocalPlayer() )
-		return false;
-
 	C_DOTAHero hero = player.m_hAssignedHero;
 
 	if ( !hero.IsValid() )
@@ -121,7 +122,7 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	// todo: calculate that player's magic resistance from items
 
 	float damageMult = ( 100.0 - hero.m_flMagicalResistanceValue ) / 100.0;
-	float effectiveDamage = damage * damageMult;
+	float effectiveDamage = ( damage * damageMult ) - 25; // add some buffer room for slightly off calculations
 
 	return effectiveDamage >= hero.m_iHealth;
 }
@@ -163,8 +164,14 @@ void CZeusManager::DoUlt()
 	// just ult
 	// difter could learn a thing or two here
 
-	// todo: select hero first, or perhaps execute the ability directly?
+	// select our hero
+	VH().EngineClient()->ExecuteClientCmd( "+dota_camera_follow\n" );
+	VH().EngineClient()->ExecuteClientCmd( "-dota_camera_follow\n" );
+
+	// execute ult
 	VH().EngineClient()->ExecuteClientCmd( "dota_ability_execute 5\n" );
+
+	// this is dirty, but queueing up a CUnitOrders would be fragile
 
 	m_flNextTaunt = VH().EngineTool()->ClientTime() + 5.0;
 }

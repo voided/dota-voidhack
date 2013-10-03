@@ -103,8 +103,8 @@ CON_COMMAND( vh_test, "Test convar" )
 			continue;
 
 		Msg(
-			"Player %d (%d) is playing as %d at level %d, with %d/%d/%d kda\n",
-			x, ( int )hero.m_iPlayerID, hero.GetHeroID(), hero.GetLevel(), hero.GetNumKills(), hero.GetNumDeaths(), hero.GetNumAssists()
+			"Player %d (%d) is playing as %d at level %d, with %d/%d/%d kda, team: %d\n",
+			x, ( int )hero.m_iPlayerID, hero.GetHeroID(), hero.GetLevel(), hero.GetNumKills(), hero.GetNumDeaths(), hero.GetNumAssists(), ( int )player.m_iTeamNum
 		);
 	}
 

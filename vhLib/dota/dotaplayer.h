@@ -22,6 +22,8 @@ public:
 	bool IsLocalPlayer();
 
 
+	CEntProp( int, m_iTeamNum );
+
 	CEntPropEnt( m_hAssignedHero );
 
 
