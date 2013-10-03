@@ -40,8 +40,7 @@ class CEntityHelper
 	
 public:
 	CEntityHelper() :
-		m_pEntInfo( NULL ), m_pGameRules( NULL ),
-		m_pResourceEntity( NULL ), m_pGameRulesProxyEntity( NULL )
+		m_pEntInfo( NULL ), m_pGameRules( NULL )
 	{
 	}
 
@@ -53,6 +52,7 @@ public:
 
 	C_BasePlayer *GetLocalPlayer();
 	C_BaseEntity *GetEntityFromIndex( int entIndex );
+	IHandleEntity *LookupEntity( const CBaseHandle &handle );
 
 	// returns the player resource entity
 	C_BaseEntity *GetResourceEntity();
@@ -82,9 +82,8 @@ private:
 	CEntInfo *m_pEntInfo; // CBaseEntityList entlist array
 	C_GameRules **m_pGameRules; // g_pGameRules
 
-	C_BaseEntity *m_pResourceEntity;
-	C_BaseEntity *m_pGameRulesProxyEntity; // gamerules proxy
-
+	CBaseHandle m_ResourceEntity;
+	CBaseHandle m_GameRulesProxyEntity; // gamerules proxy
 };
 
 CEntityHelper &EntityHelper();
@@ -156,4 +155,9 @@ bool CEntityHelper::GetEntProp( C_BaseEntity *pEnt, EntPropType propType, const 
 
 	*pValue = *(T *)( (uint8 *)pEnt + offset );
 	return true;
+}
+
+inline IHandleEntity* CBaseHandle::Get() const
+{
+	return EntityHelper().LookupEntity( *this );
 }

@@ -51,9 +51,6 @@ void CEntityHelper::Shutdown()
 {
 	m_pEntInfo = NULL;
 	m_pGameRules = NULL;
-
-	m_pResourceEntity = NULL;
-	m_pGameRulesProxyEntity = NULL;
 }
 
 C_BasePlayer *CEntityHelper::GetLocalPlayer()
@@ -77,21 +74,50 @@ C_BaseEntity *CEntityHelper::GetEntityFromIndex( int entIndex )
 
 	return reinterpret_cast<C_BaseEntity *>( pEnt->GetBaseEntity() );
 }
+IHandleEntity *CEntityHelper::LookupEntity( const CBaseHandle &handle )
+{
+	if ( m_pEntInfo == NULL )
+		return NULL;
+
+	if ( !handle.IsValid() )
+		return NULL;
+
+	CEntInfo *pInfo = &m_pEntInfo[ handle.GetEntryIndex() ];
+
+	if ( pInfo->m_SerialNumber == handle.GetSerialNumber() )
+		return pInfo->m_pEntity;
+
+	return NULL;
+}
 
 C_BaseEntity *CEntityHelper::GetResourceEntity()
 {
-	if ( m_pResourceEntity == NULL )
-		m_pResourceEntity = FindEntityByNetClass( "CDOTA_PlayerResource" );
+	if ( m_ResourceEntity.Get() == NULL )
+	{
+		m_ResourceEntity.Set( FindEntityByNetClass( "CDOTA_PlayerResource" ) );
+	}
 
-	return m_pResourceEntity;
+	IClientUnknown *pUnk = reinterpret_cast<IClientUnknown *>( m_ResourceEntity.Get() );
+
+	if ( !pUnk )
+		return NULL;
+
+	return pUnk->GetBaseEntity();
 }
 
 C_BaseEntity *CEntityHelper::GetGameRulesProxyEntity()
 {
-	if ( m_pGameRulesProxyEntity == NULL )
-		m_pGameRulesProxyEntity = FindEntityByNetClass( "CDOTAGamerulesProxy" );
+	if ( m_GameRulesProxyEntity.Get() == NULL )
+	{
+		m_GameRulesProxyEntity.Set( FindEntityByNetClass( "CDOTAGamerulesProxy" ) );
+	}
 
-	return m_pGameRulesProxyEntity;
+	IClientUnknown *pUnk = reinterpret_cast<IClientUnknown *>( m_GameRulesProxyEntity.Get() );
+	
+	if ( !pUnk )
+		return NULL;
+	
+	return pUnk->GetBaseEntity();
 }
 
 C_GameRules *CEntityHelper::GetGameRules()
