@@ -27,16 +27,26 @@ class C_DOTABaseEntity
 public:
 	C_DOTABaseEntity( C_BaseEntity *pEnt );
 
+	operator C_BaseEntity *() { return GetEntity(); }
+
 
 	// return the underlying entity this class wraps
 	// this is required to support entprop lookup!
-	C_BaseEntity *GetEntity() { return m_pEntity; }
+	C_BaseEntity *GetEntity() const
+	{
+		IClientUnknown *pUnk = reinterpret_cast<IClientUnknown *>( m_Entity.Get() );
+
+		if ( !pUnk )
+			return NULL;
+
+		return pUnk->GetBaseEntity();
+	}
 
 	// is the wrapped entity valid?
-	bool IsValid() { return m_pEntity != NULL; }
+	bool IsValid() { return GetEntity() != NULL; }
 
 
 private:
-	C_BaseEntity *m_pEntity;
+	CBaseHandle m_Entity;
 
 };
