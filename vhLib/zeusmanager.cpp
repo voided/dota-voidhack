@@ -19,7 +19,8 @@ CZeusManager &ZeusManager()
 
 
 CZeusManager::CZeusManager()
-	: m_flNextTaunt( FLT_MAX )
+	: m_flNextTaunt( FLT_MAX ),
+	  m_flLastUlt( 0 )
 {
 }
 
@@ -63,31 +64,21 @@ void CZeusManager::Think()
 }
 
 
+
 // precondition: playing as zeus, and ult is ready for use
 bool CZeusManager::ShouldUlt()
 {
-	int ultDamage = 0;
+	// todo: this is gross, but pulling values from the KV ability scripts is a wishlist feature
+	int UltDamageTable[] = { 0, 225, 350, 475 };
+	int UltAghsDamageTable[] = { 0, 440, 540, 640 };
+
 
 	C_DOTAPlayer localPlayer = C_DOTAPlayer::GetLocalPlayer();
 	C_DOTAHero hero = localPlayer.m_hAssignedHero;
 	C_DOTAAbility abilityUlt = hero.m_hAbilities[ 3 ];
 
-	// todo: this is gross, but pulling values from the KV scripts is a wishlist feature
 	// todo: handle having aghs?
-	switch ( abilityUlt.m_iLevel )
-	{
-	case 1:
-		ultDamage = 225;
-		break;
-
-	case 2:
-		ultDamage = 325;
-		break;
-
-	case 3:
-		ultDamage = 450;
-		break;
-	}
+	int ultDamage = UltDamageTable[ abilityUlt.m_iLevel ];
 
 	for ( int i = 1 ; i <= MAX_PLAYERS ; ++i )
 	{
@@ -140,6 +131,11 @@ bool CZeusManager::IsPlayingAsZeus()
 // precondition: we're playing as zeus
 bool CZeusManager::IsUltReady()
 {
+	float timeSinceLastUlt = VH().EngineTool()->ClientTime() - m_flLastUlt;
+
+	if ( timeSinceLastUlt < 1.0 )
+		return false; // artifical delay so we don't spam the ability command
+
 	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
 	C_DOTAAbility ability = hero.m_hAbilities[ 3 ]; // ability 3 (zero indexed) is ult
 
@@ -173,5 +169,6 @@ void CZeusManager::DoUlt()
 
 	// this is dirty, but queueing up a CUnitOrders would be fragile
 
-	m_flNextTaunt = VH().EngineTool()->ClientTime() + 5.0;
+	m_flLastUlt = VH().EngineTool()->ClientTime();
+	m_flNextTaunt = m_flLastUlt + 5.0;
 }

@@ -32,6 +32,7 @@ private:
 
 private:
 	float m_flNextTaunt;
+	float m_flLastUlt;
 
 };
 
