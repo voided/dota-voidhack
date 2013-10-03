@@ -74,6 +74,9 @@ CON_COMMAND( vh_test, "Test convar" )
 					);
 				}
 			}
+
+			Msg( "Magic Res: %0.2f, Mana: %0.2f, Max Mana: %0.2f\n", ( float )hero.m_flMagicalResistanceValue, ( float )hero.m_flMana, ( float )hero.m_flMaxMana );
+			Msg( "Health: %d, Max Health: %d\n", ( int )hero.m_iHealth, ( int )hero.m_iMaxHealth  );
 		}
 	}
 

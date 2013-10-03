@@ -2,6 +2,9 @@
 #pragma once
 
 
+class C_DOTAPlayer;
+
+
 // you can't run from heaven
 class CZeusManager
 {
@@ -22,6 +25,7 @@ private:
 	bool IsPlayingAsZeus();
 	bool IsUltReady();
 	bool ShouldUlt();
+	bool IsPlayerUltable( C_DOTAPlayer &player, int damage );
 
 	void DoUlt();
 

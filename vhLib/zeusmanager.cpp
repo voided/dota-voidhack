@@ -63,12 +63,67 @@ void CZeusManager::Think()
 }
 
 
+// precondition: playing as zeus, and ult is ready for use
 bool CZeusManager::ShouldUlt()
 {
-	// todo: 
-	//   check if any players are worth ulting (low hp, calculate magic resistance)
+	int ultDamage = 0;
+
+	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
+	C_DOTAAbility abilityUlt = hero.m_hAbilities[ 3 ];
+
+	// todo: this is gross, but pulling values from the KV scripts is a wishlist feature
+	// todo: handle having aghs?
+	switch ( abilityUlt.m_iLevel )
+	{
+	case 1:
+		ultDamage = 225;
+		break;
+
+	case 2:
+		ultDamage = 325;
+		break;
+
+	case 3:
+		ultDamage = 450;
+		break;
+	}
+
+	for ( int i = 1 ; i <= MAX_PLAYERS ; ++i )
+	{
+		C_DOTAPlayer player = C_DOTAPlayer::GetPlayerByIndex( i );
+
+		if ( !player.IsValid() )
+			continue;
+
+		if ( IsPlayerUltable( player, ultDamage ) )
+			return true;
+	}
 
 	return false;
+}
+
+bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
+{
+	if ( player.IsLocalPlayer() )
+		return false;
+
+	C_DOTAHero hero = player.m_hAssignedHero;
+
+	if ( !hero.IsValid() )
+		return false;
+
+	if ( hero.InAnyState( UnitState_Invisible | UnitState_Invulnerable | UnitState_MagicImmune | UnitState_OutOfGame ) )
+		return false; // ult won't affect units in this state
+
+	if ( hero.m_iHealth == 0 )
+		return false; // player dead
+
+	// todo: calculate that player's magic resistance from items
+
+	float damageMult = ( 100.0 - hero.m_flMagicalResistanceValue ) / 100.0;
+	float effectiveDamage = damage * damageMult;
+
+	return effectiveDamage >= hero.m_iHealth;
 }
 
 bool CZeusManager::IsPlayingAsZeus()
@@ -85,7 +140,6 @@ bool CZeusManager::IsPlayingAsZeus()
 bool CZeusManager::IsUltReady()
 {
 	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
-
 	C_DOTAAbility ability = hero.m_hAbilities[ 3 ]; // ability 3 (zero indexed) is ult
 
 	if ( !ability.IsValid() )
