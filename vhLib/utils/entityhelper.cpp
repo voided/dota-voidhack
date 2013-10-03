@@ -6,9 +6,6 @@
 
 #include "cbase.h"
 
-// windows why
-#undef GetProp
-
 
 
 CEntityHelper g_EntityHelper;
@@ -106,161 +103,11 @@ C_GameRules *CEntityHelper::GetGameRules()
 }
 
 
-bool CEntityHelper::GetEntPropInt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *pValue, int element )
-{
-	int offset = 0;
-
-	switch ( propType )
-	{
-		case EntProp_RecvProp:
-		{
-			RecvPropInfo_t propInfo;
-
-			if ( !GetRecvPropInfo( pEnt, propName, &propInfo ) )
-				return false;
-
-			SendPropType propType = propInfo.prop->GetType();
-
-			if ( propType == DPT_DataTable )
-			{
-				// if the prop we're looking up is a datatable, it's an "array" prop with inner elements
-
-				RecvTable *pTable = propInfo.prop->GetDataTable();
-				Assert( pTable );
-
-				if ( element < 0 || element >= pTable->GetNumProps() )
-					return false;
-
-				RecvProp *pProp = pTable->GetProp( element );
-
-				if ( pProp->GetType() != DPT_Int )
-					return false; // underlying array members should be ints
-
-				propInfo.actualOffset += pProp->GetOffset();
-			}
-			else if ( propType != DPT_Int )
-			{
-				// not an "array" prop, or an int prop
-				return false;
-			}
-
-			offset = propInfo.actualOffset;
-			break;
-		}
-
-		case EntProp_DataMap:
-		{
-			DataMapInfo_t mapInfo;
-
-			if ( !GetDataMapInfo( pEnt, propName, &mapInfo ) )
-				return false;
-
-			if ( element < 0 || element >= mapInfo.prop->fieldSize )
-				return false;
-
-			offset = mapInfo.actualOffset + ( element * ( mapInfo.prop->fieldSizeInBytes / mapInfo.prop->fieldSize ) );
-			break;
-		}
-
-		default:
-			Assert( !"EntProp type not implemented!" );
-			return false;
-	}
-
-	if ( pEnt == GetGameRulesProxyEntity() )
-	{
-		// if we're looking up a netprop on the gamerules proxy, we need to use the real gamerules class
-
-		if ( GetGameRules() == NULL )
-			return false;
-
-		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
-	}
-
-	*pValue = *(int32 *)( (uint8 *)pEnt + offset );
-	return true;
-}
-
-bool CEntityHelper::GetEntPropHandle( C_BaseEntity *pEnt, EntPropType propType, const char *propName, CBaseHandle *pHandle, int element )
-{
-	int offset = 0;
-
-	switch ( propType )
-	{
-		case EntProp_RecvProp:
-		{
-			RecvPropInfo_t propInfo;
-
-			if ( !GetRecvPropInfo( pEnt, propName, &propInfo ) )
-				return false;
-
-			SendPropType propType = propInfo.prop->GetType();
-
-			if ( propType == DPT_DataTable )
-			{
-				// if the prop we're looking up is a datatable, it's an "array" prop with inner elements
-
-				RecvTable *pTable = propInfo.prop->GetDataTable();
-				Assert( pTable );
-
-				if ( element < 0 || element >= pTable->GetNumProps() )
-					return false;
-
-				RecvProp *pProp = pTable->GetProp( element );
-
-				if ( pProp->GetType() != DPT_Int )
-					return false; // underlying array member props should be int for handles
-
-				propInfo.actualOffset += pProp->GetOffset();
-			}
-			else if ( propType != DPT_Int )
-			{
-				// not an "array" prop, or an int prop (which handles are)
-				return false;
-			}
-
-			offset = propInfo.actualOffset;
-			break;
-		}
-
-		case EntProp_DataMap:
-		{
-			DataMapInfo_t mapInfo;
-
-			if ( !GetDataMapInfo( pEnt, propName, &mapInfo ) )
-				return false;
-
-			if ( element < 0 || element >= mapInfo.prop->fieldSize )
-				return false;
-
-			offset = mapInfo.actualOffset + ( element * ( mapInfo.prop->fieldSizeInBytes / mapInfo.prop->fieldSize ) );
-			break;
-		}
-
-		default:
-			Assert( !"EntProp type not implemented!" );
-			return false;
-	}
-
-	if ( pEnt == GetGameRulesProxyEntity() )
-	{
-		// if we're looking up a netprop on the gamerules proxy, we need to use the real gamerules class
-
-		if ( GetGameRules() == NULL )
-			return false;
-
-		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
-	}
-
-	*pHandle = *(CBaseHandle *)( (uint8 *)pEnt + offset );
-	return true;
-}
-
 bool CEntityHelper::GetEntPropEnt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, C_BaseEntity **pOutEnt, int element )
 {
 	CBaseHandle handle;
 
-	if ( !GetEntPropHandle( pEnt, propType, propName, &handle, element ) )
+	if ( !GetEntProp<CBaseHandle>( pEnt, propType, propName, &handle, element ) )
 		return false;
 
 	if ( !handle.IsValid() )
