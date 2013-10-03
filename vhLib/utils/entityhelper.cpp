@@ -220,6 +220,8 @@ int CEntityHelper::GetEntPropString( C_BaseEntity *pEnt, EntPropType propType, c
 
 bool FindInRecvTable( RecvTable *pTable, const char *propName, RecvPropInfo_t *pInfo, int startOffset )
 {
+	Assert( pTable );
+
 	int numProps = pTable->GetNumProps();
 
 	for ( int x = 0 ; x < numProps ; ++x )
@@ -246,6 +248,8 @@ bool FindInRecvTable( RecvTable *pTable, const char *propName, RecvPropInfo_t *p
 
 bool FindInDataMap( datamap_t *pDataMap, const char *dataName, DataMapInfo_t *pInfo )
 {
+	Assert( pDataMap );
+
 	while ( pDataMap )
 	{
 		for ( int i = 0 ; i < pDataMap->dataNumFields ; ++i )
@@ -284,11 +288,25 @@ bool CEntityHelper::GetRecvPropInfo( IClientNetworkable *pNetworkable, const cha
 		return false;
 
 	ClientClass *pClass = pNetworkable->GetClientClass();
+	Assert( pClass );
 
 	if ( pClass == NULL )
 		return false;
 
-	return FindInRecvTable( pClass->m_pRecvTable, propName, pInfo, 0 );
+	// first perform a lookup in our cache
+	auto index = m_RecvPropCache.Find( propName );
+
+	if ( m_RecvPropCache.IsValidIndex( index ) )
+	{
+		*pInfo = m_RecvPropCache[ index ];
+		return true;
+	}
+
+	if ( !FindInRecvTable( pClass->m_pRecvTable, propName, pInfo, 0 ) )
+		return false; // couldn't find it at all
+
+	m_RecvPropCache.Insert( propName, *pInfo );
+	return true;
 }
 
 bool CEntityHelper::GetDataMapInfo( C_BaseEntity *pEntity, const char *dataName, DataMapInfo_t *pInfo )
@@ -318,7 +336,7 @@ C_BaseEntity *CEntityHelper::FindEntityByNetClass( const char *netClass )
 		if ( !pClass || !pClass->m_pNetworkName )
 			continue;
 
-		if ( V_strcmp( pClass->m_pNetworkName, netClass ) == 0 )
+		if ( V_strcasecmp( pClass->m_pNetworkName, netClass ) == 0 )
 		{
 			return pEnt;
 		}

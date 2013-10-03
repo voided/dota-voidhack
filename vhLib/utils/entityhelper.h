@@ -40,7 +40,8 @@ class CEntityHelper
 	
 public:
 	CEntityHelper() :
-		m_pEntInfo( NULL ), m_pGameRules( NULL )
+		m_pEntInfo( NULL ), m_pGameRules( NULL ),
+		m_RecvPropCache( CaselessStringLessThan )
 	{
 	}
 
@@ -84,6 +85,9 @@ private:
 
 	CBaseHandle m_ResourceEntity;
 	CBaseHandle m_GameRulesProxyEntity; // gamerules proxy
+
+
+	CUtlMap<const char *, RecvPropInfo_t> m_RecvPropCache;
 };
 
 CEntityHelper &EntityHelper();
