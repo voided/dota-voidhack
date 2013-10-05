@@ -35,13 +35,24 @@ enum EntPropType
 };
 
 
+template <typename T>
+struct Cache_t : public CUtlMap<const char *, T>
+{
+	Cache_t() : 
+		CUtlMap<const char *, T>( CaselessStringLessThan )
+	{
+	}
+};
+
+
 class CEntityHelper
 {
 	
 public:
 	CEntityHelper() :
 		m_pEntInfo( NULL ), m_pGameRules( NULL ),
-		m_RecvPropCache( CaselessStringLessThan )
+		m_RecvPropCache( DefLessFunc( ClientClass * ) ),
+		m_DataMapCache( DefLessFunc( datamap_t * ) )
 	{
 	}
 
@@ -88,7 +99,8 @@ private:
 	CBaseHandle m_GameRulesProxyEntity; // gamerules proxy
 
 
-	CUtlMap<const char *, RecvPropInfo_t> m_RecvPropCache;
+	CUtlMap<ClientClass *, Cache_t<RecvPropInfo_t> *> m_RecvPropCache;
+	CUtlMap<datamap_t *, Cache_t<DataMapInfo_t> *> m_DataMapCache;
 };
 
 CEntityHelper &EntityHelper();

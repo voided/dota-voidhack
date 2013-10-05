@@ -51,6 +51,16 @@ void CEntityHelper::Shutdown()
 {
 	m_pEntInfo = NULL;
 	m_pGameRules = NULL;
+
+	FOR_EACH_MAP_FAST( m_RecvPropCache, i )
+	{
+		delete m_RecvPropCache.Element( i );
+	}
+
+	FOR_EACH_MAP_FAST( m_DataMapCache, i )
+	{
+		delete m_DataMapCache.Element( i );
+	}
 }
 
 C_BasePlayer *CEntityHelper::GetLocalPlayer()
@@ -204,19 +214,25 @@ bool CEntityHelper::GetRecvPropInfo( IClientNetworkable *pNetworkable, const cha
 	if ( pClass == NULL )
 		return false;
 
-	// first perform a lookup in our cache
-	auto index = m_RecvPropCache.Find( propName );
+	auto classIndex = m_RecvPropCache.Find( pClass );
 
-	if ( m_RecvPropCache.IsValidIndex( index ) )
+	if ( !m_RecvPropCache.IsValidIndex( classIndex ) )
+		classIndex = m_RecvPropCache.Insert( pClass, new Cache_t<RecvPropInfo_t>() );
+
+	Cache_t<RecvPropInfo_t> &cache = *m_RecvPropCache[ classIndex ];
+
+	auto cacheIndex = cache.Find( propName );
+
+	if ( cache.IsValidIndex( cacheIndex ) )
 	{
-		*pInfo = m_RecvPropCache[ index ];
+		*pInfo = cache[ cacheIndex ];
 		return true;
 	}
 
 	if ( !FindInRecvTable( pClass->m_pRecvTable, propName, pInfo, 0 ) )
 		return false; // couldn't find it at all
 
-	m_RecvPropCache.Insert( propName, *pInfo );
+	cache.Insert( propName, *pInfo );
 	return true;
 }
 
@@ -230,7 +246,26 @@ bool CEntityHelper::GetDataMapInfo( C_BaseEntity *pEntity, const char *dataName,
 	if ( pDataMap == NULL )
 		return false;
 
-	return FindInDataMap( pDataMap, dataName, pInfo );
+	auto mapIndex = m_DataMapCache.Find( pDataMap );
+
+	if ( !m_DataMapCache.IsValidIndex( mapIndex ) )
+		mapIndex = m_DataMapCache.Insert( pDataMap, new Cache_t<DataMapInfo_t>() );
+
+	Cache_t<DataMapInfo_t> &cache = *m_DataMapCache[ mapIndex ];
+
+	auto cacheIndex = cache.Find( dataName );
+
+	if ( cache.IsValidIndex( cacheIndex ) )
+	{
+		*pInfo = cache[ cacheIndex ];
+		return true;
+	}
+
+	if ( !FindInDataMap( pDataMap, dataName, pInfo ) )
+		return false;
+
+	cache.Insert( dataName, *pInfo );
+	return true;
 }
 
 C_BaseEntity *CEntityHelper::FindEntityByNetClass( const char *netClass )
