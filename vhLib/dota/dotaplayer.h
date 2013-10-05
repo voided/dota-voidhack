@@ -24,7 +24,7 @@ public:
 
 	CEntProp( int, m_iTeamNum );
 
-	CEntPropEnt( m_hAssignedHero );
+	CEntProp( C_BaseEntity *, m_hAssignedHero );
 
 
 	static C_DOTAPlayer GetLocalPlayer();

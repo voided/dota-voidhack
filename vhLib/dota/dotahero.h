@@ -69,5 +69,5 @@ public:
 	CDataProp( float, m_flMagicalResistanceValue ); // base magical resistance
 	CDataProp( float, m_flPhysicalArmorValue ); // base armor
 
-	CEntPropEntArray( m_hAbilities );
+	CEntPropArray( C_BaseEntity *, m_hAbilities );
 };

@@ -64,11 +64,12 @@ public:
 	C_GameRules *GetGameRules();
 
 
-	template <class T>
+	template <typename T>
 	bool GetEntProp( C_BaseEntity *pEnt, EntPropType propType, const char *propName, T *pValue, int element = 0 );
-
-	bool GetEntPropEnt( C_BaseEntity *pEnt, EntPropType propType, const char *propName, C_BaseEntity **pOutEnt, int element = 0 );
-	int	GetEntPropString( C_BaseEntity *pEnt, EntPropType propType, const char *propName, char **pOutString, int element = 0 );
+	template <>
+	bool GetEntProp<C_BaseEntity *>( C_BaseEntity *pEnt, EntPropType propType, const char *propName, C_BaseEntity **pValue, int element );
+	template <>
+	bool GetEntProp<char *>( C_BaseEntity *pEnt, EntPropType propType, const char *propName, char **pOutString, int element );
 
 
 	bool GetRecvPropInfo( IClientNetworkable *pNetworkable, const char *propName, RecvPropInfo_t *pInfo );
@@ -159,6 +160,96 @@ bool CEntityHelper::GetEntProp( C_BaseEntity *pEnt, EntPropType propType, const 
 
 	*pValue = *(T *)( (uint8 *)pEnt + offset );
 	return true;
+}
+
+template <>
+bool CEntityHelper::GetEntProp<C_BaseEntity *>( C_BaseEntity *pEnt, EntPropType propType, const char *propName, C_BaseEntity **pValue, int element )
+{
+	CBaseHandle handle;
+
+	if ( !GetEntProp<CBaseHandle>( pEnt, propType, propName, &handle, element ) )
+		return false;
+
+	if ( !handle.IsValid() )
+		return false;
+
+	int entIndex = handle.GetEntryIndex();
+	C_BaseEntity *pEntFromHandle = GetEntityFromIndex( entIndex );
+
+	*pValue = pEntFromHandle;
+	return pEntFromHandle != NULL;
+}
+
+template <>
+bool CEntityHelper::GetEntProp<char *>( C_BaseEntity *pEnt, EntPropType propType, const char *propName, char **pOutString, int element )
+{
+	int offset = 0;
+	bool isStringIndex = false;
+
+	switch ( propType )
+	{
+		case EntProp_RecvProp:
+		{
+			RecvPropInfo_t propInfo;
+
+			if ( !GetRecvPropInfo( pEnt, propName, &propInfo ) )
+				return 0;
+
+			if ( propInfo.prop->GetType() != DPT_String )
+				return 0; // not a string prop
+
+			offset = propInfo.actualOffset;
+			break;
+		}
+
+		case EntProp_DataMap:
+		{
+			DataMapInfo_t mapInfo;
+
+			if ( !GetDataMapInfo( pEnt, propName, &mapInfo ) )
+				return 0;
+
+			if ( mapInfo.prop->fieldType != FIELD_CHARACTER &&
+				 mapInfo.prop->fieldType != FIELD_STRING &&
+				 mapInfo.prop->fieldType != FIELD_MODELNAME &&
+				 mapInfo.prop->fieldType != FIELD_SOUNDNAME )
+				 return 0;
+			
+			isStringIndex = mapInfo.prop->fieldType != FIELD_CHARACTER;
+
+			if ( isStringIndex && ( element < 0 || element >= mapInfo.prop->fieldSize ) )
+				return 0;
+
+			offset = mapInfo.actualOffset;
+
+			if ( isStringIndex )
+				offset += ( element * ( mapInfo.prop->fieldSizeInBytes / mapInfo.prop->fieldSize ) );
+
+			break;
+		}
+	}
+
+	if ( pEnt == GetGameRulesProxyEntity() )
+	{
+		// if we're looking up a netprop on the gamerules proxy, we need to use the real gamerules class
+
+		if ( GetGameRules() == NULL )
+			return false;
+
+		pEnt = reinterpret_cast<C_BaseEntity *>( GetGameRules() );
+	}
+
+	if ( isStringIndex )
+	{
+		string_t index = *(string_t *)( (uint8 *)pEnt + offset );
+		*pOutString = index == NULL_STRING ? "" : STRING( index );
+	}
+	else
+	{
+		*pOutString = (char *)( (uint8 *)pEnt + offset );
+	}
+	
+	return V_strlen( *pOutString ) > 0;
 }
 
 inline IHandleEntity* CBaseHandle::Get() const
