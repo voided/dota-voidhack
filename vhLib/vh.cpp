@@ -17,6 +17,7 @@
 #include "dotaresource.h"
 #include "dotaability.h"
 #include "dotagamerules.h"
+#include "dotaitem.h"
 
 #include <sourcehook/sourcehook.h>
 
@@ -72,6 +73,16 @@ CON_COMMAND( vh_test, "Test convar" )
 						"Ability %d (%s), Activated: %d, Hidden: %d, Level: %d, Cooldown: %0.2f, Mana cost: %d\n",
 						x, ability.GetName(), (bool)ability.m_bActivated, (bool)ability.m_bHidden, (int)ability.m_iLevel, ability.GetCooldownTimeRemaining(), (int)ability.m_iManaCost
 					);
+				}
+			}
+
+			for ( int x = 0 ; x < MAX_UNIT_ITEMS ; ++x )
+			{
+				C_DOTAItem item = hero.m_hItems[ x ];
+
+				if ( item.IsValid() )
+				{
+					Msg( "Item %d: %s (modifier: %s)\n", x, item.GetName(), item.GetIntrinsicModifierName() );
 				}
 			}
 

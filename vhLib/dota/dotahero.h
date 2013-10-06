@@ -70,4 +70,6 @@ public:
 	CDataProp( float, m_flPhysicalArmorValue ); // base armor
 
 	CEntPropArray( C_BaseEntity *, m_hAbilities );
+
+	CEntPropArray( C_BaseEntity *, m_hItems );
 };

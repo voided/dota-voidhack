@@ -4,6 +4,7 @@
 
 
 #include "entprop.h"
+#include "entfuncs.h"
 #include "entmembers.h"
 
 #include "dota_consts.h"

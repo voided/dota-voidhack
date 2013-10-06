@@ -87,6 +87,9 @@
     <ClCompile Include="dota\dotagamerules.cpp">
       <Filter>Source Files\dota</Filter>
     </ClCompile>
+    <ClCompile Include="dota\dotaitem.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zeusmanager.h">
@@ -127,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="utils\entmembers.h">
       <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\entfuncs.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaitem.h">
+      <Filter>Header Files\dota</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

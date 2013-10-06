@@ -92,6 +92,7 @@
     <ClCompile Include="dota\dotaentity.cpp" />
     <ClCompile Include="dota\dotagamerules.cpp" />
     <ClCompile Include="dota\dotahero.cpp" />
+    <ClCompile Include="dota\dotaitem.cpp" />
     <ClCompile Include="dota\dotaplayer.cpp" />
     <ClCompile Include="dota\dotaresource.cpp" />
     <ClCompile Include="main.cpp" />
@@ -105,10 +106,12 @@
     <ClInclude Include="dota\dotaentity.h" />
     <ClInclude Include="dota\dotagamerules.h" />
     <ClInclude Include="dota\dotahero.h" />
+    <ClInclude Include="dota\dotaitem.h" />
     <ClInclude Include="dota\dotaplayer.h" />
     <ClInclude Include="dota\dotaresource.h" />
     <ClInclude Include="dota\dota_consts.h" />
     <ClInclude Include="sigscan\bytescanner.h" />
+    <ClInclude Include="utils\entfuncs.h" />
     <ClInclude Include="utils\entityhelper.h" />
     <ClInclude Include="utils\entmembers.h" />
     <ClInclude Include="utils\entprop.h" />
