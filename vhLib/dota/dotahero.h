@@ -55,6 +55,9 @@ public:
 	// is this hero in any of these states?
 	bool InAnyState( int state );
 
+	// does this hero own this item?
+	bool HasItem( const char *itemName );
+
 
 	CEntProp( int, m_iPlayerID );
 

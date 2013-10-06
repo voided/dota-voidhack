@@ -64,7 +64,6 @@ void CZeusManager::Think()
 }
 
 
-
 // precondition: playing as zeus, and ult is ready for use
 bool CZeusManager::ShouldUlt()
 {
@@ -77,8 +76,12 @@ bool CZeusManager::ShouldUlt()
 	C_DOTAHero hero = localPlayer.m_hAssignedHero;
 	C_DOTAAbility abilityUlt = hero.m_hAbilities[ 3 ];
 
-	// todo: handle having aghs?
 	int ultDamage = UltDamageTable[ abilityUlt.m_iLevel ];
+
+	if ( HasScepter() )
+	{
+		ultDamage = UltAghsDamageTable[ abilityUlt.m_iLevel ];
+	}
 
 	for ( int i = 1 ; i <= MAX_PLAYERS ; ++i )
 	{
@@ -116,6 +119,13 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	float effectiveDamage = ( damage * damageMult ) - 25; // add some buffer room for slightly off calculations
 
 	return effectiveDamage >= hero.m_iHealth;
+}
+
+bool CZeusManager::HasScepter()
+{
+	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
+
+	return hero.HasItem( "item_ultimate_scepter" );
 }
 
 bool CZeusManager::IsPlayingAsZeus()

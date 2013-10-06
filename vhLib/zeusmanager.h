@@ -25,7 +25,9 @@ private:
 	bool IsPlayingAsZeus();
 	bool IsUltReady();
 	bool ShouldUlt();
+
 	bool IsPlayerUltable( C_DOTAPlayer &player, int damage );
+	bool HasScepter();
 
 	void DoUlt();
 

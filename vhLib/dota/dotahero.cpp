@@ -3,6 +3,7 @@
 #include "dotahero.h"
 
 #include "dotaresource.h"
+#include "dotaitem.h"
 
 
 C_DOTAHero::C_DOTAHero( C_BaseEntity *pEnt )
@@ -53,4 +54,22 @@ bool C_DOTAHero::InAnyState( int state )
 
 	int bitFlag = 1 << state;
 	return ( m_nUnitState & bitFlag ) != 0;
+}
+
+bool C_DOTAHero::HasItem( const char *itemName )
+{
+	Assert( IsValid() );
+
+	for ( int x = 0 ; x < m_hItems.Size() ; ++x )
+	{
+		C_DOTAItem item = m_hItems[ x ];
+
+		if ( !item.IsValid() )
+			continue;
+
+		if ( V_stricmp( item.GetName(), itemName ) == 0 )
+			return true;
+	}
+
+	return false;
 }
