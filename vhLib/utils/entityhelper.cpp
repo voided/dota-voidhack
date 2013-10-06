@@ -153,7 +153,10 @@ bool CEntityHelper::GetEntPropArraySize( C_BaseEntity *pEnt, EntPropType propTyp
 			if ( propInfo.prop->GetType() != DPT_DataTable )
 				return false; // array props must be datatables
 
-			*outSize = propInfo.prop->GetNumElements();
+			RecvTable *pTable = propInfo.prop->GetDataTable();
+			Assert( pTable );
+
+			*outSize = pTable->GetNumProps();
 			return true;
 		}
 		
