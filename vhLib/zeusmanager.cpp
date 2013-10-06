@@ -116,7 +116,7 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	// todo: calculate that player's magic resistance from items
 
 	float damageMult = ( 100.0 - hero.m_flMagicalResistanceValue ) / 100.0;
-	float effectiveDamage = ( damage * damageMult ) - 25; // add some buffer room for slightly off calculations
+	float effectiveDamage = ( damage * damageMult ) - 75; // add some buffer room for slightly off calculations
 
 	return effectiveDamage >= hero.m_iHealth;
 }
