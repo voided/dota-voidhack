@@ -117,7 +117,9 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	// todo: calculate that player's magic resistance from items
 
 	float damageMult = ( 100.0 - hero.m_flMagicalResistanceValue ) / 100.0;
-	float effectiveDamage = ( damage * damageMult ) - 75; // add some buffer room for slightly off calculations
+	float effectiveDamage = ( damage * damageMult ) - 50; // add some buffer room for slightly off calculations
+
+	// todo: ethereal extra damage
 
 	return effectiveDamage >= hero.m_iHealth;
 }
@@ -146,6 +148,10 @@ bool CZeusManager::IsUltReady()
 		return false; // artifical delay so we don't spam the ability command
 
 	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
+
+	if ( hero.m_iHealth == 0 )
+		return false; // we're dead
+
 	C_DOTAAbility ability = hero.m_hAbilities[ 3 ]; // ability 3 (zero indexed) is ult
 
 	if ( !ability.IsValid() )
