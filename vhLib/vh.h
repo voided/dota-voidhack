@@ -42,6 +42,7 @@ public:
 	IBaseClientDLL *ClientDLL() { return m_pClientDLL; }
 	IEngineTool *EngineTool() { return m_pEngineTool; }
 	IClientTools *ClientTools() { return m_pClientTools; }
+	IGameEventManager2 *GameEventManager() { return m_pGameEventManager; }
 
 
 private:
@@ -58,6 +59,7 @@ private:
 	IBaseClientDLL *m_pClientDLL;
 	IEngineTool *m_pEngineTool;
 	IClientTools *m_pClientTools;
+	IGameEventManager2 *m_pGameEventManager;
 
 	CUtlVector<FrameFunction> m_FrameHooks;
 };

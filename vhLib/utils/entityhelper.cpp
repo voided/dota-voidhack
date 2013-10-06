@@ -8,11 +8,10 @@
 
 
 
-CEntityHelper g_EntityHelper;
-
-CEntityHelper &EntityHelper()
+inline CEntityHelper &EntityHelper()
 {
-	return g_EntityHelper;
+	static CEntityHelper entityHelper;
+	return entityHelper;
 }
 
 void CEntityHelper::Init()

@@ -22,13 +22,17 @@ public:
 	bool IsLocalPlayer();
 
 
+	CEntProp( int, m_iPlayerID );
+
 	CEntProp( int, m_iTeamNum );
 
 	CEntProp( C_BaseEntity *, m_hAssignedHero );
 
 
 	static C_DOTAPlayer GetLocalPlayer();
+
 	static C_DOTAPlayer GetPlayerByIndex( int index );
+	static C_DOTAPlayer GetPlayerByPlayerID( int playerId );
 
 };
 

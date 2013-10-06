@@ -10,11 +10,11 @@
 
 
 
-CZeusManager g_ZeusManager;
 
-CZeusManager &ZeusManager()
+inline CZeusManager &ZeusManager()
 {
-	return g_ZeusManager;
+	static CZeusManager zeusManager;
+	return zeusManager;
 }
 
 
@@ -22,6 +22,7 @@ CZeusManager::CZeusManager()
 	: m_flNextTaunt( FLT_MAX ),
 	  m_flLastUlt( 0 )
 {
+	ListenForGameEvent( "dota_player_kill" );
 }
 
 
@@ -141,9 +142,7 @@ bool CZeusManager::IsPlayingAsZeus()
 // precondition: we're playing as zeus
 bool CZeusManager::IsUltReady()
 {
-	float timeSinceLastUlt = VH().EngineTool()->ClientTime() - m_flLastUlt;
-
-	if ( timeSinceLastUlt < 1.0 )
+	if ( HasUltedRecently() )
 		return false; // artifical delay so we don't spam the ability command
 
 	C_DOTAHero hero = C_DOTAPlayer::GetLocalPlayer().m_hAssignedHero;
@@ -165,6 +164,12 @@ bool CZeusManager::IsUltReady()
 	return true;
 }
 
+bool CZeusManager::HasUltedRecently()
+{
+	float timeSinceLastUlt = VH().EngineTool()->ClientTime() - m_flLastUlt;
+	return timeSinceLastUlt < 1.0;
+}
+
 void CZeusManager::DoUlt()
 {
 	// just ult
@@ -180,5 +185,27 @@ void CZeusManager::DoUlt()
 	// this is dirty, but queueing up a CUnitOrders would be fragile
 
 	m_flLastUlt = VH().EngineTool()->ClientTime();
+}
+
+void CZeusManager::FireGameEvent( IGameEvent *event  )
+{
+	if ( V_stricmp( event->GetName(), "dota_player_kill" ) != 0 )
+		return;
+
+	C_DOTAPlayer victim = C_DOTAPlayer::GetPlayerByPlayerID( event->GetInt( "victim_userid" ) );
+	C_DOTAPlayer killer = C_DOTAPlayer::GetPlayerByPlayerID( event->GetInt( "killer1_userid" ) );
+
+	// we're only interested in the first killer
+	// if that's not us, we were involved in a kill that wasn't directly caused by us
+
+	if ( !victim.IsValid() || !killer.IsValid() )
+		return;
+
+	if ( !killer.IsLocalPlayer() )
+		return; // we weren't the killer
+
+	if ( !HasUltedRecently() )
+		return; // if we haven't ulted recently, the ult didn't lead to the death
+
 	m_flNextTaunt = m_flLastUlt + 5.0;
 }

@@ -11,6 +11,7 @@
 #include "vstdlib/cvar.h"
 #include "toolframework/ienginetool.h"
 #include "cdll_int.h"
+#include "igameevents.h"
 
 #include "dotaplayer.h"
 #include "dotahero.h"
@@ -22,11 +23,10 @@
 #include <sourcehook/sourcehook.h>
 
 
-CVH g_VH;
-
-CVH &VH()
+inline CVH &VH()
 {
-	return g_VH;
+	static CVH vh;
+	return vh;
 }
 
 
@@ -37,6 +37,9 @@ int g_PLID = 0;
 
 
 SH_DECL_HOOK1_void( IBaseClientDLL, FrameStageNotify, SH_NOATTRIB, 0, ClientFrameStage_t );
+
+// to support CGameEventListener
+IGameEventManager2 *gameeventmanager = NULL;
 
 
 CVH::CVH() :
@@ -121,6 +124,21 @@ CON_COMMAND( vh_test, "Test convar" )
 
 }
 
+
+template <typename T>
+T *GetInterface( CreateInterfaceFn factory, const char *version )
+{
+	T* iface = reinterpret_cast<T *>( factory( version, NULL ) );
+
+	if ( !iface )
+	{
+		Error( "Unable to get interface %s!", version );
+		return NULL;
+	}
+
+	return iface;
+}
+
 void CVH::Init()
 {
 	m_fnEngineFactory = Sys_GetFactory( "engine" );
@@ -138,10 +156,11 @@ void CVH::Init()
 	// passing the vstdlib factory sets up icvar for us
 	ConnectTier1Libraries( factories, 3 );
 
-	m_pEngineClient = reinterpret_cast<IVEngineClient *>( m_fnEngineFactory( VENGINE_CLIENT_INTERFACE_VERSION, NULL ) );
-	m_pClientDLL = reinterpret_cast<IBaseClientDLL *>( m_fnClientFactory( CLIENT_DLL_INTERFACE_VERSION, NULL ) );
-	m_pEngineTool = reinterpret_cast<IEngineTool *>( m_fnEngineFactory( VENGINETOOL_INTERFACE_VERSION, NULL ) );
-	m_pClientTools = reinterpret_cast<IClientTools *>( m_fnClientFactory( VCLIENTTOOLS_INTERFACE_VERSION, NULL ) );
+	m_pEngineClient = GetInterface<IVEngineClient>( m_fnEngineFactory, VENGINE_CLIENT_INTERFACE_VERSION );
+	m_pClientDLL = GetInterface<IBaseClientDLL>( m_fnClientFactory, CLIENT_DLL_INTERFACE_VERSION );
+	m_pEngineTool = GetInterface<IEngineTool>( m_fnEngineFactory, VENGINETOOL_INTERFACE_VERSION );
+	m_pClientTools = GetInterface<IClientTools>( m_fnClientFactory, VCLIENTTOOLS_INTERFACE_VERSION );
+	m_pGameEventManager = gameeventmanager = GetInterface<IGameEventManager2>( m_fnEngineFactory, INTERFACEVERSION_GAMEEVENTSMANAGER2 );
 
 	SH_ADD_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), false );
 

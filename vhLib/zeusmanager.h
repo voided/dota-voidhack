@@ -1,12 +1,14 @@
 
 #pragma once
 
+#include "GameEventListener.h"
+
 
 class C_DOTAPlayer;
 
 
 // you can't run from heaven
-class CZeusManager
+class CZeusManager : public CGameEventListener
 {
 
 public:
@@ -25,11 +27,15 @@ private:
 	bool IsPlayingAsZeus();
 	bool IsUltReady();
 	bool ShouldUlt();
+	bool HasUltedRecently();
 
 	bool IsPlayerUltable( C_DOTAPlayer &player, int damage );
 	bool HasScepter();
 
 	void DoUlt();
+
+	// IGameEventListener2
+	virtual void FireGameEvent( IGameEvent *event  );
 
 
 private:
