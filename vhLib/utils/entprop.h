@@ -41,6 +41,17 @@
 			} \
 			return (propType)0; \
 		} \
+		int Size() \
+		{ \
+			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
+			AssertMsg( pEnt, "Entprop lookup on invalid entity!" ); \
+			int size = 0; \
+			if ( EntityHelper().GetEntPropArraySize( pEnt, entPropType, #propName, &size ) ) \
+			{ \
+				return size; \
+			} \
+			return 0; \
+		} \
 	} propName;
 
 

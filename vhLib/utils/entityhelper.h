@@ -82,12 +82,13 @@ public:
 	template <>
 	bool GetEntProp<char *>( C_BaseEntity *pEnt, EntPropType propType, const char *propName, char **pOutString, int element );
 
-
-	bool GetRecvPropInfo( IClientNetworkable *pNetworkable, const char *propName, RecvPropInfo_t *pInfo );
-	bool GetDataMapInfo( C_BaseEntity *pEntity, const char *dataName, DataMapInfo_t *pInfo );
+	bool GetEntPropArraySize( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *outSize );
 
 
 private:
+	bool GetRecvPropInfo( IClientNetworkable *pNetworkable, const char *propName, RecvPropInfo_t *pInfo );
+	bool GetDataMapInfo( C_BaseEntity *pEntity, const char *dataName, DataMapInfo_t *pInfo );
+
 	C_BaseEntity *FindEntityByNetClass( const char *netClass );
 
 
@@ -146,7 +147,7 @@ bool CEntityHelper::GetEntProp( C_BaseEntity *pEnt, EntPropType propType, const 
 			DataMapInfo_t mapInfo;
 
 			if ( !GetDataMapInfo( pEnt, propName, &mapInfo ) )
-				return false;
+					return false;
 
 			if ( element < 0 || element >= mapInfo.prop->fieldSize )
 				return false;
@@ -219,7 +220,7 @@ bool CEntityHelper::GetEntProp<char *>( C_BaseEntity *pEnt, EntPropType propType
 			DataMapInfo_t mapInfo;
 
 			if ( !GetDataMapInfo( pEnt, propName, &mapInfo ) )
-				return 0;
+					return 0;
 
 			if ( mapInfo.prop->fieldType != FIELD_CHARACTER &&
 				 mapInfo.prop->fieldType != FIELD_STRING &&

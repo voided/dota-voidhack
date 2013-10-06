@@ -139,6 +139,46 @@ C_GameRules *CEntityHelper::GetGameRules()
 }
 
 
+bool CEntityHelper::GetEntPropArraySize( C_BaseEntity *pEnt, EntPropType propType, const char *propName, int *outSize )
+{
+	switch ( propType )
+	{
+		case EntProp_RecvProp:
+		{
+			RecvPropInfo_t propInfo;
+
+			if ( !GetRecvPropInfo( pEnt, propName, &propInfo ) )
+				return false;
+
+			if ( propInfo.prop->GetType() != DPT_DataTable )
+				return false; // array props must be datatables
+
+			*outSize = propInfo.prop->GetNumElements();
+			return true;
+		}
+		
+		case EntProp_DataMap:
+		{
+			DataMapInfo_t mapInfo;
+
+			if ( !GetDataMapInfo( pEnt, propName, &mapInfo ) )
+			{
+				// if we can't find the datamap on the entity we're checking, check against worldspawn
+				if ( !GetDataMapInfo( GetEntityFromIndex( 0 ), propName, &mapInfo ) )
+					return false;
+			}
+
+			*outSize = mapInfo.prop->fieldSize;
+			return true;
+		}
+
+		default:
+			Assert( !"Unknown ent prop type in GetEntPropArraySize!" );
+	}
+
+	return false;
+}
+
 bool FindInRecvTable( RecvTable *pTable, const char *propName, RecvPropInfo_t *pInfo, int startOffset )
 {
 	Assert( pTable );
