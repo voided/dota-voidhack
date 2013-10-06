@@ -3,6 +3,7 @@
 
 
 #define MAX_ABILITIES 16
+#define MAX_ABILITIES 16 // maximum abilities a unit may have
 
 #define MAX_HEROES 10
 

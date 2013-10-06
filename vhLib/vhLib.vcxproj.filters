@@ -125,5 +125,8 @@
     <ClInclude Include="dota\dotagamerules.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
+    <ClInclude Include="utils\entmembers.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
