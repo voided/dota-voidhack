@@ -90,6 +90,12 @@
     <ClCompile Include="dota\dotaitem.cpp">
       <Filter>Source Files\dota</Filter>
     </ClCompile>
+    <ClCompile Include="cameramanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fogmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="zeusmanager.h">
@@ -99,21 +105,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dota\dota_consts.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaability.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaentity.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotahero.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaplayer.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaresource.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
     <ClInclude Include="sigscan\bytescanner.h">
@@ -127,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="utils\entfuncs.h">
       <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="cameramanager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dota\dotaability.h">
       <Filter>Header Files\dota</Filter>
@@ -148,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="dota\dotaresource.h">
       <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="fogmanager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

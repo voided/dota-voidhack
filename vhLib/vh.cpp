@@ -1,8 +1,11 @@
 
 #include "vh.h"
 
-#include "zeusmanager.h"
 #include "entityhelper.h"
+
+#include "zeusmanager.h"
+#include "cameramanager.h"
+#include "fogmanager.h"
 
 #include "tier1/interface.h"
 
@@ -45,6 +48,7 @@ IGameEventManager2 *gameeventmanager = NULL;
 CVH::CVH() :
 	m_pEngineClient( NULL ), m_pClientDLL( NULL ),
 	m_pEngineTool( NULL ), m_pClientTools( NULL ),
+	m_pGameEventManager( NULL ),
 
 	m_fnClientFactory( NULL ),
 	m_fnEngineFactory( NULL ),
@@ -156,11 +160,19 @@ void CVH::Init()
 	// passing the vstdlib factory sets up icvar for us
 	ConnectTier1Libraries( factories, 3 );
 
+	if ( g_pCVar == NULL )
+	{
+		Error( "Unable to get ICVar!" );
+		return;
+	}
+
+	// get engine interfaces
 	m_pEngineClient = GetInterface<IVEngineClient>( m_fnEngineFactory, VENGINE_CLIENT_INTERFACE_VERSION );
-	m_pClientDLL = GetInterface<IBaseClientDLL>( m_fnClientFactory, CLIENT_DLL_INTERFACE_VERSION );
 	m_pEngineTool = GetInterface<IEngineTool>( m_fnEngineFactory, VENGINETOOL_INTERFACE_VERSION );
-	m_pClientTools = GetInterface<IClientTools>( m_fnClientFactory, VCLIENTTOOLS_INTERFACE_VERSION );
 	m_pGameEventManager = gameeventmanager = GetInterface<IGameEventManager2>( m_fnEngineFactory, INTERFACEVERSION_GAMEEVENTSMANAGER2 );
+	// get client interfaces
+	m_pClientDLL = GetInterface<IBaseClientDLL>( m_fnClientFactory, CLIENT_DLL_INTERFACE_VERSION );
+	m_pClientTools = GetInterface<IClientTools>( m_fnClientFactory, VCLIENTTOOLS_INTERFACE_VERSION );
 
 	SH_ADD_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), false );
 
@@ -169,13 +181,20 @@ void CVH::Init()
 
 	// init our things
 	EntityHelper().Init();
+
+	// init managers
 	ZeusManager().Init();
+	CameraManager().Init();
+	FogManager().Init();
 }
 
 void CVH::Shutdown()
 {
 	// un-init our things
+	FogManager().Shutdown();
+	CameraManager().Shutdown();
 	ZeusManager().Shutdown();
+
 	EntityHelper().Shutdown();
 
 	ConVar_Unregister();
@@ -183,8 +202,10 @@ void CVH::Shutdown()
 	SH_REMOVE_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), false );
 
 	m_pClientTools = NULL;
-	m_pEngineTool = NULL;
 	m_pClientDLL = NULL;
+
+	m_pGameEventManager = NULL;
+	m_pEngineTool = NULL;
 	m_pEngineClient = NULL;
 
 	DisconnectTier1Libraries();
@@ -192,6 +213,8 @@ void CVH::Shutdown()
 	m_fnCvarFactory = NULL;
 	m_fnClientFactory = NULL;
 	m_fnEngineFactory = NULL;
+
+	m_FrameHooks.RemoveAll();
 }
 
 

@@ -88,6 +88,7 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_chookmaninfo.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cproto.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp" />
+    <ClCompile Include="cameramanager.cpp" />
     <ClCompile Include="dota\dotaability.cpp" />
     <ClCompile Include="dota\dotaentity.cpp" />
     <ClCompile Include="dota\dotagamerules.cpp" />
@@ -95,6 +96,7 @@
     <ClCompile Include="dota\dotaitem.cpp" />
     <ClCompile Include="dota\dotaplayer.cpp" />
     <ClCompile Include="dota\dotaresource.cpp" />
+    <ClCompile Include="fogmanager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sigscan\bytescanner.cpp" />
     <ClCompile Include="utils\entityhelper.cpp" />
@@ -102,6 +104,7 @@
     <ClCompile Include="zeusmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cameramanager.h" />
     <ClInclude Include="dota\dotaability.h" />
     <ClInclude Include="dota\dotaentity.h" />
     <ClInclude Include="dota\dotagamerules.h" />
@@ -110,6 +113,7 @@
     <ClInclude Include="dota\dotaplayer.h" />
     <ClInclude Include="dota\dotaresource.h" />
     <ClInclude Include="dota\dota_consts.h" />
+    <ClInclude Include="fogmanager.h" />
     <ClInclude Include="sigscan\bytescanner.h" />
     <ClInclude Include="utils\entfuncs.h" />
     <ClInclude Include="utils\entityhelper.h" />

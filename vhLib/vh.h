@@ -16,6 +16,7 @@ class IVEngineClient;
 class IBaseClientDLL;
 class IEngineTool;
 class IClientTools;
+class IClientEntityList;
 enum ClientFrameStage_t;
 
 
@@ -37,12 +38,13 @@ public:
 	void AddFrameHook( FrameFunction func );
 	void RemoveFrameHook( FrameFunction func );
 
-	// various engine/client interface accessors
+	// engine interfaces
 	IVEngineClient *EngineClient() { return m_pEngineClient; }
-	IBaseClientDLL *ClientDLL() { return m_pClientDLL; }
 	IEngineTool *EngineTool() { return m_pEngineTool; }
-	IClientTools *ClientTools() { return m_pClientTools; }
 	IGameEventManager2 *GameEventManager() { return m_pGameEventManager; }
+	// client interfaces
+	IBaseClientDLL *ClientDLL() { return m_pClientDLL; }
+	IClientTools *ClientTools() { return m_pClientTools; }
 
 
 private:
@@ -55,11 +57,13 @@ private:
 	CreateInterfaceFn m_fnClientFactory;
 	CreateInterfaceFn m_fnCvarFactory;
 
+	// engine
 	IVEngineClient *m_pEngineClient;
-	IBaseClientDLL *m_pClientDLL;
 	IEngineTool *m_pEngineTool;
-	IClientTools *m_pClientTools;
 	IGameEventManager2 *m_pGameEventManager;
+	// client
+	IBaseClientDLL *m_pClientDLL;
+	IClientTools *m_pClientTools;
 
 	CUtlVector<FrameFunction> m_FrameHooks;
 };
