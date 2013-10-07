@@ -98,7 +98,6 @@
     <ClCompile Include="dota\entities\dotaresource.cpp" />
     <ClCompile Include="dota\fogmanager.cpp" />
     <ClCompile Include="dota\zeusmanager.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="utils\entityhelper.cpp" />
     <ClCompile Include="utils\sigscan\bytescanner.cpp" />
     <ClCompile Include="vh.cpp" />

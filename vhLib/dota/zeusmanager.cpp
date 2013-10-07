@@ -11,7 +11,7 @@
 
 
 
-inline CZeusManager &ZeusManager()
+CZeusManager &ZeusManager()
 {
 	static CZeusManager zeusManager;
 	return zeusManager;
