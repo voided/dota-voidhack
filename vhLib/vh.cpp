@@ -74,7 +74,7 @@ CON_COMMAND( vh_test, "Test convar" )
 				{
 					Msg(
 						"Ability %d (%s), Activated: %d, Hidden: %d, Level: %d, Cooldown: %0.2f, Mana cost: %d\n",
-						x, ability.GetName(), (bool)ability.m_bActivated, (bool)ability.m_bHidden, (int)ability.m_iLevel, ability.GetCooldownTimeRemaining(), (int)ability.m_iManaCost
+						x, (char *)ability.m_iName, (bool)ability.m_bActivated, (bool)ability.m_bHidden, (int)ability.m_iLevel, ability.GetCooldownTimeRemaining(), (int)ability.m_iManaCost
 					);
 				}
 			}
@@ -85,7 +85,7 @@ CON_COMMAND( vh_test, "Test convar" )
 
 				if ( item.IsValid() )
 				{
-					Msg( "Item %d: %s (modifier: %s)\n", x, item.GetName(), item.GetIntrinsicModifierName() );
+					Msg( "Item %d: %s (modifier: %s)\n", x, (char *)item.m_iName, item.GetIntrinsicModifierName() );
 				}
 			}
 

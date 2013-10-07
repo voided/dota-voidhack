@@ -18,10 +18,6 @@ public:
 	float GetCooldownTimeRemaining();
 
 
-	// returns the internal name of the ability
-	DECLARE_MEMBER( const char *, Name, 336 );
-
-
 	CEntProp( bool, m_bHidden ); // is this ability hidden?
 	CEntProp( bool, m_bActivated );
 

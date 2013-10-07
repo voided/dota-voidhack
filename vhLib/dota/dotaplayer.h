@@ -17,6 +17,11 @@ class C_DOTAPlayer : public C_DOTABaseEntity
 public:
 	C_DOTAPlayer( C_BasePlayer *pEnt );
 
+	operator C_BasePlayer *()
+	{
+		return reinterpret_cast<C_BasePlayer *>( GetEntity() );
+	}
+
 
 	// is this player instance the local player?
 	bool IsLocalPlayer();

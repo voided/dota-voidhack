@@ -11,6 +11,7 @@ C_DOTAPlayer::C_DOTAPlayer( C_BasePlayer *pEnt )
 {
 }
 
+
 bool C_DOTAPlayer::IsLocalPlayer()
 {
 	Assert( IsValid() );
@@ -18,6 +19,7 @@ bool C_DOTAPlayer::IsLocalPlayer()
 	C_BasePlayer *pLocalPlayer = EntityHelper().GetLocalPlayer();
 	return this->GetEntity() == pLocalPlayer;
 }
+
 
 C_DOTAPlayer C_DOTAPlayer::GetLocalPlayer()
 {

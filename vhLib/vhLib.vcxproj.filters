@@ -125,16 +125,28 @@
     <ClInclude Include="utils\entprop.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="dota\dotagamerules.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\entmembers.h">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="utils\entfuncs.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="dota\dotaability.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaentity.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotagamerules.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotahero.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
     <ClInclude Include="dota\dotaitem.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaplayer.h">
+      <Filter>Header Files\dota</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\dotaresource.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
   </ItemGroup>

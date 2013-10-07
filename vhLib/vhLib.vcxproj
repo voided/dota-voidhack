@@ -113,7 +113,6 @@
     <ClInclude Include="sigscan\bytescanner.h" />
     <ClInclude Include="utils\entfuncs.h" />
     <ClInclude Include="utils\entityhelper.h" />
-    <ClInclude Include="utils\entmembers.h" />
     <ClInclude Include="utils\entprop.h" />
     <ClInclude Include="vh.h" />
     <ClInclude Include="zeusmanager.h" />

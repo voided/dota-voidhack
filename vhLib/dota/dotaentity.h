@@ -5,7 +5,6 @@
 
 #include "entprop.h"
 #include "entfuncs.h"
-#include "entmembers.h"
 
 #include "dota_consts.h"
 
@@ -32,6 +31,9 @@ public:
 	operator C_BaseEntity *() { return GetEntity(); }
 
 
+	const char *GetEntityName() { return m_iName; }
+
+
 	// return the underlying entity this class wraps
 	// this is required to support entprop lookup!
 	C_BaseEntity *GetEntity() const
@@ -46,6 +48,9 @@ public:
 
 	// is the wrapped entity valid?
 	bool IsValid() { return GetEntity() != NULL; }
+
+
+	CEntProp( char *, m_iName );
 
 
 private:

@@ -67,7 +67,7 @@ bool C_DOTAHero::HasItem( const char *itemName )
 		if ( !item.IsValid() )
 			continue;
 
-		if ( V_stricmp( item.GetName(), itemName ) == 0 )
+		if ( V_stricmp( item.m_iName, itemName ) == 0 )
 			return true;
 	}
 
