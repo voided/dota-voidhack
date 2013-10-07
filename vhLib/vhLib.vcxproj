@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;dota;sigscan;utils;G:\dev\Source\hl2sdk-dota\public;G:\dev\Source\hl2sdk-dota\public\tier0;G:\dev\Source\hl2sdk-dota\public\tier1;G:\dev\Source\hl2sdk-dota\game\shared;G:\dev\Source\hl2sdk-dota\game\client;G:\dev\Source\hl2sdk-dota\common;G:\dev\SourceMod\mmsource-1.10\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;dota;dota\entities;utils;utils\sigscan;G:\dev\Source\hl2sdk-dota\public;G:\dev\Source\hl2sdk-dota\public\tier0;G:\dev\Source\hl2sdk-dota\public\tier1;G:\dev\Source\hl2sdk-dota\game\shared;G:\dev\Source\hl2sdk-dota\game\client;G:\dev\Source\hl2sdk-dota\common;G:\dev\SourceMod\mmsource-1.10\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;COMPILER_MSVC;COMPILER_MSVC32;CLIENT_DLL;_ITERATOR_DEBUG_LEVEL=0;NO_MALLOC_OVERRIDE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
@@ -88,38 +88,38 @@
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_chookmaninfo.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cproto.cpp" />
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp" />
-    <ClCompile Include="cameramanager.cpp" />
-    <ClCompile Include="dota\dotaability.cpp" />
-    <ClCompile Include="dota\dotaentity.cpp" />
-    <ClCompile Include="dota\dotagamerules.cpp" />
-    <ClCompile Include="dota\dotahero.cpp" />
-    <ClCompile Include="dota\dotaitem.cpp" />
-    <ClCompile Include="dota\dotaplayer.cpp" />
-    <ClCompile Include="dota\dotaresource.cpp" />
-    <ClCompile Include="fogmanager.cpp" />
+    <ClCompile Include="dota\cameramanager.cpp" />
+    <ClCompile Include="dota\entities\dotaability.cpp" />
+    <ClCompile Include="dota\entities\dotaentity.cpp" />
+    <ClCompile Include="dota\entities\dotagamerules.cpp" />
+    <ClCompile Include="dota\entities\dotahero.cpp" />
+    <ClCompile Include="dota\entities\dotaitem.cpp" />
+    <ClCompile Include="dota\entities\dotaplayer.cpp" />
+    <ClCompile Include="dota\entities\dotaresource.cpp" />
+    <ClCompile Include="dota\fogmanager.cpp" />
+    <ClCompile Include="dota\zeusmanager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="sigscan\bytescanner.cpp" />
     <ClCompile Include="utils\entityhelper.cpp" />
+    <ClCompile Include="utils\sigscan\bytescanner.cpp" />
     <ClCompile Include="vh.cpp" />
-    <ClCompile Include="zeusmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cameramanager.h" />
-    <ClInclude Include="dota\dotaability.h" />
-    <ClInclude Include="dota\dotaentity.h" />
-    <ClInclude Include="dota\dotagamerules.h" />
-    <ClInclude Include="dota\dotahero.h" />
-    <ClInclude Include="dota\dotaitem.h" />
-    <ClInclude Include="dota\dotaplayer.h" />
-    <ClInclude Include="dota\dotaresource.h" />
+    <ClInclude Include="dota\cameramanager.h" />
     <ClInclude Include="dota\dota_consts.h" />
-    <ClInclude Include="fogmanager.h" />
-    <ClInclude Include="sigscan\bytescanner.h" />
+    <ClInclude Include="dota\entities\dotaability.h" />
+    <ClInclude Include="dota\entities\dotaentity.h" />
+    <ClInclude Include="dota\entities\dotagamerules.h" />
+    <ClInclude Include="dota\entities\dotahero.h" />
+    <ClInclude Include="dota\entities\dotaitem.h" />
+    <ClInclude Include="dota\entities\dotaplayer.h" />
+    <ClInclude Include="dota\entities\dotaresource.h" />
+    <ClInclude Include="dota\fogmanager.h" />
+    <ClInclude Include="dota\zeusmanager.h" />
     <ClInclude Include="utils\entfuncs.h" />
     <ClInclude Include="utils\entityhelper.h" />
     <ClInclude Include="utils\entprop.h" />
+    <ClInclude Include="utils\sigscan\bytescanner.h" />
     <ClInclude Include="vh.h" />
-    <ClInclude Include="zeusmanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

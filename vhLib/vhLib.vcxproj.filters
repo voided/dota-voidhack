@@ -13,15 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\sourcehook">
-      <UniqueIdentifier>{23bab37a-ef22-4136-9441-a307efef4dbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\sigscan">
-      <UniqueIdentifier>{c646e31f-a23e-40be-9b56-4f570082329c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\sigscan">
-      <UniqueIdentifier>{a5a8fbb4-b688-4f20-90ca-0cec4bab38a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\dota">
       <UniqueIdentifier>{d13f12cb-15cc-46f0-bc53-f99696a31909}</UniqueIdentifier>
     </Filter>
@@ -34,81 +25,90 @@
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{953cded2-a0b1-46b7-8e8c-0b882bd376a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\dota\entities">
+      <UniqueIdentifier>{6d4a3cad-0a31-4a01-9e5c-69e15b4e3b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils\sigscan">
+      <UniqueIdentifier>{a5a8fbb4-b688-4f20-90ca-0cec4bab38a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils\sigscan">
+      <UniqueIdentifier>{c646e31f-a23e-40be-9b56-4f570082329c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils\sourcehook">
+      <UniqueIdentifier>{23bab37a-ef22-4136-9441-a307efef4dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dota\entities">
+      <UniqueIdentifier>{b48f4084-fede-44f0-a348-9e2ae523a2b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zeusmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook.cpp">
-      <Filter>Source Files\sourcehook</Filter>
+      <Filter>Source Files\utils\sourcehook</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_chookidman.cpp">
-      <Filter>Source Files\sourcehook</Filter>
+      <Filter>Source Files\utils\sourcehook</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_hookmangen.cpp">
-      <Filter>Source Files\sourcehook</Filter>
+      <Filter>Source Files\utils\sourcehook</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_chookmaninfo.cpp">
-      <Filter>Source Files\sourcehook</Filter>
+      <Filter>Source Files\utils\sourcehook</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cproto.cpp">
-      <Filter>Source Files\sourcehook</Filter>
+      <Filter>Source Files\utils\sourcehook</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SourceMod\mmsource-1.10\core\sourcehook\sourcehook_impl_cvfnptr.cpp">
-      <Filter>Source Files\sourcehook</Filter>
-    </ClCompile>
-    <ClCompile Include="dota\dotaability.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dota\dotaentity.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dota\dotahero.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dota\dotaplayer.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="dota\dotaresource.cpp">
-      <Filter>Source Files\dota</Filter>
-    </ClCompile>
-    <ClCompile Include="sigscan\bytescanner.cpp">
-      <Filter>Source Files\sigscan</Filter>
+      <Filter>Source Files\utils\sourcehook</Filter>
     </ClCompile>
     <ClCompile Include="utils\entityhelper.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="dota\dotagamerules.cpp">
+    <ClCompile Include="utils\sigscan\bytescanner.cpp">
+      <Filter>Source Files\utils\sigscan</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotaability.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotaentity.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotagamerules.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotahero.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotaitem.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotaplayer.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\entities\dotaresource.cpp">
+      <Filter>Source Files\dota\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="dota\cameramanager.cpp">
       <Filter>Source Files\dota</Filter>
     </ClCompile>
-    <ClCompile Include="dota\dotaitem.cpp">
+    <ClCompile Include="dota\fogmanager.cpp">
       <Filter>Source Files\dota</Filter>
     </ClCompile>
-    <ClCompile Include="cameramanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fogmanager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="dota\zeusmanager.cpp">
+      <Filter>Source Files\dota</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="zeusmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dota\dota_consts.h">
       <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="sigscan\bytescanner.h">
-      <Filter>Header Files\sigscan</Filter>
     </ClInclude>
     <ClInclude Include="utils\entityhelper.h">
       <Filter>Header Files\utils</Filter>
@@ -119,32 +119,38 @@
     <ClInclude Include="utils\entfuncs.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="cameramanager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="utils\sigscan\bytescanner.h">
+      <Filter>Header Files\utils\sigscan</Filter>
     </ClInclude>
-    <ClInclude Include="dota\dotaability.h">
+    <ClInclude Include="dota\entities\dotaability.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\entities\dotaentity.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\entities\dotagamerules.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\entities\dotahero.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\entities\dotaitem.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\entities\dotaplayer.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\entities\dotaresource.h">
+      <Filter>Header Files\dota\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\cameramanager.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
-    <ClInclude Include="dota\dotaentity.h">
+    <ClInclude Include="dota\fogmanager.h">
       <Filter>Header Files\dota</Filter>
     </ClInclude>
-    <ClInclude Include="dota\dotagamerules.h">
+    <ClInclude Include="dota\zeusmanager.h">
       <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotahero.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaitem.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaplayer.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="dota\dotaresource.h">
-      <Filter>Header Files\dota</Filter>
-    </ClInclude>
-    <ClInclude Include="fogmanager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
