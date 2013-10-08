@@ -9,6 +9,9 @@
 #include "dotaability.h"
 
 
+ConVar vh_zeus_autoult( "vh_zeus_autoult", "1", FCVAR_NONE, "Enable or disable automatic zeus ulting" );
+ConVar vh_zeus_dmg_buffer( "vh_zeus_dmg_buffer", "50", FCVAR_NONE, "Amount of damage buffer to subtract from ult damage calculation" );
+ConVar vh_zeus_taunt( "vh_zeus_taunt", "1", FCVAR_NONE, "Do we taunt players after killing them?" );
 
 
 CZeusManager &ZeusManager()
@@ -49,7 +52,7 @@ void CZeusManager::Think()
 
 	if ( IsPlayingAsZeus() )
 	{
-		if ( IsUltReady() && ShouldUlt() )
+		if ( vh_zeus_autoult.GetBool() && IsUltReady() && ShouldUlt() )
 		{
 			DoUlt();
 			return;
@@ -117,7 +120,7 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	// todo: calculate that player's magic resistance from items
 
 	float damageMult = ( 100.0 - hero.m_flMagicalResistanceValue ) / 100.0;
-	float effectiveDamage = ( damage * damageMult ) - 50; // add some buffer room for slightly off calculations
+	float effectiveDamage = ( damage * damageMult ) - vh_zeus_dmg_buffer.GetFloat(); // add some buffer room for slightly off calculations
 
 	// todo: ethereal extra damage
 
@@ -213,5 +216,8 @@ void CZeusManager::FireGameEvent( IGameEvent *event  )
 	if ( !HasUltedRecently() )
 		return; // if we haven't ulted recently, the ult didn't lead to the death
 
-	m_flNextTaunt = m_flLastUlt + 5.0;
+	if ( vh_zeus_taunt.GetBool() )
+	{
+		m_flNextTaunt = m_flLastUlt + 5.0;
+	}
 }

@@ -8,7 +8,7 @@
 
 
 
-inline CEntityHelper &EntityHelper()
+CEntityHelper &EntityHelper()
 {
 	static CEntityHelper entityHelper;
 	return entityHelper;
