@@ -2,6 +2,7 @@
 #include "vh.h"
 
 #include "entityhelper.h"
+#include "convarhelper.h"
 
 #include "zeusmanager.h"
 #include "cameramanager.h"
@@ -199,6 +200,7 @@ void CVH::Init()
 
 	// init our things
 	EntityHelper().Init();
+	ConVarHelper().Init();
 
 	// init managers
 	ZeusManager().Init();
@@ -213,6 +215,7 @@ void CVH::Shutdown()
 	CameraManager().Shutdown();
 	ZeusManager().Shutdown();
 
+	ConVarHelper().Shutdown();
 	EntityHelper().Shutdown();
 
 	ConVar_Unregister();
