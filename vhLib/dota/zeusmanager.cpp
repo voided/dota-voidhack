@@ -1,6 +1,4 @@
 
-#include "vh.h"
-
 #include "zeusmanager.h"
 
 #include "dotaplayer.h"
@@ -31,19 +29,14 @@ CZeusManager::CZeusManager()
 
 void CZeusManager::Init()
 {
-	VH().AddFrameHook( ZeusManager_Think );
+	VH().AddFrameHook( this );
 }
 
 void CZeusManager::Shutdown()
 {
-	VH().RemoveFrameHook( ZeusManager_Think );
+	VH().RemoveFrameHook( this );
 }
 
-
-void ZeusManager_Think()
-{
-	ZeusManager().Think();
-}
 
 void CZeusManager::Think()
 {

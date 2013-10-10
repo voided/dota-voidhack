@@ -1,6 +1,9 @@
 
 #pragma once
 
+
+#include "vh.h"
+
 #include "GameEventListener.h"
 
 
@@ -8,7 +11,7 @@ class C_DOTAPlayer;
 
 
 // you can't run from heaven
-class CZeusManager : public CGameEventListener
+class CZeusManager : public CGameEventListener, public IFrameManager
 {
 
 public:
@@ -21,8 +24,7 @@ public:
 
 
 private:
-	friend void ZeusManager_Think();
-	void Think();
+	virtual void Think();
 
 	bool IsPlayingAsZeus();
 	bool IsUltReady();

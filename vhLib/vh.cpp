@@ -239,18 +239,18 @@ void CVH::Shutdown()
 }
 
 
-void CVH::AddFrameHook( FrameFunction func )
+void CVH::AddFrameHook( const IFrameManager *manager )
 {
-	m_FrameHooks.AddToTail( func );
+	m_FrameHooks.AddToTail( const_cast<IFrameManager *>( manager ) );
 }
 
-void CVH::RemoveFrameHook( FrameFunction func )
+void CVH::RemoveFrameHook( const IFrameManager *manager )
 {
 	FOR_EACH_VEC( m_FrameHooks, i )
 	{
-		FrameFunction &frameFunc = m_FrameHooks[ i ];
+		const IFrameManager *frameManager = m_FrameHooks[ i ];
 
-		if ( frameFunc == func )
+		if ( frameManager == manager )
 		{
 			m_FrameHooks.Remove( i );
 			break;
@@ -272,6 +272,6 @@ void CVH::Think()
 	FOR_EACH_VEC( m_FrameHooks, i )
 	{
 		// think for every installed frame hook
-		m_FrameHooks[ i ]();
+		m_FrameHooks[ i ]->Think();
 	}
 }

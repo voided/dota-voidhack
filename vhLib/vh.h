@@ -20,7 +20,12 @@ class IClientEntityList;
 enum ClientFrameStage_t;
 
 
-typedef void (*FrameFunction)();
+// a game manager that wishes to think per frame
+class IFrameManager
+{
+public:
+	virtual void Think() = 0;
+};
 
 
 class CVH
@@ -35,8 +40,8 @@ public:
 	void Shutdown();
 
 	// add and remove per-frame think hooks
-	void AddFrameHook( FrameFunction func );
-	void RemoveFrameHook( FrameFunction func );
+	void AddFrameHook( const IFrameManager *manager );
+	void RemoveFrameHook( const IFrameManager *manager );
 
 	// engine interfaces
 	IVEngineClient *EngineClient() { return m_pEngineClient; }
@@ -65,7 +70,7 @@ private:
 	IBaseClientDLL *m_pClientDLL;
 	IClientTools *m_pClientTools;
 
-	CUtlVector<FrameFunction> m_FrameHooks;
+	CUtlVector<IFrameManager *> m_FrameHooks;
 };
 
 CVH &VH();
