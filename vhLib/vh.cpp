@@ -4,6 +4,7 @@
 #include "entityhelper.h"
 #include "convarhelper.h"
 
+#include "scriptmanager.h"
 #include "zeusmanager.h"
 #include "cameramanager.h"
 #include "fogmanager.h"
@@ -45,7 +46,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 
 
 
-inline CVH &VH()
+CVH &VH()
 {
 	static CVH vh;
 	return vh;
@@ -67,11 +68,12 @@ IGameEventManager2 *gameeventmanager = NULL;
 CVH::CVH() :
 	m_pEngineClient( NULL ), m_pClientDLL( NULL ),
 	m_pEngineTool( NULL ), m_pClientTools( NULL ),
-	m_pGameEventManager( NULL ),
+	m_pGameEventManager( NULL ), m_pFileSystem( NULL ),
 
 	m_fnClientFactory( NULL ),
 	m_fnEngineFactory( NULL ),
-	m_fnCvarFactory( NULL )
+	m_fnCvarFactory( NULL ),
+	m_fnFileSystemFactory( NULL )
 {
 }
 
@@ -167,17 +169,19 @@ void CVH::Init()
 	m_fnEngineFactory = Sys_GetFactory( "engine" );
 	m_fnClientFactory = Sys_GetFactory( "client" );
 	m_fnCvarFactory = VStdLib_GetICVarFactory();
+	m_fnFileSystemFactory = Sys_GetFactory( "filesystem_stdio" );
 
 	CreateInterfaceFn factories[] =
 	{
 		m_fnEngineFactory,
 		m_fnClientFactory,
 		m_fnCvarFactory,
+		m_fnFileSystemFactory,
 	};
 
 	// connect tier1
 	// passing the vstdlib factory sets up icvar for us
-	ConnectTier1Libraries( factories, 3 );
+	ConnectTier1Libraries( factories, 4 );
 
 	if ( g_pCVar == NULL )
 	{
@@ -188,10 +192,16 @@ void CVH::Init()
 	// get engine interfaces
 	m_pEngineClient = GetInterface<IVEngineClient>( m_fnEngineFactory, VENGINE_CLIENT_INTERFACE_VERSION );
 	m_pEngineTool = GetInterface<IEngineTool>( m_fnEngineFactory, VENGINETOOL_INTERFACE_VERSION );
-	m_pGameEventManager = gameeventmanager = GetInterface<IGameEventManager2>( m_fnEngineFactory, INTERFACEVERSION_GAMEEVENTSMANAGER2 );
+	m_pGameEventManager = GetInterface<IGameEventManager2>( m_fnEngineFactory, INTERFACEVERSION_GAMEEVENTSMANAGER2 );
 	// get client interfaces
 	m_pClientDLL = GetInterface<IBaseClientDLL>( m_fnClientFactory, CLIENT_DLL_INTERFACE_VERSION );
 	m_pClientTools = GetInterface<IClientTools>( m_fnClientFactory, VCLIENTTOOLS_INTERFACE_VERSION );
+	// get filesystem interfaces
+	m_pFileSystem = GetInterface<IFileSystem>( m_fnFileSystemFactory, FILESYSTEM_INTERFACE_VERSION );
+
+	// to support CGameEventListener
+	gameeventmanager = m_pGameEventManager;
+	g_pFullFileSystem = m_pFileSystem;
 
 	SH_ADD_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), false );
 
@@ -203,6 +213,7 @@ void CVH::Init()
 	ConVarHelper().Init();
 
 	// init managers
+	ScriptManager().Init();
 	ZeusManager().Init();
 	CameraManager().Init();
 	FogManager().Init();
@@ -214,6 +225,7 @@ void CVH::Shutdown()
 	FogManager().Shutdown();
 	CameraManager().Shutdown();
 	ZeusManager().Shutdown();
+	ScriptManager().Shutdown();
 
 	ConVarHelper().Shutdown();
 	EntityHelper().Shutdown();
@@ -225,6 +237,7 @@ void CVH::Shutdown()
 	m_pClientTools = NULL;
 	m_pClientDLL = NULL;
 
+	m_pFileSystem = NULL;
 	m_pGameEventManager = NULL;
 	m_pEngineTool = NULL;
 	m_pEngineClient = NULL;

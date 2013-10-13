@@ -47,6 +47,7 @@ public:
 	IVEngineClient *EngineClient() { return m_pEngineClient; }
 	IEngineTool *EngineTool() { return m_pEngineTool; }
 	IGameEventManager2 *GameEventManager() { return m_pGameEventManager; }
+	IFileSystem *FileSystem() { return m_pFileSystem; }
 	// client interfaces
 	IBaseClientDLL *ClientDLL() { return m_pClientDLL; }
 	IClientTools *ClientTools() { return m_pClientTools; }
@@ -61,11 +62,13 @@ private:
 	CreateInterfaceFn m_fnEngineFactory;
 	CreateInterfaceFn m_fnClientFactory;
 	CreateInterfaceFn m_fnCvarFactory;
+	CreateInterfaceFn m_fnFileSystemFactory;
 
 	// engine
 	IVEngineClient *m_pEngineClient;
 	IEngineTool *m_pEngineTool;
 	IGameEventManager2 *m_pGameEventManager;
+	IFileSystem *m_pFileSystem;
 	// client
 	IBaseClientDLL *m_pClientDLL;
 	IClientTools *m_pClientTools;
