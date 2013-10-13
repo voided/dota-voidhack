@@ -34,6 +34,8 @@ private:
 	bool IsPlayerUltable( C_DOTAPlayer &player, int damage );
 	bool HasScepter();
 
+	int CalculateDamage( int level );
+
 	void DoUlt();
 
 	// IGameEventListener2

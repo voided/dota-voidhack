@@ -1,6 +1,8 @@
 
 #include "zeusmanager.h"
 
+#include "scriptmanager.h"
+
 #include "dotaplayer.h"
 #include "dotahero.h"
 #include "dotaresource.h"
@@ -64,20 +66,16 @@ void CZeusManager::Think()
 // precondition: playing as zeus, and ult is ready for use
 bool CZeusManager::ShouldUlt()
 {
-	// todo: this is gross, but pulling values from the KV ability scripts is a wishlist feature
-	int UltDamageTable[] = { 0, 225, 350, 475 };
-	int UltAghsDamageTable[] = { 0, 440, 540, 640 };
-
-
 	C_DOTAPlayer localPlayer = C_DOTAPlayer::GetLocalPlayer();
 	C_DOTAHero hero = localPlayer.m_hAssignedHero;
 	C_DOTAAbility abilityUlt = hero.m_hAbilities[ 3 ];
 
-	int ultDamage = UltDamageTable[ abilityUlt.m_iLevel ];
+	int ultDamage = CalculateDamage( abilityUlt.m_iLevel );
 
-	if ( HasScepter() )
+	if ( ultDamage == 0 )
 	{
-		ultDamage = UltAghsDamageTable[ abilityUlt.m_iLevel ];
+		Warning( "[ZeusManager] Unable to calculate ult damage!\n" );
+		return false;
 	}
 
 	for ( int i = 1 ; i <= MAX_PLAYERS ; ++i )
@@ -118,6 +116,24 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	// todo: ethereal extra damage
 
 	return effectiveDamage >= hero.m_iHealth;
+}
+
+int CZeusManager::CalculateDamage( int level )
+{
+	if ( level == 0 )
+		return 0;
+
+	DOTAAbilityInfo_t *pInfo = ScriptManager().GetAbilityInfo( "zuus_thundergods_wrath" );
+
+	if ( !pInfo )
+		return 0;
+
+	DOTAAbilitySpecial_t *pSpecial = pInfo->GetSpecialByName( HasScepter() ? "damage_scepter" : "damage" );
+
+	if ( !pSpecial )
+		return 0;
+
+	return V_atoi( pSpecial->values[ level - 1 ] );
 }
 
 bool CZeusManager::HasScepter()
