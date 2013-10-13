@@ -30,6 +30,12 @@ void CFogManager::Init()
 	{
 		fow_client_visibility.SetValue( 1 );
 	}
+
+	ConVarRef dota_minimap_draw_fow( "dota_minimap_draw_fow" );
+	if ( dota_minimap_draw_fow.IsValid() )
+	{
+		dota_minimap_draw_fow.SetValue( 0 );
+	}
 }
 
 void CFogManager::Shutdown()
