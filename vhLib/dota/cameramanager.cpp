@@ -1,7 +1,7 @@
 
 #include "cameramanager.h"
 
-#include "convarhelper.h"
+#include "convar.h"
 
 
 CCameraManager &CameraManager()
@@ -13,23 +13,19 @@ CCameraManager &CameraManager()
 
 void CCameraManager::Init()
 {
-	m_pCvarFOVMax = ConVarHelper().FindConVar( "dota_camera_fov_max" );
-
-	if ( m_pCvarFOVMax )
+	ConVarRef dota_camera_fov_max( "dota_camera_fov_max" );
+	if ( dota_camera_fov_max.IsValid() )
 	{
-		m_pCvarFOVMax->SetValue( 100 );
+		dota_camera_fov_max.SetValue( 100 );
 	}
 
-	m_pCvarDistance = ConVarHelper().FindConVar( "dota_camera_distance" );
-
-	if ( m_pCvarDistance )
+	ConVarRef dota_camera_distance( "dota_camera_distance" );
+	if ( dota_camera_distance.IsValid() )
 	{
-		m_pCvarDistance->SetValue( 1300 );
+		dota_camera_distance.SetValue( 1300 );
 	}
 }
 
 void CCameraManager::Shutdown()
 {
-	m_pCvarDistance = NULL;
-	m_pCvarFOVMax = NULL;
 }

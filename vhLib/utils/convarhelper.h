@@ -3,13 +3,13 @@
 
 #include "convar.h"
 
-#include "utlmap.h"
+#include "utlvector.h"
 
 
 
 struct ConVarInfo_t
 {
-	ConVar *cvar;
+	ConVar *convar;
 	int oldFlags;
 };
 
@@ -18,20 +18,12 @@ class CConVarHelper
 {
 
 public:
-	CConVarHelper() :
-		m_ConVars( CaselessStringLessThan )
-	{
-	}
-
-
 	void Init();
 	void Shutdown();
 
-	ConVar *FindConVar( const char *name );
-
 
 private:
-	CUtlMap<const char *, ConVarInfo_t> m_ConVars;
+	CUtlVector<ConVarInfo_t> m_ConVars;
 
 };
 

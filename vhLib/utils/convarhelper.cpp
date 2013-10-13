@@ -2,6 +2,10 @@
 #include "convarhelper.h"
 
 
+// flags which we want to remove from all convars
+#define FCVAR_BADFLAGS ( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN | FCVAR_CHEAT )
+
+
 CConVarHelper &ConVarHelper()
 {
 	static CConVarHelper convarHelper;
@@ -11,49 +15,51 @@ CConVarHelper &ConVarHelper()
 
 void CConVarHelper::Init()
 {
+	Assert( g_pCVar );
+
+	ICvar::Iterator iter( g_pCVar );
+
+	for ( iter.SetFirst() ; iter.IsValid() ; iter.Next() )
+	{
+		ConCommandBase *cmd = iter.Get();
+
+		if ( cmd->IsCommand() )
+			continue;
+
+		ConVar *pVar = reinterpret_cast<ConVar *>( cmd );
+
+		if ( pVar->GetFlags() & FCVAR_BADFLAGS )
+		{
+			ConVarInfo_t info;
+			info.convar = pVar;
+			info.oldFlags = pVar->GetFlags();
+
+			m_ConVars.AddToTail( info );
+
+			pVar->RemoveFlags( FCVAR_BADFLAGS );
+
+			DevMsg( "[ConVarHelper] Fixing convar: %s\n", pVar->GetName() );
+		}
+	}
 }
 
 void CConVarHelper::Shutdown()
 {
-	FOR_EACH_MAP_FAST( m_ConVars, i )
+	FOR_EACH_VEC( m_ConVars, i )
 	{
 		ConVarInfo_t &info = m_ConVars[ i ];
+		ConVar *pVar = info.convar;
 
-		info.cvar->Revert();
-		info.cvar->AddFlags( info.oldFlags );
+		DevMsg( "[ConVarHelper] Resetting convar: %s\n", pVar->GetName() );
+
+		if ( V_strcmp( pVar->GetString(), pVar->GetDefault() ) != 0 )
+		{
+			// if we changed the value, revert it
+			pVar->Revert();
+		}
+
+		pVar->AddFlags( info.oldFlags );
 	}
 
 	m_ConVars.RemoveAll();
-}
-
-
-ConVar *CConVarHelper::FindConVar( const char *name )
-{
-	auto cacheIndex = m_ConVars.Find( name );
-
-	if ( m_ConVars.IsValidIndex( cacheIndex ) )
-	{
-		// if we have it cached, return our cached version so we don't store stale flags
-		ConVarInfo_t &info = m_ConVars[ cacheIndex ];
-
-		return info.cvar;
-	}
-
-	Assert( g_pCVar );
-	ConVar *pCvar = g_pCVar->FindVar( name );
-
-	if ( pCvar == NULL )
-		return NULL;
-
-	ConVarInfo_t info =
-	{
-		pCvar,
-		pCvar->GetFlags()
-	};
-
-	m_ConVars.Insert( name, info );
-
-	pCvar->RemoveFlags( FCVAR_CHEAT | FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
-
-	return pCvar;
 }
