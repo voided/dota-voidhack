@@ -1,7 +1,7 @@
 
 #include "fogmanager.h"
 
-#include "convar.h"
+#include "convarhelper.h"
 
 
 CFogManager &FogManager()
@@ -13,28 +13,28 @@ CFogManager &FogManager()
 
 void CFogManager::Init()
 {
-	ConVarRef fog_override( "fog_override" );
-	if ( fog_override.IsValid() )
+	ConVar *fog_override = ConVarHelper().FindConVar( "fog_override" );
+	if ( fog_override )
 	{
-		fog_override.SetValue( 1 );
+		fog_override->SetValue( 1 );
 	}
 
-	ConVarRef fog_enable( "fog_enable" );
-	if ( fog_enable.IsValid() )
+	ConVar *fog_enable = ConVarHelper().FindConVar( "fog_enable" );
+	if ( fog_enable )
 	{
-		fog_enable.SetValue( 0 );
+		fog_enable->SetValue( 0 );
 	}
 
-	ConVarRef fow_client_visibility( "fow_client_visibility" );
-	if ( fow_client_visibility.IsValid() )
+	ConVar *fow_client_visibility = ConVarHelper().FindConVar( "fow_client_visibility" );
+	if ( fow_client_visibility )
 	{
-		fow_client_visibility.SetValue( 1 );
+		fow_client_visibility->SetValue( 1 );
 	}
 
-	ConVarRef dota_minimap_draw_fow( "dota_minimap_draw_fow" );
-	if ( dota_minimap_draw_fow.IsValid() )
+	ConVar *dota_minimap_draw_fow = ConVarHelper().FindConVar( "dota_minimap_draw_fow" );
+	if ( dota_minimap_draw_fow )
 	{
-		dota_minimap_draw_fow.SetValue( 0 );
+		dota_minimap_draw_fow->SetValue( 0 );
 	}
 }
 

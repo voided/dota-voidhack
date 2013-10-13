@@ -21,6 +21,8 @@ public:
 	void Init();
 	void Shutdown();
 
+	ConVar *FindConVar( const char *name );
+
 
 private:
 	CUtlVector<ConVarInfo_t> m_ConVars;

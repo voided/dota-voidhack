@@ -63,3 +63,19 @@ void CConVarHelper::Shutdown()
 
 	m_ConVars.RemoveAll();
 }
+
+
+ConVar *CConVarHelper::FindConVar( const char *name )
+{
+	Assert( g_pCVar );
+
+	ConVar *pVar = g_pCVar->FindVar( name );
+
+	if ( !pVar )
+	{
+		Warning( "[ConVarHelper] Unable to find convar: %s\n", name );
+		return NULL;
+	}
+
+	return pVar;
+}
