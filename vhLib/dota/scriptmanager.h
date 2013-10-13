@@ -20,6 +20,28 @@ struct DOTAAbilitySpecial_t
 		// values.PurgeAndDeleteElements();
 	}
 
+
+	float GetFloat( int level )
+	{
+		Assert( type == "FIELD_FLOAT" );
+
+		if ( level < 1 || level > values.Count() )
+			return V_atof( values[ 0 ] );
+
+		return V_atof( values[ level - 1 ] );
+	}
+
+	int GetInt( int level )
+	{
+		Assert( type == "FIELD_INTEGER" );
+
+		if ( level < 1 || level > values.Count() )
+			return V_atoi( values[ 0 ] );
+
+		return V_atoi( values[ level - 1 ] );
+	}
+
+
 	CUtlString type;
 	CUtlVector<char *> values;
 };
@@ -50,8 +72,37 @@ struct DOTAAbilityInfo_t
 		return abilitySpecial[ specialIndex ];
 	}
 
+	float GetCooldown( int level )
+	{
+		if ( level < 1 || level > cooldowns.Count() )
+			return V_atof( cooldowns[ 0 ] );
+
+		return V_atof( cooldowns[ level - 1 ] );
+	}
+
+	int GetManaCost( int level )
+	{
+		if ( level < 1 || level > manaCosts.Count() )
+			return V_atoi( manaCosts[ 0 ] );
+
+		return V_atoi( manaCosts[ level - 1 ] );
+	}
+
 
 	int id;
+
+	CUtlString type;
+
+	CUtlString behavior;
+
+	CUtlString unitTargetTeam;
+	CUtlString unitTargetType;
+	CUtlString unitTargetFlags;
+
+	CUtlString unitDamageType;
+
+	CUtlVector<char *> cooldowns;
+	CUtlVector<char *> manaCosts;
 
 	CUtlMap<const char *, DOTAAbilitySpecial_t *> abilitySpecial;
 };

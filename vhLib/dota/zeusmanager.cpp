@@ -133,7 +133,7 @@ int CZeusManager::CalculateDamage( int level )
 	if ( !pSpecial )
 		return 0;
 
-	return V_atoi( pSpecial->values[ level - 1 ] );
+	return pSpecial->GetInt( level );
 }
 
 bool CZeusManager::HasScepter()

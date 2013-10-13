@@ -108,6 +108,22 @@ DOTAAbilityInfo_t *CScriptManager::GetAbilityInfo( const char *abilityName )
 
 	pInfo->id = pAbility->GetInt( "ID" );
 
+	pInfo->type = pAbility->GetString( "AbilityType" );
+
+	pInfo->behavior = pAbility->GetString( "AbilityBehavior" );
+
+	pInfo->unitTargetTeam = pAbility->GetString( "AbilityUnitTargetTeam" );
+	pInfo->unitTargetType = pAbility->GetString( "AbilityUnitTargetType" );
+	pInfo->unitTargetFlags = pAbility->GetString( "AbilityUnitTargetFlags" );
+
+	pInfo->unitDamageType = pAbility->GetString( "AbilityUnitDamageType" );
+
+	const char *cooldown = pAbility->GetString( "AbilityCooldown" );
+	V_SplitString( cooldown, " ", pInfo->cooldowns );
+
+	const char *manaCost = pAbility->GetString( "AbilityManaCost" );
+	V_SplitString( manaCost, " ", pInfo->manaCosts );
+
 	FOR_EACH_SUBKEY( pAbility->FindKey( "AbilitySpecial" ), pSpecialKey )
 	{
 		DOTAAbilitySpecial_t *pSpecial = new DOTAAbilitySpecial_t;
