@@ -5,10 +5,13 @@
 #include "dotaentity.h"
 
 
+struct DOTAAbilityInfo_t;
+
+
 // represents an ability and it's associoated data that a hero may have
 class C_DOTAAbility : public C_DOTABaseEntity
 {
-	DOTA_CLASS( C_DOTAAbility, C_DOTABaseEntity );
+	DECLARE_CLASS( C_DOTAAbility, C_DOTABaseEntity );
 
 public:
 	C_DOTAAbility( C_BaseEntity *pEnt );
@@ -16,6 +19,8 @@ public:
 
 	// gets the number of seconds remaining until this ability can be used again
 	float GetCooldownTimeRemaining();
+
+	const DOTAAbilityInfo_t *GetAbilityInfo();
 
 
 	CEntProp( bool, m_bHidden ); // is this ability hidden?

@@ -9,7 +9,7 @@
 // entprop lookup automatically handles the translation so that props are accessed relative to the real gamerules class
 class C_DOTAGameRules : public C_DOTABaseEntity
 {
-	DOTA_CLASS( C_DOTAGameRules, C_DOTABaseEntity );
+	DECLARE_CLASS( C_DOTAGameRules, C_DOTABaseEntity );
 
 public:
 	C_DOTAGameRules( C_BaseEntity *pEnt );

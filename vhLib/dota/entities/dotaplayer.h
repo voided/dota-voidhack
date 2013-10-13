@@ -12,7 +12,7 @@ class C_BasePlayer;
 
 class C_DOTAPlayer : public C_DOTABaseEntity
 {
-	DOTA_CLASS( C_DOTAPlayer, C_DOTABaseEntity );
+	DECLARE_CLASS( C_DOTAPlayer, C_DOTABaseEntity );
 
 public:
 	C_DOTAPlayer( C_BasePlayer *pEnt );

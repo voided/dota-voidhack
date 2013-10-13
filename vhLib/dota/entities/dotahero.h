@@ -36,7 +36,7 @@ enum DOTAUnitState
 
 class C_DOTAHero : public C_DOTABaseEntity
 {
-	DOTA_CLASS( C_DOTAHero, C_DOTABaseEntity );
+	DECLARE_CLASS( C_DOTAHero, C_DOTABaseEntity );
 
 public:
 	C_DOTAHero( C_BaseEntity *pEnt );

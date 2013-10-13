@@ -70,13 +70,8 @@ bool CZeusManager::ShouldUlt()
 	C_DOTAHero hero = localPlayer.m_hAssignedHero;
 	C_DOTAAbility abilityUlt = hero.m_hAbilities[ 3 ];
 
-	int ultDamage = CalculateDamage( abilityUlt.m_iLevel );
+	int ultDamage = 0;
 
-	if ( ultDamage == 0 )
-	{
-		Warning( "[ZeusManager] Unable to calculate ult damage!\n" );
-		return false;
-	}
 
 	for ( int i = 1 ; i <= MAX_PLAYERS ; ++i )
 	{
@@ -118,22 +113,28 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	return effectiveDamage >= hero.m_iHealth;
 }
 
-int CZeusManager::CalculateDamage( int level )
+bool CZeusManager::CalculateDamage( C_DOTAAbility &ability, int *pOutDamage )
 {
-	if ( level == 0 )
-		return 0;
+	Assert( ability.IsValid() );
 
-	DOTAAbilityInfo_t *pInfo = ScriptManager().GetAbilityInfo( "zuus_thundergods_wrath" );
+	const DOTAAbilityInfo_t *pInfo = ability.GetAbilityInfo();
 
 	if ( !pInfo )
-		return 0;
+	{
+		Warning( "[ZeusManager] Unable to get ability info for ult!\n" );
+		return false;
+	}
 
-	DOTAAbilitySpecial_t *pSpecial = pInfo->GetSpecialByName( HasScepter() ? "damage_scepter" : "damage" );
+	const DOTAAbilitySpecial_t *pSpecial = pInfo->GetSpecialByName( HasScepter() ? "damage_scepter" : "damage" );
 
 	if ( !pSpecial )
-		return 0;
+	{
+		Warning( "[ZeusManager] Unable to get damage ability special!\n" );
+		return false;
+	}
 
-	return pSpecial->GetInt( level );
+	*pOutDamage = pSpecial->GetInt( ability.m_iLevel );
+	return true;
 }
 
 bool CZeusManager::HasScepter()

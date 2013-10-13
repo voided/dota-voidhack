@@ -8,6 +8,7 @@
 
 
 class C_DOTAPlayer;
+class C_DOTAAbility;
 
 
 // you can't run from heaven
@@ -34,7 +35,7 @@ private:
 	bool IsPlayerUltable( C_DOTAPlayer &player, int damage );
 	bool HasScepter();
 
-	int CalculateDamage( int level );
+	bool CalculateDamage( C_DOTAAbility &ability, int *pOutDamage );
 
 	void DoUlt();
 

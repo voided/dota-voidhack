@@ -8,13 +8,7 @@
 
 #include "dota_consts.h"
 
-
-#define DOTA_CLASS( className, baseClass ) \
-	typedef baseClass BaseClass; \
-	typedef className ThisClass;
-
-#define DOTA_CLASS_NOBASE( className ) \
-	typedef className ThisClass;
+#include "networkvar.h"
 
 
 class C_BaseEntity;
@@ -23,7 +17,7 @@ class C_BaseEntity;
 // base wrapper for most dota related entities
 class C_DOTABaseEntity
 {
-	DOTA_CLASS_NOBASE( C_DOTABaseEntity );
+	DECLARE_CLASS_NOBASE( C_DOTABaseEntity );
 
 public:
 	C_DOTABaseEntity( C_BaseEntity *pEnt );
