@@ -131,7 +131,7 @@ private:
 	// loads and verifies the version of a script file
 	KeyValues *LoadScript( const char *scriptName );
 
-	DOTAAbilityInfo_t *ParseAbilityInto( KeyValues *pAbilitiesKey );
+	DOTAAbilityInfo_t *ParseAbilityInfo( KeyValues *pAbilitiesKey );
 
 
 private:
