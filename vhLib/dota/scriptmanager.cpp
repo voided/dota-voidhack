@@ -94,6 +94,17 @@ DOTAAbilityInfo_t *CScriptManager::GetAbilityInfo( const char *abilityName )
 	if ( !pAbility )
 		return NULL;
 
+	DOTAAbilityInfo_t *pInfo = ParseAbilityInfo( pAbility );
+
+	m_AbilityMap.Insert( abilityName, pInfo );
+
+	return pInfo;
+}
+
+DOTAAbilityInfo_t *CScriptManager::ParseAbilityInfo( KeyValues *pAbility )
+{
+	Assert( m_pKvAbilities );
+
 	KeyValues *pBaseAbility = m_pKvAbilities->FindKey( "ability_base" );
 	Assert( pBaseAbility );
 
@@ -144,8 +155,6 @@ DOTAAbilityInfo_t *CScriptManager::GetAbilityInfo( const char *abilityName )
 
 		pInfo->abilitySpecial.Insert( specialName, pSpecial );
 	}
-
-	m_AbilityMap.Insert( abilityName, pInfo );
 
 	return pInfo;
 }

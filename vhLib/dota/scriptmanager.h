@@ -126,8 +126,12 @@ public:
 	KeyValues *GetItemInfo( const char *itemName );
 	DOTAAbilityInfo_t *GetAbilityInfo( const char *abilityName );
 
+
 private:
+	// loads and verifies the version of a script file
 	KeyValues *LoadScript( const char *scriptName );
+
+	DOTAAbilityInfo_t *ParseAbilityInto( KeyValues *pAbilitiesKey );
 
 
 private:
