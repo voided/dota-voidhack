@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include <cstddef>
 
 #include "utlmap.h"
 #include "utlstring.h"
@@ -21,7 +20,7 @@ struct DOTAAbilitySpecial_t
 	}
 
 
-	float GetFloat( int level )
+	float GetFloat( int level ) const
 	{
 		Assert( type == "FIELD_FLOAT" );
 
@@ -31,7 +30,7 @@ struct DOTAAbilitySpecial_t
 		return V_atof( values[ level - 1 ] );
 	}
 
-	int GetInt( int level )
+	int GetInt( int level ) const
 	{
 		Assert( type == "FIELD_INTEGER" );
 
@@ -59,10 +58,14 @@ struct DOTAAbilityInfo_t
 		{
 			delete abilitySpecial[ i ];
 		}
+
+		// see comment in ~DOTAAbilitySpecial_t for why we can't do this
+		// cooldowns.PurgeAndDeleteElements();
+		// manaCosts.PurgeAndDeleteElements();
 	}
 
 
-	DOTAAbilitySpecial_t *GetSpecialByName( const char *name )
+	const DOTAAbilitySpecial_t *GetSpecialByName( const char *name ) const
 	{
 		auto specialIndex = abilitySpecial.Find( name );
 
@@ -72,7 +75,7 @@ struct DOTAAbilityInfo_t
 		return abilitySpecial[ specialIndex ];
 	}
 
-	float GetCooldown( int level )
+	float GetCooldown( int level = 0 ) const
 	{
 		if ( level < 1 || level > cooldowns.Count() )
 			return V_atof( cooldowns[ 0 ] );
@@ -80,7 +83,7 @@ struct DOTAAbilityInfo_t
 		return V_atof( cooldowns[ level - 1 ] );
 	}
 
-	int GetManaCost( int level )
+	int GetManaCost( int level = 0 ) const
 	{
 		if ( level < 1 || level > manaCosts.Count() )
 			return V_atoi( manaCosts[ 0 ] );
@@ -107,6 +110,22 @@ struct DOTAAbilityInfo_t
 	CUtlMap<const char *, DOTAAbilitySpecial_t *> abilitySpecial;
 };
 
+struct DOTAItemInfo_t
+{
+	~DOTAItemInfo_t()
+	{
+		delete abilityInfo;
+		abilityInfo = NULL;
+	}
+
+
+	DOTAAbilityInfo_t *abilityInfo;
+
+	int cost;
+
+	CUtlString declarations;
+};
+
 
 class CScriptManager
 {
@@ -114,7 +133,8 @@ class CScriptManager
 public:
 	CScriptManager() :
 		m_pKvItems( NULL ), m_pKvAbilities( NULL ),
-		m_AbilityMap( CaselessStringLessThan )
+		m_AbilityMap( CaselessStringLessThan ),
+		m_ItemMap( CaselessStringLessThan )
 	{
 	}
 
@@ -123,15 +143,16 @@ public:
 	void Shutdown();
 
 
-	KeyValues *GetItemInfo( const char *itemName );
-	DOTAAbilityInfo_t *GetAbilityInfo( const char *abilityName );
+	const DOTAItemInfo_t *GetItemInfo( const char *itemName );
+	const DOTAAbilityInfo_t *GetAbilityInfo( const char *abilityName );
 
 
 private:
 	// loads and verifies the version of a script file
 	KeyValues *LoadScript( const char *scriptName );
 
-	DOTAAbilityInfo_t *ParseAbilityInfo( KeyValues *pAbilitiesKey );
+	DOTAAbilityInfo_t *ParseAbilityInfo( KeyValues *pAbility );
+	DOTAItemInfo_t *ParseItemInfo( KeyValues *pItem );
 
 
 private:
@@ -139,6 +160,7 @@ private:
 	KeyValues *m_pKvAbilities;
 
 	CUtlMap<const char *, DOTAAbilityInfo_t *> m_AbilityMap;
+	CUtlMap<const char *, DOTAItemInfo_t *> m_ItemMap;
 
 };
 

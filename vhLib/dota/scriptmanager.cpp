@@ -3,7 +3,6 @@
 
 #include "vh.h"
 
-
 #include "KeyValues.h"
 #include "filesystem.h"
 
@@ -40,6 +39,11 @@ void CScriptManager::Shutdown()
 	{
 		delete m_AbilityMap[ i ];
 	}
+
+	FOR_EACH_MAP_FAST( m_ItemMap, i )
+	{
+		delete m_ItemMap[ i ];
+	}
 }
 
 KeyValues *CScriptManager::LoadScript( const char *scriptName )
@@ -68,15 +72,31 @@ KeyValues *CScriptManager::LoadScript( const char *scriptName )
 }
 
 
-KeyValues *CScriptManager::GetItemInfo( const char *itemName )
+const DOTAItemInfo_t *CScriptManager::GetItemInfo( const char *itemName )
 {
 	if ( !m_pKvItems )
 		return NULL;
 
-	return m_pKvItems->FindKey( itemName );
+	auto itemIndex = m_ItemMap.Find( itemName );
+
+	if ( m_ItemMap.IsValidIndex( itemIndex ) )
+	{
+		return m_ItemMap[ itemIndex ];
+	}
+
+	KeyValues *pItem = m_pKvItems->FindKey( itemName );
+
+	if ( !pItem )
+		return NULL;
+
+	DOTAItemInfo_t *pItemInfo = ParseItemInfo( pItem );
+
+	m_ItemMap.Insert( itemName, pItemInfo );
+
+	return pItemInfo;
 }
 
-DOTAAbilityInfo_t *CScriptManager::GetAbilityInfo( const char *abilityName )
+const DOTAAbilityInfo_t *CScriptManager::GetAbilityInfo( const char *abilityName )
 {
 	if ( !m_pKvAbilities )
 		return NULL;
@@ -157,4 +177,19 @@ DOTAAbilityInfo_t *CScriptManager::ParseAbilityInfo( KeyValues *pAbility )
 	}
 
 	return pInfo;
+}
+
+DOTAItemInfo_t *CScriptManager::ParseItemInfo( KeyValues *pItem )
+{
+	Assert( m_pKvItems );
+
+	DOTAItemInfo_t *itemInfo = new DOTAItemInfo_t;
+
+	itemInfo->abilityInfo = ParseAbilityInfo( pItem );
+
+	itemInfo->cost = pItem->GetInt( "ItemCost" );
+
+	itemInfo->declarations = pItem->GetString( "ItemDeclarations" );
+
+	return itemInfo;
 }
