@@ -278,6 +278,8 @@ void CVH::FrameStageNotify( ClientFrameStage_t curStage )
 		// entity simulation happens here, so we'll think alongside
 		Think();
 	}
+
+	RETURN_META( MRES_IGNORED );
 }
 
 void CVH::Think()
