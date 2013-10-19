@@ -25,6 +25,7 @@ public:
 	operator C_BaseEntity *() { return GetEntity(); }
 
 
+	// classname
 	const char *GetEntityName() { return m_iName; }
 
 
@@ -41,7 +42,21 @@ public:
 	}
 
 	// is the wrapped entity valid?
-	bool IsValid() { return GetEntity() != NULL; }
+	bool IsValid()
+	{
+		C_BaseEntity *pEnt = GetEntity();
+
+		if ( !pEnt )
+			return false;
+
+		// todo: re-enable when we can verify we're calling the right function
+		/*
+		if ( pEnt->IsDormant() )
+			return false; // outside of PVS
+		*/
+
+		return true;
+	}
 
 
 	CEntProp( char *, m_iName );

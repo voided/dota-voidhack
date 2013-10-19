@@ -203,7 +203,7 @@ void CVH::Init()
 	gameeventmanager = m_pGameEventManager;
 	g_pFullFileSystem = m_pFileSystem;
 
-	SH_ADD_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), false );
+	SH_ADD_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), true );
 
 	// register our convars and concommands
 	ConVar_Register();
@@ -232,7 +232,7 @@ void CVH::Shutdown()
 
 	ConVar_Unregister();
 
-	SH_REMOVE_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), false );
+	SH_REMOVE_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), true );
 
 	m_pClientTools = NULL;
 	m_pClientDLL = NULL;
