@@ -69,15 +69,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;COMPILER_MSVC;COMPILER_MSVC32;_RETAIL;CLIENT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>G:\dev\Source\hl2sdk-dota\public;G:\dev\Source\hl2sdk-dota\public\tier0;G:\dev\Source\hl2sdk-dota\public\tier1;G:\dev\Source\hl2sdk-dota\game\shared;G:\dev\Source\hl2sdk-dota\game\client;G:\dev\Source\hl2sdk-dota\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;COMPILER_MSVC;COMPILER_MSVC32;CLIENT_DLL;NO_MALLOC_OVERRIDE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;dota;dota\entities;utils;utils\sigscan;G:\dev\Source\hl2sdk-dota\public;G:\dev\Source\hl2sdk-dota\public\tier0;G:\dev\Source\hl2sdk-dota\public\tier1;G:\dev\Source\hl2sdk-dota\game\shared;G:\dev\Source\hl2sdk-dota\game\client;G:\dev\Source\hl2sdk-dota\common;G:\dev\SourceMod\mmsource-1.10\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>tier0.lib;tier1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tier1.lib;tier0.lib;interfaces.lib;vstdlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>G:\dev\Source\hl2sdk-dota\lib\public;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
