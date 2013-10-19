@@ -49,11 +49,8 @@ public:
 		if ( !pEnt )
 			return false;
 
-		// todo: re-enable when we can verify we're calling the right function
-		/*
 		if ( pEnt->IsDormant() )
-			return false; // outside of PVS
-		*/
+			return false; // outside of PVS, we'll consider it invalid otherwise we'll be accessing stale data
 
 		return true;
 	}
