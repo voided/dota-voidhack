@@ -42,17 +42,14 @@ public:
 	}
 
 	// is the wrapped entity valid?
-	bool IsValid()
+	bool IsValid() { return GetEntity() != NULL; }
+
+	// is this entity outside of the client's PVS?
+	bool IsDormant()
 	{
-		C_BaseEntity *pEnt = GetEntity();
+		Assert( IsValid() );
 
-		if ( !pEnt )
-			return false;
-
-		if ( pEnt->IsDormant() )
-			return false; // outside of PVS, we'll consider it invalid otherwise we'll be accessing stale data
-
-		return true;
+		return GetEntity()->IsDormant();
 	}
 
 

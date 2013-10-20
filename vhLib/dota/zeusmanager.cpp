@@ -97,6 +97,9 @@ bool CZeusManager::IsPlayerUltable( C_DOTAPlayer &player, int damage )
 	if ( !hero.IsValid() )
 		return false;
 
+	if ( hero.IsDormant() )
+		return false; // outside of PVS
+
 	if ( hero.InAnyState( UnitState_Invisible | UnitState_Invulnerable | UnitState_MagicImmune | UnitState_OutOfGame ) )
 		return false; // ult won't affect units in this state
 
