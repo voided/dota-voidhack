@@ -26,6 +26,8 @@
 #include "dotagamerules.h"
 #include "dotaitem.h"
 
+#include "vgui/ISurface.h"
+
 #include <sourcehook/sourcehook.h>
 
 #include <windows.h>
@@ -71,6 +73,10 @@ CON_COMMAND( vh_test, "Test convar" )
 {
 	Msg( "In game: %d\n", VH().EngineClient()->IsInGame() );
 	Msg( "Ent index: %d\n", VH().ClientTools()->GetEntIndex( VH().ClientTools()->GetLocalPlayer() ) );
+
+	int wide = 0, tall = 0;
+	RenderHelper().Surface()->GetScreenSize( wide, tall );
+	Msg( "Res: %dx%d\n", wide, tall );
 
 	C_DOTAPlayer player = C_DOTAPlayer::GetLocalPlayer();
 
@@ -146,7 +152,7 @@ void FactoryInfo_t::Init()
 	clientFactory = Sys_GetFactory( "client" );
 	cvarFactory = VStdLib_GetICVarFactory();
 	fileSystemFactory = Sys_GetFactory( "filesystem_stdio" );
-	vguiFactory = Sys_GetFactory( "vgui2" );
+	vguiFactory = Sys_GetFactory( "vguimatsurface" );
 }
 
 
@@ -260,12 +266,12 @@ void CVH::FrameStageNotify( ClientFrameStage_t curStage )
 	if ( curStage == FRAME_RENDER_START )
 	{
 		// entity simulation happens here, so we'll think alongside
-	FOR_EACH_VEC( m_FrameHooks, i )
-	{
-		// think for every installed frame hook
-		m_FrameHooks[ i ]->Think();
+		FOR_EACH_VEC( m_FrameHooks, i )
+		{
+			// think for every installed frame hook
+			m_FrameHooks[ i ]->Think();
+		}
 	}
-}
 
 	RETURN_META( MRES_IGNORED );
 }
