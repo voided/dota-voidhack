@@ -27,6 +27,7 @@ public:
 	virtual void Think() = 0;
 };
 
+
 struct FactoryInfo_t
 {
 	~FactoryInfo_t()
@@ -35,6 +36,7 @@ struct FactoryInfo_t
 		clientFactory = NULL;
 		cvarFactory = NULL;
 		fileSystemFactory = NULL;
+		vguiFactory = NULL;
 	}
 
 	void Init();
@@ -44,7 +46,22 @@ struct FactoryInfo_t
 	CreateInterfaceFn clientFactory;
 	CreateInterfaceFn cvarFactory;
 	CreateInterfaceFn fileSystemFactory;
+	CreateInterfaceFn vguiFactory;
 };
+
+template <typename T>
+T *GetInterface( CreateInterfaceFn factory, const char *version )
+{
+	T* iface = reinterpret_cast<T *>( factory( version, NULL ) );
+
+	if ( !iface )
+	{
+		Error( "Unable to get interface %s!\n", version );
+		return NULL;
+	}
+
+	return iface;
+}
 
 
 class CVH
@@ -105,6 +122,7 @@ private:
 	IClientTools *m_pClientTools;
 
 	CUtlVector<IFrameManager *> m_FrameHooks;
+	
 };
 
 CVH &VH();

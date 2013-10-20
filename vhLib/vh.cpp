@@ -139,20 +139,6 @@ CON_COMMAND( vh_test, "Test convar" )
 }
 
 
-template <typename T>
-T *GetInterface( CreateInterfaceFn factory, const char *version )
-{
-	T* iface = reinterpret_cast<T *>( factory( version, NULL ) );
-
-	if ( !iface )
-	{
-		Error( "Unable to get interface %s!", version );
-		return NULL;
-	}
-
-	return iface;
-}
-
 
 void FactoryInfo_t::Init()
 {
@@ -160,6 +146,7 @@ void FactoryInfo_t::Init()
 	clientFactory = Sys_GetFactory( "client" );
 	cvarFactory = VStdLib_GetICVarFactory();
 	fileSystemFactory = Sys_GetFactory( "filesystem_stdio" );
+	vguiFactory = Sys_GetFactory( "vgui2" );
 }
 
 
@@ -173,11 +160,12 @@ void CVH::Init()
 		m_factoryInfo.clientFactory,
 		m_factoryInfo.cvarFactory,
 		m_factoryInfo.fileSystemFactory,
+		m_factoryInfo.vguiFactory,
 	};
 
 	// connect tier1
 	// passing the vstdlib factory sets up icvar for us
-	ConnectTier1Libraries( factories, 4 );
+	ConnectTier1Libraries( factories, SIZE_OF_ARRAY( factories ) );
 
 	if ( g_pCVar == NULL )
 	{
@@ -207,9 +195,9 @@ void CVH::Init()
 	ConVar_Register();
 
 	// init our things
+	RenderHelper().Init();
 	EntityHelper().Init();
 	ConVarHelper().Init();
-	RenderHelper().Init();
 
 	// init managers
 	ScriptManager().Init();
@@ -226,9 +214,9 @@ void CVH::Shutdown()
 	ZeusManager().Shutdown();
 	ScriptManager().Shutdown();
 
-	RenderHelper().Shutdown();
 	ConVarHelper().Shutdown();
 	EntityHelper().Shutdown();
+	RenderHelper().Shutdown();
 
 	ConVar_Unregister();
 
