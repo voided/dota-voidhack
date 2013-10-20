@@ -101,6 +101,7 @@
     <ClCompile Include="dota\zeusmanager.cpp" />
     <ClCompile Include="utils\convarhelper.cpp" />
     <ClCompile Include="utils\entityhelper.cpp" />
+    <ClCompile Include="utils\renderhelper.cpp" />
     <ClCompile Include="utils\sigscan\bytescanner.cpp" />
     <ClCompile Include="vh.cpp" />
   </ItemGroup>
@@ -121,6 +122,7 @@
     <ClInclude Include="utils\entfuncs.h" />
     <ClInclude Include="utils\entityhelper.h" />
     <ClInclude Include="utils\entprop.h" />
+    <ClInclude Include="utils\renderhelper.h" />
     <ClInclude Include="utils\sigscan\bytescanner.h" />
     <ClInclude Include="vh.h" />
   </ItemGroup>

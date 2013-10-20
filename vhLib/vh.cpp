@@ -211,6 +211,7 @@ void CVH::Init()
 	// init our things
 	EntityHelper().Init();
 	ConVarHelper().Init();
+	RenderHelper().Init();
 
 	// init managers
 	ScriptManager().Init();
@@ -227,6 +228,7 @@ void CVH::Shutdown()
 	ZeusManager().Shutdown();
 	ScriptManager().Shutdown();
 
+	RenderHelper().Shutdown();
 	ConVarHelper().Shutdown();
 	EntityHelper().Shutdown();
 
