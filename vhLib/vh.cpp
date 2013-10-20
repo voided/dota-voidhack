@@ -3,6 +3,7 @@
 
 #include "entityhelper.h"
 #include "convarhelper.h"
+#include "renderhelper.h"
 
 #include "scriptmanager.h"
 #include "zeusmanager.h"
@@ -61,21 +62,9 @@ int g_PLID = 0;
 
 SH_DECL_HOOK1_void( IBaseClientDLL, FrameStageNotify, SH_NOATTRIB, 0, ClientFrameStage_t );
 
-// to support CGameEventListener
+
 IGameEventManager2 *gameeventmanager = NULL;
-
-
-CVH::CVH() :
-	m_pEngineClient( NULL ), m_pClientDLL( NULL ),
-	m_pEngineTool( NULL ), m_pClientTools( NULL ),
-	m_pGameEventManager( NULL ), m_pFileSystem( NULL ),
-
-	m_fnClientFactory( NULL ),
-	m_fnEngineFactory( NULL ),
-	m_fnCvarFactory( NULL ),
-	m_fnFileSystemFactory( NULL )
-{
-}
+IVEngineClient *engine = NULL;
 
 
 CON_COMMAND( vh_test, "Test convar" )
@@ -164,19 +153,26 @@ T *GetInterface( CreateInterfaceFn factory, const char *version )
 	return iface;
 }
 
+
+void FactoryInfo_t::Init()
+{
+	engineFactory = Sys_GetFactory( "engine" );
+	clientFactory = Sys_GetFactory( "client" );
+	cvarFactory = VStdLib_GetICVarFactory();
+	fileSystemFactory = Sys_GetFactory( "filesystem_stdio" );
+}
+
+
 void CVH::Init()
 {
-	m_fnEngineFactory = Sys_GetFactory( "engine" );
-	m_fnClientFactory = Sys_GetFactory( "client" );
-	m_fnCvarFactory = VStdLib_GetICVarFactory();
-	m_fnFileSystemFactory = Sys_GetFactory( "filesystem_stdio" );
+	m_factoryInfo.Init();
 
 	CreateInterfaceFn factories[] =
 	{
-		m_fnEngineFactory,
-		m_fnClientFactory,
-		m_fnCvarFactory,
-		m_fnFileSystemFactory,
+		m_factoryInfo.engineFactory,
+		m_factoryInfo.clientFactory,
+		m_factoryInfo.cvarFactory,
+		m_factoryInfo.fileSystemFactory,
 	};
 
 	// connect tier1
@@ -190,18 +186,20 @@ void CVH::Init()
 	}
 
 	// get engine interfaces
-	m_pEngineClient = GetInterface<IVEngineClient>( m_fnEngineFactory, VENGINE_CLIENT_INTERFACE_VERSION );
-	m_pEngineTool = GetInterface<IEngineTool>( m_fnEngineFactory, VENGINETOOL_INTERFACE_VERSION );
-	m_pGameEventManager = GetInterface<IGameEventManager2>( m_fnEngineFactory, INTERFACEVERSION_GAMEEVENTSMANAGER2 );
-	// get client interfaces
-	m_pClientDLL = GetInterface<IBaseClientDLL>( m_fnClientFactory, CLIENT_DLL_INTERFACE_VERSION );
-	m_pClientTools = GetInterface<IClientTools>( m_fnClientFactory, VCLIENTTOOLS_INTERFACE_VERSION );
-	// get filesystem interfaces
-	m_pFileSystem = GetInterface<IFileSystem>( m_fnFileSystemFactory, FILESYSTEM_INTERFACE_VERSION );
+	m_pEngineClient = GetInterface<IVEngineClient>( m_factoryInfo.engineFactory, VENGINE_CLIENT_INTERFACE_VERSION );
+	m_pEngineTool = GetInterface<IEngineTool>( m_factoryInfo.engineFactory, VENGINETOOL_INTERFACE_VERSION );
+	m_pGameEventManager = GetInterface<IGameEventManager2>( m_factoryInfo.engineFactory, INTERFACEVERSION_GAMEEVENTSMANAGER2 );
 
-	// to support CGameEventListener
+	// get client interfaces
+	m_pClientDLL = GetInterface<IBaseClientDLL>( m_factoryInfo.clientFactory, CLIENT_DLL_INTERFACE_VERSION );
+	m_pClientTools = GetInterface<IClientTools>( m_factoryInfo.clientFactory, VCLIENTTOOLS_INTERFACE_VERSION );
+
+	// get filesystem interfaces
+	m_pFileSystem = GetInterface<IFileSystem>( m_factoryInfo.fileSystemFactory, FILESYSTEM_INTERFACE_VERSION );
+
 	gameeventmanager = m_pGameEventManager;
 	g_pFullFileSystem = m_pFileSystem;
+	engine = m_pEngineClient;
 
 	SH_ADD_HOOK( IBaseClientDLL, FrameStageNotify, m_pClientDLL, SH_MEMBER( this, &CVH::FrameStageNotify ), true );
 
@@ -246,10 +244,6 @@ void CVH::Shutdown()
 
 	DisconnectTier1Libraries();
 
-	m_fnCvarFactory = NULL;
-	m_fnClientFactory = NULL;
-	m_fnEngineFactory = NULL;
-
 	m_FrameHooks.RemoveAll();
 }
 
@@ -278,17 +272,12 @@ void CVH::FrameStageNotify( ClientFrameStage_t curStage )
 	if ( curStage == FRAME_RENDER_START )
 	{
 		// entity simulation happens here, so we'll think alongside
-		Think();
-	}
-
-	RETURN_META( MRES_IGNORED );
-}
-
-void CVH::Think()
-{
 	FOR_EACH_VEC( m_FrameHooks, i )
 	{
 		// think for every installed frame hook
 		m_FrameHooks[ i ]->Think();
 	}
+}
+
+	RETURN_META( MRES_IGNORED );
 }

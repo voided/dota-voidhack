@@ -27,12 +27,42 @@ public:
 	virtual void Think() = 0;
 };
 
+struct FactoryInfo_t
+{
+	~FactoryInfo_t()
+	{
+		engineFactory = NULL;
+		clientFactory = NULL;
+		cvarFactory = NULL;
+		fileSystemFactory = NULL;
+	}
+
+	void Init();
+
+
+	CreateInterfaceFn engineFactory;
+	CreateInterfaceFn clientFactory;
+	CreateInterfaceFn cvarFactory;
+	CreateInterfaceFn fileSystemFactory;
+};
+
 
 class CVH
 {
 
 public:
-	CVH();
+	CVH() :
+		// engine
+		m_pEngineClient( NULL ), 
+		m_pEngineTool( NULL ),
+		m_pGameEventManager( NULL ),
+		m_pFileSystem( NULL ),
+
+		// client
+		m_pClientDLL( NULL ),
+		m_pClientTools( NULL )
+	{
+	}
 
 
 public:
@@ -43,32 +73,33 @@ public:
 	void AddFrameHook( const IFrameManager *manager );
 	void RemoveFrameHook( const IFrameManager *manager );
 
+	// factory accessors
+	FactoryInfo_t &GetFactoryInfo() { return m_factoryInfo; }
+
 	// engine interfaces
 	IVEngineClient *EngineClient() { return m_pEngineClient; }
 	IEngineTool *EngineTool() { return m_pEngineTool; }
 	IGameEventManager2 *GameEventManager() { return m_pGameEventManager; }
 	IFileSystem *FileSystem() { return m_pFileSystem; }
+
 	// client interfaces
 	IBaseClientDLL *ClientDLL() { return m_pClientDLL; }
 	IClientTools *ClientTools() { return m_pClientTools; }
 
 
 private:
-	void FrameStageNotify( ClientFrameStage_t curStage );
-	void Think();
+	void FrameStageNotify( ClientFrameStage_t curStage ); // IBaseClientDLL::FrameStageNotify hook
 
 
 private:
-	CreateInterfaceFn m_fnEngineFactory;
-	CreateInterfaceFn m_fnClientFactory;
-	CreateInterfaceFn m_fnCvarFactory;
-	CreateInterfaceFn m_fnFileSystemFactory;
+	FactoryInfo_t m_factoryInfo;
 
 	// engine
 	IVEngineClient *m_pEngineClient;
 	IEngineTool *m_pEngineTool;
 	IGameEventManager2 *m_pGameEventManager;
 	IFileSystem *m_pFileSystem;
+
 	// client
 	IBaseClientDLL *m_pClientDLL;
 	IClientTools *m_pClientTools;
