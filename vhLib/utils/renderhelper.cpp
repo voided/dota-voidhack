@@ -7,6 +7,9 @@
 #include "ivrenderview.h"
 #include "view_shared.h"
 
+#include "ienginevgui.h"
+#include "vgui/ISurface.h"
+
 #include "vh.h"
 #include <sourcehook/sourcehook.h>
 
@@ -18,7 +21,6 @@ CRenderHelper &RenderHelper()
 }
 
 
-SH_DECL_HOOK1_void( IViewRender, Render2DEffectsPreHUD, SH_NOATTRIB, 0, const CViewSetup & );
 SH_DECL_HOOK1_void( IVRenderView, VGui_Paint, SH_NOATTRIB, 0, int );
 
 
@@ -31,11 +33,7 @@ void CRenderHelper::Init()
 	{
 		m_pViewRender = *(IViewRender **)( (uint8 *)pFunc + 0x22D );
 
-		if ( m_pViewRender )
-		{
-			SH_ADD_HOOK( IViewRender, Render2DEffectsPreHUD, m_pViewRender, SH_MEMBER( this, &CRenderHelper::Render2DEffectsPreHUD ), false );
-		}
-		else
+		if ( !m_pViewRender )
 		{
 			Warning( "[RenderHelper] Unable to find IViewRender!\n" );
 		}
@@ -46,24 +44,25 @@ void CRenderHelper::Init()
 	}
 
 	m_pRenderView = GetInterface<IVRenderView>( VH().GetFactoryInfo().engineFactory, VENGINE_RENDERVIEW_INTERFACE_VERSION );
+
 	m_pSurface = GetInterface<vgui::ISurface>( VH().GetFactoryInfo().vguiFactory, VGUI_SURFACE_INTERFACE_VERSION );
 
-	SH_ADD_HOOK( IVRenderView, VGui_Paint, m_pRenderView, SH_MEMBER( this, &CRenderHelper::VGui_Paint ), true );
+	m_pPaintSurface = m_pSurface->GetVguiPaintSurface();
+	Assert( m_pPaintSurface );
+
+	SH_ADD_HOOK( IVRenderView, VGui_Paint, m_pRenderView, SH_MEMBER( this, &CRenderHelper::PreVGui_Paint ), false );
+	SH_ADD_HOOK( IVRenderView, VGui_Paint, m_pRenderView, SH_MEMBER( this, &CRenderHelper::PostVGui_Paint ), true );
 }
 
 void CRenderHelper::Shutdown()
 {
-	if ( m_pViewRender )
-	{
-		SH_REMOVE_HOOK( IViewRender, Render2DEffectsPreHUD, m_pViewRender, SH_MEMBER( this, &CRenderHelper::Render2DEffectsPreHUD ), false );
-		m_pViewRender = NULL;
-	}
+	SH_REMOVE_HOOK( IVRenderView, VGui_Paint, m_pRenderView, SH_MEMBER( this, &CRenderHelper::PostVGui_Paint ), true );
+	SH_REMOVE_HOOK( IVRenderView, VGui_Paint, m_pRenderView, SH_MEMBER( this, &CRenderHelper::PreVGui_Paint ), false );
 
-	if ( m_pRenderView )
-	{
-		SH_REMOVE_HOOK( IVRenderView, VGui_Paint, m_pRenderView, SH_MEMBER( this, &CRenderHelper::VGui_Paint ), true );
-		m_pRenderView = NULL;
-	}
+	m_pPaintSurface = NULL;
+	m_pSurface = NULL;
+
+	m_pRenderView = NULL;
 }
 
 
@@ -87,21 +86,27 @@ void CRenderHelper::RemoveRenderHook( const IRenderManager *manager )
 }
 
 
-void CRenderHelper::Render2DEffectsPreHUD( const CViewSetup &view )
+void CRenderHelper::PreVGui_Paint( int mode )
 {
-	FOR_EACH_VEC( m_RenderHooks, i )
+	if ( mode == PAINT_UIPANELS )
 	{
-		m_RenderHooks[ i ]->RenderPreHud();
+		FOR_EACH_VEC( m_RenderHooks, i )
+		{
+			m_RenderHooks[ i ]->RenderPreHud();
+		}
 	}
 
 	RETURN_META( MRES_IGNORED );
 }
 
-void CRenderHelper::VGui_Paint( int mode )
+void CRenderHelper::PostVGui_Paint( int mode )
 {
-	FOR_EACH_VEC( m_RenderHooks, i )
+	if ( mode == PAINT_UIPANELS )
 	{
-		m_RenderHooks[ i ]->RenderPostHud();
+		FOR_EACH_VEC( m_RenderHooks, i )
+		{
+			m_RenderHooks[ i ]->RenderPostHud();
+		}
 	}
 
 	RETURN_META( MRES_IGNORED );

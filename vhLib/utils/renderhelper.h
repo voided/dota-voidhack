@@ -8,9 +8,12 @@
 class IViewRender;
 class IVRenderView;
 class CViewSetup;
+
 namespace vgui
 {
 	class ISurface;
+	class IVGuiPaintSurface;
+	typedef unsigned long HFont; 
 };
 
 
@@ -30,7 +33,8 @@ public:
 	CRenderHelper() :
 		m_pViewRender( NULL ),
 		m_pRenderView( NULL ),
-		m_pSurface( NULL )
+		m_pSurface( NULL ),
+		m_pPaintSurface( NULL )
 	{
 	}
 
@@ -45,17 +49,20 @@ public:
 	IViewRender *ViewRender() { return m_pViewRender; }
 	IVRenderView *RenderView() { return m_pRenderView; }
 	vgui::ISurface *Surface() { return m_pSurface; }
+	vgui::IVGuiPaintSurface *PaintSurface() { return m_pPaintSurface; }
 
 
 private:
-	void Render2DEffectsPreHUD( const CViewSetup &view ); // IViewRender::Render2DEffectsPreHUD hook
-	void VGui_Paint( int mode ); // IVRenderView::VGui_Paint hook
+	void PreVGui_Paint( int mode ); // IVRenderView::VGui_Paint pre hook
+	void PostVGui_Paint( int mode ); // IVRenderView::VGui_Paint post hook
 
 
 private:
 	IViewRender *m_pViewRender;
 	IVRenderView *m_pRenderView;
+
 	vgui::ISurface *m_pSurface;
+	vgui::IVGuiPaintSurface *m_pPaintSurface;
 
 	CUtlVector<IRenderManager *> m_RenderHooks;
 
