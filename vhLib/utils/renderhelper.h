@@ -65,19 +65,42 @@ public:
 	{
 
 	public:
-		Rect( int x, int y, int width, int height, Color color = Color() )
+		Rect() {}
+		Rect( int x, int y, int width, int height, Color color = Color(), bool filled = false )
 			: x( x ), y( y ),
 			  width( width ), height( height ),
-			  color( color )
+			  color( color ),
+			  filled( filled )
 		{
 		}
 
 		void Draw();
 
+		void SetPos( int x, int y )
+		{
+			this->x = x;
+			this->y = y;
+		}
+		void SetSize( int width, int height )
+		{
+			this->width = width;
+			this->height = height;
+		}
+		void SetColor( Color color )
+		{
+			this->color = color;
+		}
+		void SetFilled( bool filled )
+		{
+			this->filled = filled;
+		}
+
+
 	public:
 		int x, y;
 		int width, height;
 		Color color;
+		bool filled;
 	};
 
 

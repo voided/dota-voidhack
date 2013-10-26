@@ -125,5 +125,12 @@ void CRenderHelper::Rect::Draw()
 	int x1 = x + width;
 	int y1 = y + height;
 
-	RenderHelper().PaintSurface()->DrawFilledRect( x0, y0, x1, y1 );
+	if ( filled )
+	{
+		RenderHelper().PaintSurface()->DrawFilledRect( x0, y0, x1, y1 );
+	}
+	else
+	{
+		RenderHelper().PaintSurface()->DrawOutlinedRect( x0, y0, x1, y1 );
+	}
 }
