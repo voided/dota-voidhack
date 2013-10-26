@@ -19,6 +19,59 @@ CHeroManager &HeroManager()
 }
 
 
+class CManaBar
+{
+public:
+	CManaBar( C_DOTAHero &hero );
+
+
+	void Layout();
+	void Draw();
+
+
+private:
+	static const int WIDTH = 125;
+	static const int HEIGHT = 14;
+
+	C_DOTAHero &m_Hero;
+
+	CRenderHelper::Rect m_Border;
+	CRenderHelper::Rect m_ManaBar;
+
+};
+
+
+CManaBar::CManaBar( C_DOTAHero &hero )
+	: m_Hero( hero )
+{
+	m_Border.SetColor( Color( 255, 255, 255, 255 ) );
+
+	m_ManaBar.SetColor( Color( 0, 0, 255, 255 ) );
+	m_ManaBar.SetFilled( true );
+}
+
+void CManaBar::Layout()
+{
+	const Vector &vecMaxs = m_Hero.CollisionProp().m_vecMaxs;
+	Vector vecOff = Vector( 0, 0, vecMaxs.z );
+	
+	int x, y;
+	CameraManager().GetVectorInScreenSpace( m_Hero.GetAbsOrigin(), x, y, &vecOff );
+
+	m_Border.SetPos( x - ( WIDTH / 2 ), y );
+	m_ManaBar.SetPos( x - ( WIDTH / 2 ), y );
+
+	m_Border.SetSize( WIDTH, HEIGHT );
+	m_ManaBar.SetSize( WIDTH * m_Hero.ManaFraction(), HEIGHT );
+}
+
+void CManaBar::Draw()
+{
+	m_ManaBar.Draw();
+	m_Border.Draw();
+}
+
+
 void CHeroManager::Init()
 {
 	RenderHelper().AddRenderHook( this );
@@ -68,31 +121,8 @@ void CHeroManager::DrawManaBar( C_DOTAHero &hero )
 	if ( hero.m_iTeamNum == C_DOTAPlayer::GetLocalPlayer().m_iTeamNum )
 		return;
 
-	float zOff = hero.m_vecMaxs.Get().z;
-	Vector vecOff( 0, 0, zOff );
+	CManaBar manaBar( hero );
 
-	int x, y;
-
-	if ( !CameraManager().GetVectorInScreenSpace( hero.m_vecOrigin, x, y, &vecOff ) )
-		return;
-
-	const int WIDTH = 100;
-	const int HEIGHT = 15;
-
-
-	// first render outer white border
-	CRenderHelper::Rect rect( x - ( WIDTH / 2 ), y - ( HEIGHT / 2 ), WIDTH, HEIGHT, Color( 255, 255, 255, 255 ) );
-	rect.Draw();
-
-	int effectiveWidth = hero.GetManaPercent() * WIDTH;
-
-	rect.x += 1;
-	rect.y += 1;
-
-	rect.height -= 2;
-	rect.width = effectiveWidth - 2;
-
-	rect.color = Color( 0, 0, 255, 255 );
-
-	rect.Draw();
+	manaBar.Layout();
+	manaBar.Draw();
 }

@@ -10,8 +10,40 @@
 
 #include "networkvar.h"
 
+#include "const.h"
+
 
 class C_BaseEntity;
+
+
+class CCollision
+{
+	DECLARE_CLASS_NOBASE( CCollision );
+
+public:
+	CCollision( C_BaseEntity *pEnt )
+		: m_pOuter( pEnt )
+	{
+	}
+
+
+public:
+	CEntPropVector( m_vecMins );
+	CEntPropVector( m_vecMaxs );
+
+	CEntProp( uint8, m_nSolidType );
+	CEntProp( uint16, m_usSolidFlags ); 
+
+
+private:
+	// to support ent prop lookup
+	C_BaseEntity *GetEntity() { return m_pOuter; }
+
+
+private:
+	C_BaseEntity *m_pOuter;
+
+};
 
 
 // base wrapper for most dota related entities
@@ -49,13 +81,22 @@ public:
 	bool IsDormant()
 	{
 		Assert( IsValid() );
-
 		return GetEntity()->IsDormant();
 	}
+
+	const Vector &GetAbsOrigin();
+	const QAngle &GetAbsAngles();
 
 
 	// is this entity on the local player's team?
 	bool IsOnLocalTeam();
+
+
+	CCollision CollisionProp()
+	{
+		Assert( IsValid() );
+		return CCollision( GetEntity() );
+	}
 	
 
 public:
@@ -65,11 +106,9 @@ public:
 
 	CEntPropVector( m_vecOrigin );
 
-	CEntPropVector( m_vecMins );
-	CEntPropVector( m_vecMaxs );
+	CEntProp( ICollideable *, m_Collision );
 
 
 private:
-	CBaseHandle m_Entity;
-
+	EHANDLE m_Entity;
 };

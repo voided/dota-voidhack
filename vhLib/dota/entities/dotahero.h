@@ -60,7 +60,8 @@ public:
 	// get hero level
 	int GetLevel();
 
-	float GetManaPercent();
+	float ManaFraction();
+	float HealthFraction();
 
 	// is this hero in all of these states?
 	bool InState( int state );
