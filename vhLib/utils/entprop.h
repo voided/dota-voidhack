@@ -21,7 +21,7 @@
 			{ \
 				return value; \
 			} \
-			return (propType)0; \
+			propType defValue; return defValue; \
 		} \
 	} propName;
 
@@ -39,7 +39,7 @@
 			{ \
 				return value; \
 			} \
-			return (propType)0; \
+			propType defValue; return defValue; \
 		} \
 		int Size() \
 		{ \

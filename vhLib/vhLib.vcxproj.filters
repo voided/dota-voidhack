@@ -108,6 +108,9 @@
     <ClCompile Include="utils\renderhelper.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
+    <ClCompile Include="dota\heromanager.cpp">
+      <Filter>Source Files\dota</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vh.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="utils\renderhelper.h">
       <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="dota\heromanager.h">
+      <Filter>Header Files\dota</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

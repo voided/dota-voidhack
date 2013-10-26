@@ -14,6 +14,8 @@ public:
 	void Init();
 	void Shutdown();
 
+	bool GetVectorInScreenSpace( Vector pos, int &iX, int &iY, Vector *vecOffset = NULL );
+
 
 private:
 	float GetFarZ(); // IViewRender::GetZFar hook

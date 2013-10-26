@@ -54,6 +54,7 @@ public:
 
 
 	CEntProp( char *, m_iName );
+	CEntProp( Vector, m_vecOrigin );
 
 
 private:

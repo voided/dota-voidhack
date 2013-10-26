@@ -21,8 +21,8 @@ namespace vgui
 class IRenderManager
 {
 public:
-	virtual void RenderPreHud();
-	virtual void RenderPostHud();
+	virtual void RenderPreHud() { }
+	virtual void RenderPostHud() { }
 };
 
 

@@ -9,6 +9,7 @@
 #include "zeusmanager.h"
 #include "cameramanager.h"
 #include "fogmanager.h"
+#include "heromanager.h"
 
 #include "tier1/interface.h"
 
@@ -210,11 +211,13 @@ void CVH::Init()
 	ZeusManager().Init();
 	CameraManager().Init();
 	FogManager().Init();
+	HeroManager().Init();
 }
 
 void CVH::Shutdown()
 {
 	// un-init our things
+	HeroManager().Shutdown();
 	FogManager().Shutdown();
 	CameraManager().Shutdown();
 	ZeusManager().Shutdown();

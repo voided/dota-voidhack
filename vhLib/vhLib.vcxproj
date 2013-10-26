@@ -97,6 +97,7 @@
     <ClCompile Include="dota\entities\dotaplayer.cpp" />
     <ClCompile Include="dota\entities\dotaresource.cpp" />
     <ClCompile Include="dota\fogmanager.cpp" />
+    <ClCompile Include="dota\heromanager.cpp" />
     <ClCompile Include="dota\scriptmanager.cpp" />
     <ClCompile Include="dota\zeusmanager.cpp" />
     <ClCompile Include="utils\convarhelper.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="dota\entities\dotaplayer.h" />
     <ClInclude Include="dota\entities\dotaresource.h" />
     <ClInclude Include="dota\fogmanager.h" />
+    <ClInclude Include="dota\heromanager.h" />
     <ClInclude Include="dota\scriptmanager.h" />
     <ClInclude Include="dota\zeusmanager.h" />
     <ClInclude Include="utils\convarhelper.h" />
