@@ -22,7 +22,6 @@
 			{ \
 				return value; \
 			} \
-			AssertMsg2( 0, "Unable to find entprop %s on %s", #propName, pOuter->GetEntityName() ); \
 			return ret; \
 		} \
 	} propName;
@@ -42,7 +41,6 @@
 			{ \
 				return value; \
 			} \
-			AssertMsg2( 0, "Unable to find entprop %s on %s", #propName, pOuter->GetEntityName() ); \
 			return ret; \
 		} \
 		int Size() \
@@ -55,7 +53,6 @@
 			{ \
 				return size; \
 			} \
-			AssertMsg2( 0, "Unable to find entprop %s on %s", #propName, pOuter->GetEntityName() ); \
 			return 0; \
 		} \
 	} propName;
