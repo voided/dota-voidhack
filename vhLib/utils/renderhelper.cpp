@@ -111,3 +111,19 @@ void CRenderHelper::PostVGui_Paint( int mode )
 
 	RETURN_META( MRES_IGNORED );
 }
+
+
+void CRenderHelper::Rect::Draw()
+{
+	Assert( RenderHelper().PaintSurface() );
+
+	RenderHelper().PaintSurface()->DrawSetColor( color );
+
+	int x0 = x;
+	int y0 = y;
+
+	int x1 = x + width;
+	int y1 = y + height;
+
+	RenderHelper().PaintSurface()->DrawFilledRect( x0, y0, x1, y1 );
+}

@@ -22,7 +22,7 @@ CZeusManager &ZeusManager()
 
 
 CZeusManager::CZeusManager()
-	: m_flNextTaunt( FLT_MAX ),
+	: m_flNextTaunt( FLOAT32_MAX ),
 	  m_flLastUlt( 0 )
 {
 	ListenForGameEvent( "dota_player_kill" );

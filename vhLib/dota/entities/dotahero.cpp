@@ -41,6 +41,13 @@ int C_DOTAHero::GetLevel()
 	return C_DOTAResource::GetResourceEntity().m_iLevel[ m_iPlayerID ];
 }
 
+float C_DOTAHero::GetManaPercent()
+{
+	Assert( IsValid() );
+
+	return m_flMana / m_flMaxMana;
+}
+
 bool C_DOTAHero::InState( int state )
 {
 	Assert( IsValid() );

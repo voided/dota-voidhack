@@ -5,6 +5,9 @@
 #include "renderhelper.h"
 
 
+class C_DOTAHero;
+
+
 class CHeroManager : public IRenderManager
 {
 
@@ -16,6 +19,11 @@ public:
 private:
 	// IRenderManager
 	void RenderPreHud();
+
+
+	void DrawHeroInfo( C_DOTAHero &hero );
+
+	void DrawManaBar( C_DOTAHero &hero );
 
 };
 
