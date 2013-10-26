@@ -4,6 +4,7 @@
 
 #include "dotaresource.h"
 #include "dotaitem.h"
+#include "dotaplayer.h"
 
 
 C_DOTAHero::C_DOTAHero( C_BaseEntity *pEnt )
@@ -72,4 +73,11 @@ bool C_DOTAHero::HasItem( const char *itemName )
 	}
 
 	return false;
+}
+
+C_DOTAPlayer C_DOTAHero::GetPlayer()
+{
+	Assert( IsValid() );
+
+	return C_DOTAPlayer::GetPlayerByPlayerID( m_iPlayerID );
 }

@@ -44,6 +44,7 @@ public:
 	// is the wrapped entity valid?
 	bool IsValid() { return GetEntity() != NULL; }
 
+
 	// is this entity outside of the client's PVS?
 	bool IsDormant()
 	{
@@ -53,8 +54,19 @@ public:
 	}
 
 
+	// is this entity on the local player's team?
+	bool IsOnLocalTeam();
+	
+
+public:
 	CEntProp( char *, m_iName );
-	CEntProp( Vector, m_vecOrigin );
+
+	CEntProp( int, m_iTeamNum );
+
+	CEntPropVector( m_vecOrigin );
+
+	CEntPropVector( m_vecMins );
+	CEntPropVector( m_vecMaxs );
 
 
 private:

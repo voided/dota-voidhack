@@ -40,6 +40,8 @@ enum DOTAUnitState
 	UnitState_OutOfGame = 31,
 };
 
+class C_DOTAPlayer;
+
 
 class C_DOTAHero : public C_DOTABaseEntity
 {
@@ -55,6 +57,7 @@ public:
 	int GetNumAssists();
 	int GetNumDeaths();
 
+	// get hero level
 	int GetLevel();
 
 	// is this hero in all of these states?
@@ -65,7 +68,11 @@ public:
 	// does this hero own this item?
 	bool HasItem( const char *itemName );
 
+	// get owning player
+	C_DOTAPlayer GetPlayer();
 
+
+public:
 	CEntProp( int, m_iPlayerID );
 
 	CEntProp( int, m_iHealth );

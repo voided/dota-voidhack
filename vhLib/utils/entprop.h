@@ -7,61 +7,77 @@
 #include "entityhelper.h"
 
 
-#define CEntPropInternal( entPropType, propType, propName ) \
+#define CEntPropInternal( entPropType, propType, propName, ret ) \
 	class CEntProp_##propName  \
 	{ \
 	public: \
 		operator propType##() { return Get(); } \
 		propType Get() \
 		{ \
-			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
-			AssertMsg( pEnt, "Entprop lookup on invalid entity!" ); \
+			ThisClass *pOuter = GET_OUTER( ThisClass, propName ); \
+			C_BaseEntity *pEnt = pOuter->GetEntity(); \
+			AssertMsg1( pEnt, "Entprop '%s' lookup on invalid entity!", #propName ); \
 			propType value; \
 			if ( EntityHelper().GetEntProp<propType>( pEnt, entPropType, #propName, &value ) ) \
 			{ \
 				return value; \
 			} \
-			propType defValue; return defValue; \
+			AssertMsg2( 0, "Unable to find entprop %s on %s", #propName, pOuter->GetEntityName() ); \
+			return ret; \
 		} \
 	} propName;
 
-#define CEntPropArrayInternal( entPropType, propType, propName ) \
+#define CEntPropArrayInternal( entPropType, propType, propName, ret ) \
 	class CEntPropArray_##propName  \
 	{ \
 	public: \
 		propType operator[]( const int index ) { return Get( index ); } \
 		propType Get( int element ) \
 		{ \
-			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
-			AssertMsg( pEnt, "Entprop lookup on invalid entity!" ); \
+			ThisClass *pOuter = GET_OUTER( ThisClass, propName ); \
+			C_BaseEntity *pEnt = pOuter->GetEntity(); \
+			AssertMsg1( pEnt, "Entprop '%s' lookup on invalid entity!", #propName ); \
 			propType value; \
 			if ( EntityHelper().GetEntProp<propType>( pEnt, entPropType, #propName, &value, element ) ) \
 			{ \
 				return value; \
 			} \
-			propType defValue; return defValue; \
+			AssertMsg2( 0, "Unable to find entprop %s on %s", #propName, pOuter->GetEntityName() ); \
+			return ret; \
 		} \
 		int Size() \
 		{ \
-			C_BaseEntity *pEnt = GET_OUTER( ThisClass, propName )->GetEntity(); \
-			AssertMsg( pEnt, "Entprop lookup on invalid entity!" ); \
+			ThisClass *pOuter = GET_OUTER( ThisClass, propName ); \
+			C_BaseEntity *pEnt = pOuter->GetEntity(); \
+			AssertMsg1( pEnt, "Entprop '%s' lookup on invalid entity!", #propName ); \
 			int size = 0; \
 			if ( EntityHelper().GetEntPropArraySize( pEnt, entPropType, #propName, &size ) ) \
 			{ \
 				return size; \
 			} \
+			AssertMsg2( 0, "Unable to find entprop %s on %s", #propName, pOuter->GetEntityName() ); \
 			return 0; \
 		} \
 	} propName;
 
 
 #define CEntProp( propType, propName ) \
-	CEntPropInternal( EntProp_RecvProp, propType, propName )
+	CEntPropInternal( EntProp_RecvProp, propType, propName, (propType)0 )
 #define CDataProp( propType, propName ) \
-	CEntPropInternal( EntProp_DataMap, propType, propName )
+	CEntPropInternal( EntProp_DataMap, propType, propName, (propType)0 )
+
+#define CEntPropVector( propName ) \
+	CEntPropInternal( EntProp_RecvProp, Vector, propName, Vector() )
+#define CDataPropVector( propName ) \
+	CEntPropInternal( EntProp_DataMap, Vector, propName, Vector() )
 
 
 #define CEntPropArray( propType, propName ) \
-	CEntPropArrayInternal( EntProp_RecvProp, propType, propName )
+	CEntPropArrayInternal( EntProp_RecvProp, propType, propName, (propType)0 )
 #define CDataPropArray( propType, propName ) \
-	CEntPropArrayInternal( EntProp_DataMap, propType, propName )
+	CEntPropArrayInternal( EntProp_DataMap, propType, propName, (propType)0 )
+
+#define CEntPropVectorArray( propName ) \
+	CEntPropArrayInternal( EntProp_RecvProp, propType, propName, Vector() )
+#define CDataPropVectorArray( propName ) \
+	CEntPropArrayInternal( EntProp_DataMap, propType, propName, Vector() )
