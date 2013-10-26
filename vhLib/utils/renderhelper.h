@@ -65,12 +65,11 @@ public:
 	{
 
 	public:
-		Rect() {}
-		Rect( int x, int y, int width, int height, Color color = Color(), bool filled = false )
-			: x( x ), y( y ),
-			  width( width ), height( height ),
-			  color( color ),
-			  filled( filled )
+		Rect() :
+			x( 0 ), y( 0 ),
+			width( 0 ), height( 0 ),
+			color( Color() ),
+			filled( false )
 		{
 		}
 

@@ -12,6 +12,10 @@
 #include "vgui/ISurface.h"
 
 
+ConVar vh_manabars_self( "vh_manabars_self", "0", FCVAR_NONE, "Draw manabar of local player" );
+ConVar vh_manabars_teammates( "vh_manabars_teammates", "0", FCVAR_NONE, "Draw manabars of teammates" );
+
+
 CHeroManager &HeroManager()
 {
 	static CHeroManager heroManager;
@@ -21,6 +25,7 @@ CHeroManager &HeroManager()
 
 class CManaBar
 {
+
 public:
 	CManaBar( C_DOTAHero &hero );
 
@@ -30,8 +35,8 @@ public:
 
 
 private:
-	static const int WIDTH = 125;
-	static const int HEIGHT = 14;
+	static const int WIDTH = 120;
+	static const int HEIGHT = 12;
 
 	C_DOTAHero &m_Hero;
 
@@ -95,7 +100,7 @@ void CHeroManager::RenderPreHud()
 		if ( !player.IsValid() )
 			continue;
 
-		if ( player.IsLocalPlayer() )
+		if ( player.IsLocalPlayer() && !vh_manabars_self.GetBool() )
 			continue; // don't draw anything for local player
 
 		C_DOTAHero hero = player.m_hAssignedHero;
@@ -118,7 +123,7 @@ void CHeroManager::DrawManaBar( C_DOTAHero &hero )
 	if ( hero.IsDormant() )
 		return; // not in PVS, don't render mana bar
 
-	if ( hero.m_iTeamNum == C_DOTAPlayer::GetLocalPlayer().m_iTeamNum )
+	if ( hero.IsOnLocalTeam() && !vh_manabars_teammates.GetBool() )
 		return;
 
 	CManaBar manaBar( hero );
