@@ -23,6 +23,16 @@ public:
 
 	ConVar *FindConVar( const char *name );
 
+	template <typename T>
+	void SetConVar( const char *convarName, T value )
+	{
+		ConVar *pVar = FindConVar( convarName );
+		if ( pVar )
+		{
+			pVar->SetValue( value );
+		}
+	}
+
 
 private:
 	CUtlVector<ConVarInfo_t> m_ConVars;

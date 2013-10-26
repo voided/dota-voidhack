@@ -43,26 +43,16 @@ void CFogManager::Shutdown()
 
 void CFogManager::EnableFog()
 {
-	SetConVar( "fog_override", 0 );
-	SetConVar( "fog_enable", 1 );
-	SetConVar( "fow_client_visibility", 0 );
-	SetConVar( "dota_minimap_draw_fow", 1 );
+	ConVarHelper().SetConVar( "fog_override", 0 );
+	ConVarHelper().SetConVar( "fog_enable", 1 );
+	ConVarHelper().SetConVar( "fow_client_visibility", 0 );
+	ConVarHelper().SetConVar( "dota_minimap_draw_fow", 1 );
 }
 
 void CFogManager::DisableFog()
 {
-	SetConVar( "fog_override", 1 );
-	SetConVar( "fog_enable", 0 );
-	SetConVar( "fow_client_visibility", 1 );
-	SetConVar( "dota_minimap_draw_fow", 0 );
-}
-
-
-void CFogManager::SetConVar( const char *convarName, int value )
-{
-	ConVar *cvar = ConVarHelper().FindConVar( convarName );
-	if ( cvar )
-	{
-		cvar->SetValue( value );
-	}
+	ConVarHelper().SetConVar( "fog_override", 1 );
+	ConVarHelper().SetConVar( "fog_enable", 0 );
+	ConVarHelper().SetConVar( "fow_client_visibility", 1 );
+	ConVarHelper().SetConVar( "dota_minimap_draw_fow", 0 );
 }

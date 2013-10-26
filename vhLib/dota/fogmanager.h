@@ -12,10 +12,6 @@ public:
 	void DisableFog();
 	void EnableFog();
 
-
-private:
-	void SetConVar( const char *convarName, int value );
-
 };
 
 CFogManager &FogManager();
