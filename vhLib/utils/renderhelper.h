@@ -8,6 +8,7 @@
 class IViewRender;
 class IVRenderView;
 class CViewSetup;
+class IScaleformUI;
 
 namespace vgui
 {
@@ -59,6 +60,8 @@ public:
 	// vgui accessors
 	vgui::ISurface *Surface() { return m_pSurface; }
 	vgui::IVGuiPaintSurface *PaintSurface() { return m_pPaintSurface; }
+	// scaleform accessor
+	IScaleformUI *ScaleformUI() { return m_pScaleformUI; }
 
 
 	class Rect
@@ -114,6 +117,8 @@ private:
 
 	vgui::ISurface *m_pSurface;
 	vgui::IVGuiPaintSurface *m_pPaintSurface;
+
+	IScaleformUI *m_pScaleformUI;
 
 	CUtlVector<IRenderManager *> m_RenderHooks;
 

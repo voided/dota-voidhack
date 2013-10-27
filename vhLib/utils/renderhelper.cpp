@@ -10,6 +10,8 @@
 #include "ienginevgui.h"
 #include "vgui/ISurface.h"
 
+#include "scaleformui/scaleform.h"
+
 #include "vh.h"
 #include <sourcehook/sourcehook.h>
 
@@ -44,7 +46,7 @@ void CRenderHelper::Init()
 	}
 
 	m_pRenderView = GetInterface<IVRenderView>( VH().GetFactoryInfo().engineFactory, VENGINE_RENDERVIEW_INTERFACE_VERSION );
-
+	m_pScaleformUI = GetInterface<IScaleformUI>( VH().GetFactoryInfo().scaleformFactory, SCALEFORMUI_INTERFACE_VERSION );
 	m_pSurface = GetInterface<vgui::ISurface>( VH().GetFactoryInfo().vguiFactory, VGUI_SURFACE_INTERFACE_VERSION );
 
 	m_pPaintSurface = m_pSurface->GetVguiPaintSurface();

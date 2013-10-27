@@ -30,15 +30,6 @@ public:
 
 struct FactoryInfo_t
 {
-	~FactoryInfo_t()
-	{
-		engineFactory = NULL;
-		clientFactory = NULL;
-		cvarFactory = NULL;
-		fileSystemFactory = NULL;
-		vguiFactory = NULL;
-	}
-
 	void Init();
 
 
@@ -47,6 +38,7 @@ struct FactoryInfo_t
 	CreateInterfaceFn cvarFactory;
 	CreateInterfaceFn fileSystemFactory;
 	CreateInterfaceFn vguiFactory;
+	CreateInterfaceFn scaleformFactory;
 };
 
 template <typename T>

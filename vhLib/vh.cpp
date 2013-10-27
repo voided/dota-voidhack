@@ -146,14 +146,28 @@ CON_COMMAND( vh_test, "Test convar" )
 }
 
 
+CreateInterfaceFn GetFactory( const char *moduleName )
+{
+	CreateInterfaceFn factory = Sys_GetFactory( moduleName );
+
+	if ( !factory )
+	{
+		Error( "Unable to get factory for module '%s'!\n", moduleName );
+		return NULL;
+	}
+
+	return factory;
+}
+
 
 void FactoryInfo_t::Init()
 {
-	engineFactory = Sys_GetFactory( "engine" );
-	clientFactory = Sys_GetFactory( "client" );
+	engineFactory = GetFactory( "engine" );
+	clientFactory = GetFactory( "client" );
 	cvarFactory = VStdLib_GetICVarFactory();
-	fileSystemFactory = Sys_GetFactory( "filesystem_stdio" );
-	vguiFactory = Sys_GetFactory( "vguimatsurface" );
+	fileSystemFactory = GetFactory( "filesystem_stdio" );
+	vguiFactory = GetFactory( "vguimatsurface" );
+	scaleformFactory = GetFactory( "scaleformui_4" );
 }
 
 
