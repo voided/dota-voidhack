@@ -14,8 +14,12 @@ Zero support will be provided, so anyone looking to compile and use this is on t
 	* Note: entities inside of FoW are not networked to the client, so the usefulness is limited.
 * Better camera zoom
 	* Allows you to zoom your camera out further.
+* Mana Bar
+	* Displays a mana bar for enemy heroes.
+
+## Screenshot
+![](http://puu.sh/50GBL.jpg)
 
 ## Todos
 
-* Draw mana bar of enemy heroes
 * Display the level of enemy heroes' abilities.
