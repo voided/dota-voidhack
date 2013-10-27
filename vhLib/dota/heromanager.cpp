@@ -79,6 +79,12 @@ void CManaBar::Draw()
 
 void CHeroManager::Init()
 {
+
+#if _DEBUG
+	vh_manabars_self.SetValue( 1 );
+	vh_manabars_teammates.SetValue( 1 );
+#endif
+
 	RenderHelper().AddRenderHook( this );
 }
 
