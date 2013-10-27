@@ -96,6 +96,9 @@ void CHeroManager::Shutdown()
 
 void CHeroManager::RenderPreHud()
 {
+	if ( !VH().EngineTool()->IsInGame() )
+		return; // not in game, nothing to render
+
 	if ( VH().EngineClient()->IsTakingScreenshot() )
 		return;
 
